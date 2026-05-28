@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fluxaa Tools</title>
+
+<title>Fluxaa Tools Page</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
@@ -16,52 +17,10 @@ box-sizing:border-box;
 font-family:'Poppins',sans-serif;
 }
 
-html{
-scroll-behavior:smooth;
-}
-
 body{
 background:#050816;
 color:white;
 overflow-x:hidden;
-}
-
-/* NAVBAR */
-
-nav{
-width:100%;
-padding:18px 8%;
-display:flex;
-justify-content:space-between;
-align-items:center;
-position:fixed;
-top:0;
-z-index:1000;
-background:rgba(0,0,0,0.35);
-backdrop-filter:blur(12px);
-border-bottom:1px solid rgba(255,255,255,0.08);
-}
-
-.logo{
-font-size:32px;
-font-weight:700;
-color:#00d9ff;
-}
-
-.logo span{
-color:white;
-}
-
-.nav-links a{
-color:white;
-text-decoration:none;
-margin-left:25px;
-transition:0.3s;
-font-size:15px;
-}
-
-.nav-links a:hover{
-color:#00d9ff;
 }
 
 /* HERO */
@@ -69,10 +28,10 @@ color:#00d9ff;
 .hero{
 min-height:100vh;
 display:flex;
-align-items:center;
 justify-content:center;
+align-items:center;
 text-align:center;
-padding:140px 20px 80px;
+padding:120px 20px;
 
 background:
 radial-gradient(circle at top left,#00d9ff22,transparent 30%),
@@ -80,153 +39,201 @@ radial-gradient(circle at bottom right,#9333ea33,transparent 30%),
 #050816;
 }
 
-.hero-content h1{
-font-size:75px;
+.hero-content{
+max-width:950px;
+}
+
+.logo{
+font-size:70px;
 font-weight:700;
+color:#00d9ff;
+}
+
+.hero h1{
+margin-top:20px;
+font-size:70px;
 line-height:1.1;
 }
 
-.hero-content h1 span{
+.hero h1 span{
 color:#00d9ff;
 }
 
 .tagline{
-margin-top:18px;
-font-size:24px;
+margin-top:20px;
+font-size:22px;
 color:#94a3b8;
 }
 
-.hero-content p{
-max-width:760px;
+.hero p{
 margin:28px auto;
-color:#cbd5e1;
+max-width:800px;
 line-height:1.9;
 font-size:17px;
+color:#cbd5e1;
 }
 
-.hero-btn{
+.explore-btn{
 display:inline-block;
 margin-top:20px;
-padding:15px 38px;
+padding:16px 38px;
 background:linear-gradient(90deg,#00d9ff,#9333ea);
 border-radius:14px;
-color:white;
 text-decoration:none;
+color:white;
 font-weight:600;
+font-size:16px;
 transition:0.3s;
-cursor:pointer;
-border:none;
 }
 
-.hero-btn:hover{
+.explore-btn:hover{
 transform:scale(1.05);
 }
 
-/* SECTION */
+/* PRODUCTS */
 
-section{
+.products{
 padding:90px 8%;
 }
 
 .section-title{
 text-align:center;
-margin-bottom:55px;
+margin-bottom:60px;
 }
 
 .section-title h2{
-font-size:46px;
+font-size:48px;
 }
 
 .section-title p{
 margin-top:12px;
 color:#94a3b8;
+font-size:17px;
 }
 
-/* TOOLS */
-
-.tools-grid{
+.product-grid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:25px;
+grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+gap:30px;
 }
 
-.tool-card{
+.product-card{
 background:rgba(255,255,255,0.05);
 border:1px solid rgba(255,255,255,0.08);
-border-radius:24px;
-padding:32px;
+border-radius:28px;
+padding:35px;
 transition:0.4s;
-backdrop-filter:blur(12px);
-cursor:pointer;
+backdrop-filter:blur(14px);
 }
 
-.tool-card:hover{
+.product-card:hover{
 transform:translateY(-10px);
 border-color:#00d9ff;
-box-shadow:0 0 30px rgba(0,217,255,0.25);
+box-shadow:0 0 35px rgba(0,217,255,0.25);
 }
 
-.tool-icon{
-font-size:48px;
+.product-logo{
+font-size:75px;
 }
 
-.tool-card h3{
+.product-card h3{
 margin-top:18px;
-font-size:24px;
+font-size:30px;
 }
 
-.tool-card p{
-margin-top:12px;
-color:#cbd5e1;
-line-height:1.8;
-font-size:15px;
-}
-
-.tool-btn{
-display:inline-block;
-margin-top:20px;
-padding:11px 24px;
-border-radius:12px;
-background:#00d9ff;
-color:black;
-text-decoration:none;
+.by{
+margin-top:10px;
+color:#00d9ff;
 font-weight:600;
 }
 
+.product-card p{
+margin-top:16px;
+line-height:1.9;
+color:#cbd5e1;
+font-size:15px;
+}
+
+.launch-btn{
+display:inline-block;
+margin-top:25px;
+padding:14px 30px;
+background:linear-gradient(90deg,#00d9ff,#9333ea);
+border-radius:14px;
+text-decoration:none;
+color:white;
+font-weight:600;
+transition:0.3s;
+}
+
+.launch-btn:hover{
+transform:scale(1.05);
+}
+
+/* COMING */
+
+.coming{
+padding:70px 20px;
+text-align:center;
+}
+
+.coming h2{
+font-size:42px;
+color:#00d9ff;
+}
+
+.coming p{
+margin-top:18px;
+font-size:18px;
+color:#94a3b8;
+line-height:1.8;
+}
+
 /* ABOUT */
+
+.about{
+padding:80px 8%;
+}
 
 .about-box{
 max-width:900px;
 margin:auto;
 text-align:center;
-background:rgba(255,255,255,0.04);
-padding:45px;
-border-radius:24px;
+background:rgba(255,255,255,0.05);
 border:1px solid rgba(255,255,255,0.08);
+padding:45px;
+border-radius:28px;
+}
+
+.about-box h2{
+font-size:42px;
+margin-bottom:20px;
 }
 
 .about-box p{
-margin-top:18px;
-color:#cbd5e1;
 line-height:2;
+color:#cbd5e1;
 }
 
 /* STAFF */
 
+.staff{
+padding:80px 8%;
+}
+
 .staff-grid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:25px;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:30px;
 }
 
 .staff-card{
 background:rgba(255,255,255,0.05);
-padding:30px;
-border-radius:24px;
+padding:35px;
+border-radius:28px;
 text-align:center;
 border:1px solid rgba(255,255,255,0.08);
 transition:0.3s;
-cursor:pointer;
 }
 
 .staff-card:hover{
@@ -235,56 +242,69 @@ border-color:#00d9ff;
 }
 
 .staff-avatar{
-width:80px;
-height:80px;
+width:90px;
+height:90px;
 border-radius:50%;
 background:linear-gradient(90deg,#00d9ff,#9333ea);
 margin:auto;
 }
 
 .staff-card h3{
-margin-top:18px;
+margin-top:20px;
+font-size:24px;
 }
 
 .staff-card p{
-margin-top:8px;
+margin-top:10px;
 color:#94a3b8;
 }
 
 /* CONTACT */
 
-.contact-box{
-max-width:700px;
-margin:auto;
+.contact{
+padding:80px 8%;
 text-align:center;
 }
 
-.contact-box p{
-margin-top:15px;
+.contact h2{
+font-size:42px;
+}
+
+.contact p{
+margin-top:18px;
 color:#cbd5e1;
-line-height:1.8;
+line-height:1.9;
 }
 
 /* TERMS */
 
+.terms{
+padding:80px 8%;
+}
+
 .terms-box{
-max-width:900px;
+max-width:950px;
 margin:auto;
-background:rgba(255,255,255,0.04);
-padding:45px;
-border-radius:24px;
+background:rgba(255,255,255,0.05);
 border:1px solid rgba(255,255,255,0.08);
+padding:45px;
+border-radius:28px;
+}
+
+.terms-box h2{
+font-size:42px;
+margin-bottom:20px;
 }
 
 .terms-box p{
-color:#cbd5e1;
 line-height:2;
+color:#cbd5e1;
 }
 
 /* FOOTER */
 
 footer{
-margin-top:90px;
+margin-top:80px;
 padding:40px 20px;
 text-align:center;
 background:#020617;
@@ -294,7 +314,7 @@ border-top:1px solid rgba(255,255,255,0.08);
 footer h2{
 color:#00d9ff;
 margin-bottom:18px;
-font-size:30px;
+font-size:32px;
 }
 
 .footer-links{
@@ -318,106 +338,31 @@ color:#64748b;
 font-size:14px;
 }
 
-/* POPUP */
-
-.popup{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.7);
-display:none;
-justify-content:center;
-align-items:center;
-padding:20px;
-z-index:2000;
-}
-
-.popup-content{
-background:#0f172a;
-padding:40px;
-border-radius:24px;
-max-width:700px;
-width:100%;
-border:1px solid rgba(255,255,255,0.08);
-position:relative;
-animation:popup 0.3s ease;
-}
-
-@keyframes popup{
-from{
-transform:scale(0.8);
-opacity:0;
-}
-to{
-transform:scale(1);
-opacity:1;
-}
-}
-
-.close-btn{
-position:absolute;
-right:20px;
-top:15px;
-font-size:28px;
-cursor:pointer;
-color:white;
-}
-
-.popup-logo{
-font-size:70px;
-text-align:center;
-}
-
-.popup-content h2{
-text-align:center;
-margin-top:15px;
-color:#00d9ff;
-}
-
-.popup-content p{
-margin-top:18px;
-line-height:1.9;
-color:#cbd5e1;
-}
-
-.popup-content ul{
-margin-top:20px;
-padding-left:20px;
-line-height:2;
-color:#cbd5e1;
-}
-
-.launch-btn{
-display:inline-block;
-margin-top:25px;
-padding:14px 30px;
-background:linear-gradient(90deg,#00d9ff,#9333ea);
-border-radius:12px;
-text-decoration:none;
-color:white;
-font-weight:600;
-}
-
 /* MOBILE */
 
 @media(max-width:768px){
 
-.hero-content h1{
-font-size:48px;
+.hero h1{
+font-size:46px;
+}
+
+.logo{
+font-size:52px;
 }
 
 .tagline{
 font-size:18px;
 }
 
-.nav-links{
-display:none;
+.section-title h2,
+.about-box h2,
+.contact h2,
+.terms-box h2{
+font-size:32px;
 }
 
-section{
-padding:70px 6%;
+.coming h2{
+font-size:30px;
 }
 
 }
@@ -427,68 +372,77 @@ padding:70px 6%;
 
 <body>
 
-<nav>
+<!-- HERO -->
 
-<div class="logo">
-Fluxaa<span>.</span>
-</div>
-
-<div class="nav-links">
-<a href="#home">Home</a>
-<a href="#tools">Tools</a>
-<a href="#about">About</a>
-<a href="#staff">Staff</a>
-<a href="#contact">Contact</a>
-</div>
-
-</nav>
-
-<section class="hero" id="home">
+<section class="hero">
 
 <div class="hero-content">
+
+<div class="logo">
+Fluxaa.
+</div>
 
 <h1>
 A Company Of <span>Gen Z's</span>
 </h1>
 
 <div class="tagline">
-Building Smart Digital Tools For The Future 🚀
+Fluxaa Modern Tools • Smart • Fast • Professional 🚀
 </div>
 
 <p>
-Fluxaa Tools is a modern digital platform focused on creating powerful online tools for students, creators, developers and the next generation of the internet.
+Fluxaa Technologies is building modern Gen Z style digital tools for students, creators and the next generation of the internet.
 </p>
 
-<button class="hero-btn">
+<a href="#products" class="explore-btn">
 Explore Tools
-</button>
+</a>
 
 </div>
 
 </section>
 
-<section id="tools">
+<!-- PRODUCTS -->
+
+<section class="products" id="products">
 
 <div class="section-title">
-<h2>Popular Tools</h2>
-<p>Modern • Fast • Smart</p>
-</div>
 
-<div class="tools-grid">
-
-<div class="tool-card" onclick="openPopup()">
-
-<div class="tool-icon">🧮</div>
-
-<h3>Scientific Calculator</h3>
+<h2>
+Our Products
+</h2>
 
 <p>
-Advanced scientific calculations with modern interface.
+Modern • Powerful • Professional
 </p>
 
-<div class="tool-btn">
-Open Tool
 </div>
+
+<div class="product-grid">
+
+<!-- PRODUCT -->
+
+<div class="product-card">
+
+<div class="product-logo">
+🧮
+</div>
+
+<h3>
+Pocket Scientific Calculator
+</h3>
+
+<div class="by">
+By Fluxaa
+</div>
+
+<p>
+A modern Gen Z style scientific calculator with advanced mathematical functions, fast calculations and a clean futuristic interface for students and professionals.
+</p>
+
+<a href="https://bdh-store.vercel.app" target="_blank" class="launch-btn">
+Launch Now
+</a>
 
 </div>
 
@@ -496,28 +450,52 @@ Open Tool
 
 </section>
 
-<section id="about">
+<!-- COMING -->
 
-<div class="section-title">
-<h2>About Fluxaa</h2>
-<p>The Future Of Smart Digital Platforms</p>
-</div>
+<section class="coming">
+
+<h2>
+🚀 One New Product Coming Soon
+</h2>
+
+<p>
+Fluxaa Technologies is continuously building modern Gen Z digital experiences and powerful tools for the future.
+</p>
+
+</section>
+
+<!-- ABOUT -->
+
+<section class="about">
 
 <div class="about-box">
 
+<h2>
+About Fluxaa
+</h2>
+
 <p>
-Fluxaa Technologies is a next-generation digital platform created to provide smart, fast and useful online tools for everyone.
+Fluxaa Technologies is a next-generation digital platform focused on creating smart, modern and useful online tools for everyone. Our mission is to simplify technology and build a futuristic ecosystem for Gen Z users around the world.
 </p>
 
 </div>
 
 </section>
 
-<section id="staff">
+<!-- STAFF -->
+
+<section class="staff">
 
 <div class="section-title">
-<h2>Our Staff</h2>
-<p>Creative Minds Behind Fluxaa</p>
+
+<h2>
+Our Staff
+</h2>
+
+<p>
+Creative Minds Behind Fluxaa
+</p>
+
 </div>
 
 <div class="staff-grid">
@@ -526,19 +504,27 @@ Fluxaa Technologies is a next-generation digital platform created to provide sma
 
 <div class="staff-avatar"></div>
 
-<h3>Mr. Vasu</h3>
+<h3>
+Mr. Vasu
+</h3>
 
-<p>Founder & Developer</p>
+<p>
+Founder & Developer
+</p>
 
 </div>
 
-<div class="staff-card" onclick="openStaff()">
+<div class="staff-card">
 
 <div class="staff-avatar"></div>
 
-<h3>Fluxaa Staff</h3>
+<h3>
+Fluxaa Staff
+</h3>
 
-<p>Coder • Editor • Management</p>
+<p>
+Coder • Editor • Management
+</p>
 
 </div>
 
@@ -546,55 +532,57 @@ Fluxaa Technologies is a next-generation digital platform created to provide sma
 
 </section>
 
-<section id="contact">
+<!-- CONTACT -->
 
-<div class="section-title">
-<h2>Contact Us</h2>
-<p>Let's Build The Future Together</p>
-</div>
+<section class="contact">
 
-<div class="contact-box">
+<h2>
+Contact Us
+</h2>
 
 <p>
-For business inquiries, collaborations and support contact the Fluxaa Technologies team.
+For business inquiries, support and collaborations contact the Fluxaa Technologies team.
 </p>
 
 <p>
 Email: fluxa0000@gmail.com
 </p>
 
-</div>
-
 </section>
 
-<section id="terms">
+<!-- TERMS -->
 
-<div class="section-title">
-<h2>Terms & Conditions</h2>
-<p>Fluxaa Technologies Policies</p>
-</div>
+<section class="terms">
 
 <div class="terms-box">
 
+<h2>
+Terms & Conditions
+</h2>
+
 <p>
-By using Fluxaa Tools, users agree to use our platform responsibly. Unauthorized copying, abuse of services or harmful activities are strictly prohibited.
+By using Fluxaa Tools, users agree to use our services responsibly. Unauthorized copying, harmful activities or abuse of the platform is strictly prohibited. Fluxaa Technologies reserves the right to modify or improve products and services at any time.
 </p>
 
 </div>
 
 </section>
 
+<!-- FOOTER -->
+
 <footer>
 
-<h2>Fluxaa Tools</h2>
+<h2>
+Fluxaa Tools
+</h2>
 
 <div class="footer-links">
 
-<a href="#home">Home</a>
-<a href="#tools">Tools</a>
-<a href="#about">About</a>
-<a href="#staff">Staff</a>
-<a href="#contact">Contact</a>
+<a href="#">Home</a>
+<a href="#">Products</a>
+<a href="#">Company</a>
+<a href="#">Contact</a>
+<a href="#">Terms</a>
 
 </div>
 
@@ -603,82 +591,6 @@ By using Fluxaa Tools, users agree to use our platform responsibly. Unauthorized
 </p>
 
 </footer>
-
-<!-- TOOL POPUP -->
-
-<div class="popup" id="toolPopup">
-
-<div class="popup-content">
-
-<div class="close-btn" onclick="closePopup()">
-×
-</div>
-
-<div class="popup-logo">
-🧮
-</div>
-
-<h2>Scientific Calculator</h2>
-
-<p>
-Fluxaa Scientific Calculator is a fast and modern calculator designed for students and professionals.
-</p>
-
-<ul>
-<li>Scientific Functions</li>
-<li>Modern Interface</li>
-<li>Fast Calculations</li>
-<li>Mobile Friendly</li>
-</ul>
-
-<a href="#" class="launch-btn">
-Launch Tool
-</a>
-
-</div>
-
-</div>
-
-<!-- STAFF POPUP -->
-
-<div class="popup" id="staffPopup">
-
-<div class="popup-content">
-
-<div class="close-btn" onclick="closeStaff()">
-×
-</div>
-
-<h2>Fluxaa Staff</h2>
-
-<p><b>Coder:</b> Mr. Vasu</p>
-<p><b>Editor:</b> Fluxaa Team</p>
-<p><b>Designer:</b> Fluxaa Creative Department</p>
-<p><b>Management:</b> Fluxaa Technologies</p>
-
-</div>
-
-</div>
-
-<script>
-
-function openPopup(){
-document.getElementById("toolPopup").style.display="flex";
-}
-
-function closePopup(){
-document.getElementById("toolPopup").style.display="none";
-}
-
-function openStaff(){
-document.getElementById("staffPopup").style.display="flex";
-}
-
-function closeStaff(){
-document.getElementById("staffPopup").style.display="none";
-}
-
-</script>
 
 </body>
 </html>
