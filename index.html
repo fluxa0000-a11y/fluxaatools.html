@@ -17,29 +17,29 @@ box-sizing:border-box;
 font-family:'Poppins',sans-serif;
 }
 
-html{
-scroll-behavior:smooth;
-}
-
 body{
 background:#050816;
 color:white;
 overflow-x:hidden;
 }
 
+html{
+scroll-behavior:smooth;
+}
+
 /* NAVBAR */
 
 nav{
+position:fixed;
+top:0;
 width:100%;
 padding:18px 8%;
 display:flex;
 justify-content:space-between;
 align-items:center;
-position:fixed;
-top:0;
-z-index:1000;
 background:rgba(0,0,0,0.35);
 backdrop-filter:blur(12px);
+z-index:1000;
 border-bottom:1px solid rgba(255,255,255,0.08);
 }
 
@@ -58,7 +58,6 @@ color:white;
 text-decoration:none;
 margin-left:25px;
 transition:0.3s;
-font-size:15px;
 }
 
 .nav-links a:hover{
@@ -70,11 +69,10 @@ color:#00d9ff;
 .hero{
 min-height:100vh;
 display:flex;
-align-items:center;
 justify-content:center;
+align-items:center;
 text-align:center;
 padding:140px 20px 80px;
-
 background:
 radial-gradient(circle at top left,#00d9ff22,transparent 30%),
 radial-gradient(circle at bottom right,#9333ea33,transparent 30%),
@@ -83,7 +81,6 @@ radial-gradient(circle at bottom right,#9333ea33,transparent 30%),
 
 .hero-content h1{
 font-size:75px;
-font-weight:700;
 line-height:1.1;
 }
 
@@ -100,9 +97,8 @@ color:#94a3b8;
 .hero-content p{
 max-width:760px;
 margin:28px auto;
-color:#cbd5e1;
 line-height:1.9;
-font-size:17px;
+color:#cbd5e1;
 }
 
 .hero-btn{
@@ -111,10 +107,12 @@ margin-top:20px;
 padding:15px 38px;
 background:linear-gradient(90deg,#00d9ff,#9333ea);
 border-radius:14px;
-color:white;
 text-decoration:none;
+color:white;
 font-weight:600;
 transition:0.3s;
+cursor:pointer;
+border:none;
 }
 
 .hero-btn:hover{
@@ -152,10 +150,10 @@ gap:30px;
 .product-card{
 background:rgba(255,255,255,0.05);
 border:1px solid rgba(255,255,255,0.08);
-border-radius:28px;
 padding:35px;
+border-radius:28px;
 transition:0.4s;
-backdrop-filter:blur(14px);
+backdrop-filter:blur(12px);
 }
 
 .product-card:hover{
@@ -183,7 +181,6 @@ font-weight:600;
 margin-top:15px;
 line-height:1.9;
 color:#cbd5e1;
-font-size:15px;
 }
 
 .launch-btn{
@@ -206,7 +203,7 @@ transform:scale(1.05);
 
 .coming{
 text-align:center;
-padding:50px 20px;
+padding:60px 20px;
 }
 
 .coming h2{
@@ -217,7 +214,6 @@ color:#00d9ff;
 .coming p{
 margin-top:15px;
 color:#94a3b8;
-line-height:1.8;
 }
 
 /* ABOUT */
@@ -225,17 +221,17 @@ line-height:1.8;
 .about-box{
 max-width:900px;
 margin:auto;
-text-align:center;
-background:rgba(255,255,255,0.04);
+background:rgba(255,255,255,0.05);
 padding:45px;
 border-radius:24px;
+text-align:center;
 border:1px solid rgba(255,255,255,0.08);
 }
 
 .about-box p{
 margin-top:18px;
-color:#cbd5e1;
 line-height:2;
+color:#cbd5e1;
 }
 
 /* STAFF */
@@ -251,9 +247,9 @@ background:rgba(255,255,255,0.05);
 padding:30px;
 border-radius:24px;
 text-align:center;
-border:1px solid rgba(255,255,255,0.08);
-transition:0.3s;
 cursor:pointer;
+transition:0.3s;
+border:1px solid rgba(255,255,255,0.08);
 }
 
 .staff-card:hover{
@@ -278,37 +274,7 @@ margin-top:8px;
 color:#94a3b8;
 }
 
-/* CONTACT */
-
-.contact-box{
-max-width:700px;
-margin:auto;
-text-align:center;
-}
-
-.contact-box p{
-margin-top:15px;
-color:#cbd5e1;
-line-height:1.8;
-}
-
-/* TERMS */
-
-.terms-box{
-max-width:900px;
-margin:auto;
-background:rgba(255,255,255,0.04);
-padding:45px;
-border-radius:24px;
-border:1px solid rgba(255,255,255,0.08);
-}
-
-.terms-box p{
-color:#cbd5e1;
-line-height:2;
-}
-
-/* SOCIAL MEDIA */
+/* SOCIAL */
 
 .social-grid{
 display:grid;
@@ -318,20 +284,18 @@ gap:25px;
 
 .social-card{
 background:rgba(255,255,255,0.05);
-border:1px solid rgba(255,255,255,0.08);
-border-radius:26px;
 padding:35px;
+border-radius:26px;
 text-align:center;
 text-decoration:none;
 color:white;
 transition:0.4s;
-backdrop-filter:blur(12px);
+border:1px solid rgba(255,255,255,0.08);
 }
 
 .social-card:hover{
 transform:translateY(-10px);
 border-color:#00d9ff;
-box-shadow:0 0 30px rgba(0,217,255,0.25);
 }
 
 .social-logo{
@@ -346,7 +310,36 @@ font-size:24px;
 .social-card p{
 margin-top:12px;
 color:#94a3b8;
-line-height:1.7;
+}
+
+/* CONTACT */
+
+.contact-box{
+max-width:700px;
+margin:auto;
+text-align:center;
+}
+
+.contact-box p{
+margin-top:15px;
+line-height:1.8;
+color:#cbd5e1;
+}
+
+/* TERMS */
+
+.terms-box{
+max-width:900px;
+margin:auto;
+background:rgba(255,255,255,0.05);
+padding:45px;
+border-radius:24px;
+border:1px solid rgba(255,255,255,0.08);
+}
+
+.terms-box p{
+line-height:2;
+color:#cbd5e1;
 }
 
 /* FOOTER */
@@ -362,7 +355,6 @@ border-top:1px solid rgba(255,255,255,0.08);
 footer h2{
 color:#00d9ff;
 margin-bottom:18px;
-font-size:30px;
 }
 
 .footer-links{
@@ -373,8 +365,6 @@ margin-bottom:20px;
 color:#cbd5e1;
 text-decoration:none;
 margin:0 12px;
-transition:0.3s;
-font-size:15px;
 }
 
 .footer-links a:hover{
@@ -383,10 +373,9 @@ color:#00d9ff;
 
 .copyright{
 color:#64748b;
-font-size:14px;
 }
 
-/* POPUPS */
+/* POPUP */
 
 .popup{
 display:none;
@@ -395,52 +384,31 @@ top:0;
 left:0;
 width:100%;
 height:100%;
-background:rgba(0,0,0,0.75);
+background:rgba(0,0,0,0.8);
 justify-content:center;
 align-items:center;
 padding:20px;
-z-index:3000;
+z-index:5000;
 }
 
 .popup-content{
 background:#0f172a;
 padding:40px;
 border-radius:24px;
-max-width:700px;
+max-width:1000px;
 width:100%;
+max-height:90vh;
+overflow:auto;
 border:1px solid rgba(255,255,255,0.08);
 position:relative;
-animation:popup 0.3s ease;
-}
-
-@keyframes popup{
-from{
-transform:scale(0.8);
-opacity:0;
-}
-to{
-transform:scale(1);
-opacity:1;
-}
 }
 
 .close-btn{
 position:absolute;
 top:15px;
 right:20px;
-font-size:28px;
+font-size:30px;
 cursor:pointer;
-}
-
-.popup-content h2{
-color:#00d9ff;
-margin-bottom:20px;
-}
-
-.popup-content p{
-line-height:2;
-color:#cbd5e1;
-margin-top:10px;
 }
 
 /* MOBILE */
@@ -502,12 +470,12 @@ Building Smart Digital Tools For The Future 🚀
 </div>
 
 <p>
-Fluxaa Technologies is building modern Gen Z style digital products and smart tools for students, creators and developers.
+Fluxaa Technologies is building modern Gen Z style products and smart online tools.
 </p>
 
-<a href="tools.html" target="_blank" class="hero-btn">
+<button class="hero-btn" onclick="openToolsPage()">
 Explore Tools
-</a>
+</button>
 
 </div>
 
@@ -539,7 +507,7 @@ By Fluxaa
 </div>
 
 <p>
-A modern Gen Z style scientific calculator with advanced functions and fast calculations.
+A modern scientific calculator with advanced functions and fast calculations.
 </p>
 
 <a href="https://bdh-store.vercel.app" target="_blank" class="launch-btn">
@@ -561,7 +529,7 @@ Launch Now
 </h2>
 
 <p>
-Fluxaa Technologies is continuously building next-generation Gen Z tools.
+Gen Z style modern products are under development.
 </p>
 
 </section>
@@ -578,7 +546,7 @@ Fluxaa Technologies is continuously building next-generation Gen Z tools.
 <div class="about-box">
 
 <p>
-Fluxaa Technologies is a next-generation digital platform focused on creating useful and modern online tools for everyone.
+Fluxaa Technologies creates futuristic digital products and tools for creators, students and developers.
 </p>
 
 </div>
@@ -633,20 +601,13 @@ Coder • Editor • Management
 <section>
 
 <div class="section-title">
-
-<h2>
-Social Media Accounts
-</h2>
-
-<p>
-Connect With Fluxaa Technologies
-</p>
-
+<h2>Social Media Accounts</h2>
+<p>Connect With Fluxaa Technologies</p>
 </div>
 
 <div class="social-grid">
 
-<a href="#" target="_blank" class="social-card">
+<a href="#" class="social-card">
 
 <div class="social-logo">
 ▶️
@@ -662,7 +623,7 @@ Fluxaa Official Channel
 
 </a>
 
-<a href="#" target="_blank" class="social-card">
+<a href="#" class="social-card">
 
 <div class="social-logo">
 📸
@@ -678,7 +639,7 @@ Fluxaa Creative Updates
 
 </a>
 
-<a href="#" target="_blank" class="social-card">
+<a href="#" class="social-card">
 
 <div class="social-logo">
 𝕏
@@ -690,22 +651,6 @@ Twitter / X
 
 <p>
 Latest News & Updates
-</p>
-
-</a>
-
-<a href="#" target="_blank" class="social-card">
-
-<div class="social-logo">
-💻
-</div>
-
-<h3>
-GitHub
-</h3>
-
-<p>
-Open Source Projects
 </p>
 
 </a>
@@ -724,10 +669,6 @@ Open Source Projects
 </div>
 
 <div class="contact-box">
-
-<p>
-For business inquiries and support contact Fluxaa Technologies.
-</p>
 
 <p>
 Email: fluxa0000@gmail.com
@@ -749,7 +690,7 @@ Email: fluxa0000@gmail.com
 <div class="terms-box">
 
 <p>
-By using Fluxaa Tools, users agree to use the platform responsibly. Unauthorized copying or harmful activities are prohibited.
+By using Fluxaa Tools, users agree to use the platform responsibly.
 </p>
 
 </div>
@@ -770,7 +711,6 @@ Fluxaa Tools
 <a href="#">Products</a>
 <a href="#">Company</a>
 <a href="#">Contact</a>
-<a href="#">Terms</a>
 
 </div>
 
@@ -795,7 +735,7 @@ Owner Information
 </h2>
 
 <p>
-<b>Owner Name:</b> Mr. Vasu
+<b>Name:</b> Mr. Vasu
 </p>
 
 <p>
@@ -803,7 +743,7 @@ Owner Information
 </p>
 
 <p>
-<b>Description:</b> Mr. Vasu is the founder of Fluxaa Technologies focused on building futuristic Gen Z digital products and smart tools.
+Building futuristic Gen Z digital products and smart tools.
 </p>
 
 </div>
@@ -824,21 +764,86 @@ Owner Information
 Fluxaa Staff Database
 </h2>
 
-<p>
-<b>Editors:</b> Fluxaa Editorial Team
+<br>
+
+<h3>Editors</h3>
+<p>Fluxaa Editorial Team</p>
+
+<br>
+
+<h3>Coders</h3>
+<p>Fluxaa Development Team</p>
+
+<br>
+
+<h3>Management</h3>
+<p>Fluxaa Technologies Staff</p>
+
+</div>
+
+</div>
+
+<!-- TOOLS POPUP -->
+
+<div class="popup" id="toolsPopup">
+
+<div class="popup-content">
+
+<div class="close-btn" onclick="closeToolsPage()">
+×
+</div>
+
+<h2 style="color:#00d9ff;">
+Fluxaa Modern Tools
+</h2>
+
+<p style="margin-top:10px;color:#94a3b8;">
+All Tools Are Available Here
 </p>
 
-<p>
-<b>Coders:</b> Fluxaa Development Team
-</p>
+<br><br>
+
+<div class="product-grid">
+
+<div class="product-card">
+
+<div class="product-logo">
+🧮
+</div>
+
+<h3>
+Pocket Scientific Calculator
+</h3>
+
+<div class="product-by">
+By Fluxaa
+</div>
 
 <p>
-<b>Designers:</b> Fluxaa Creative Department
+Advanced modern scientific calculator with professional functions.
 </p>
 
+<a href="https://bdh-store.vercel.app" target="_blank" class="launch-btn">
+Launch Now
+</a>
+
+</div>
+
+</div>
+
+<br><br>
+
+<div class="coming">
+
+<h2>
+🚀 One New Product Coming Soon
+</h2>
+
 <p>
-<b>Management:</b> Fluxaa Technologies Staff
+Gen Z Style Modern Tools Under Development.
 </p>
+
+</div>
 
 </div>
 
@@ -860,6 +865,14 @@ document.getElementById("staffPopup").style.display="flex";
 
 function closeStaffPopup(){
 document.getElementById("staffPopup").style.display="none";
+}
+
+function openToolsPage(){
+document.getElementById("toolsPopup").style.display="flex";
+}
+
+function closeToolsPage(){
+document.getElementById("toolsPopup").style.display="none";
 }
 
 </script>
