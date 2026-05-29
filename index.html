@@ -946,6 +946,48 @@ function closeToolsPage(){
 document.getElementById("toolsPopup").style.display="none";
 }
 
+  history.pushState(null, null, location.href);
+
+window.onpopstate = function () {
+
+let toolsPopup = document.getElementById("toolsPopup");
+let ownerPopup = document.getElementById("ownerPopup");
+let staffPopup = document.getElementById("staffPopup");
+
+if (toolsPopup.style.display === "flex") {
+
+toolsPopup.style.display = "none";
+history.pushState(null, null, location.href);
+
+}
+
+else if (ownerPopup.style.display === "flex") {
+
+ownerPopup.style.display = "none";
+history.pushState(null, null, location.href);
+
+}
+
+else if (staffPopup.style.display === "flex") {
+
+staffPopup.style.display = "none";
+history.pushState(null, null, location.href);
+
+}
+
+else {
+
+let leaveSite = confirm("Do you want to leave?");
+
+if (leaveSite) {
+history.back();
+} else {
+history.pushState(null, null, location.href);
+}
+
+}
+
+};
   
 </script>
 
