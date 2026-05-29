@@ -946,33 +946,7 @@ function closeToolsPage(){
 document.getElementById("toolsPopup").style.display="none";
 }
 
-  history.pushState(null, null, location.href);
-
-window.onpopstate = function () {
-
-let toolsPopup =
-document.getElementById("toolsPopup");
-
-if (toolsPopup.style.display === "flex") {
-
-toolsPopup.style.display = "none";
-
-history.pushState(null, null, location.href);
-
-} else {
-
-let leaveSite = confirm("Do you want to leave?");
-
-if (leaveSite) {
-history.back();
-} else {
-history.pushState(null, null, location.href);
-}
-
-}
-
-};
-
+  
 </script>
 
 </body>
