@@ -946,32 +946,6 @@ function closeToolsPage(){
 document.getElementById("toolsPopup").style.display="none";
 }
 
-  let backPressedOnce = false;
-
-window.addEventListener("popstate", function () {
-
-if (!backPressedOnce) {
-
-history.pushState(null, null, location.href);
-
-backPressedOnce = true;
-
-let confirmLeave = confirm("Do you want to leave?");
-
-if (confirmLeave) {
-history.back();
-}
-
-setTimeout(() => {
-backPressedOnce = false;
-}, 2000);
-
-}
-
-});
-
-history.pushState(null, null, location.href);
-
 </script>
 
 </body>
