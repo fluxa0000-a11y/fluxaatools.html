@@ -946,7 +946,23 @@ function closeToolsPage(){
 document.getElementById("toolsPopup").style.display="none";
 }
 
-  history.pushState(null, null, location.href);
+  
+  let isNavigating = false;
+
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+
+link.addEventListener("click", function () {
+isNavigating = true;
+
+setTimeout(() => {
+isNavigating = false;
+}, 500);
+
+});
+
+});
+
+history.pushState(null, null, location.href);
 
 window.onpopstate = function () {
 
@@ -975,17 +991,11 @@ history.pushState(null, null, location.href);
 
 }
 
-else {
-
-  if(event.state !== null){
-return;
-  }
+else if (!isNavigating) {
 
 let leaveSite = confirm("Do you want to leave?");
 
-if (leaveSite) {
-history.back();
-} else {
+if (!leaveSite) {
 history.pushState(null, null, location.href);
 }
 
