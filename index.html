@@ -977,8 +977,7 @@ history.pushState(null, null, location.href);
 
 else {
 
-  if(location.hash){
-history.pushState(null, null, location.href);
+  if(event.state !== null){
 return;
   }
 
