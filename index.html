@@ -977,6 +977,11 @@ history.pushState(null, null, location.href);
 
 else {
 
+  if(location.hash){
+history.pushState(null, null, location.href);
+return;
+  }
+
 let leaveSite = confirm("Do you want to leave?");
 
 if (leaveSite) {
