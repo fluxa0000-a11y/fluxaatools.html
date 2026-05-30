@@ -1056,6 +1056,7 @@ if ('serviceWorker' in navigator) {
       .catch(err => console.log('PWA Failed:', err));
   });
 }
+  </script>
 
 <div id="installBanner" style="display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #111827; border: 1px solid #00d9ff; padding: 15px 25px; border-radius: 16px; box-shadow: 0 0 20px rgba(0, 217, 255, 0.3); z-index: 9999; width: 90%; max-width: 400px; justify-content: space-between; align-items: center; gap: 15px;">
   <div style="display: flex; align-items: center; gap: 12px;">
@@ -1070,6 +1071,7 @@ if ('serviceWorker' in navigator) {
     <button id="btnCancelInstall" style="background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #cbd5e1; padding: 8px 12px; border-radius: 10px; cursor: pointer; font-size: 12px;">Later</button>
   </div>
 </div>
+  <script>
 
   let deferredPrompt;
 const installBanner = document.getElementById('installBanner');
