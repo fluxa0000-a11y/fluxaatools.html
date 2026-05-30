@@ -1027,6 +1027,31 @@ const manifest = {
   ]
 };
 
+// ====================================================================
+// FLUXAA TECHNOLOGIES - SINGLE FILE PWA CODE WITH NEW NEON LOGO
+// ====================================================================
+
+const manifest = {
+  "name": "Fluxaa Technologies",
+  "short_name": "Fluxaa",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#050816",
+  "theme_color": "#050816",
+  "icons": [
+    {
+      "src": "Gemini_Generated_Image_djo68sdjo68sdjo6.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "Gemini_Generated_Image_djo68sdjo68sdjo6.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+};
+
 const manifestStr = JSON.stringify(manifest);
 const manifestBlob = new Blob([manifestStr], {type: 'application/json'});
 const manifestURL = URL.createObjectURL(manifestBlob);
@@ -1035,7 +1060,6 @@ manifestLink.rel = 'manifest';
 manifestLink.href = manifestURL;
 document.head.appendChild(manifestLink);
 
-// 2. Inline Service Worker code ko register karna
 if ('serviceWorker' in navigator) {
   const swCode = `
     const CACHE_NAME = 'fluxaa-single-v1';
@@ -1060,7 +1084,10 @@ if ('serviceWorker' in navigator) {
       .catch(err => console.log('PWA Failed:', err));
   });
 }
-  
+
+// ====================================================================
+// PWA CODE ENDS HERE
+// ====================================================================
 </script>
 
 </body>
