@@ -1003,16 +1003,6 @@ history.pushState(null, null, location.href);
 
 };
 
-// ... aapke windows.onpopstate waale code ke neech ka hissa ...
-else if (!isNavigating) {
-  let leaveSite = confirm("Do you want to leave?");
-  if (!leaveSite) {
-    history.pushState(null, null, location.href);
-  }
-}
-}; // Aapka purana code yahan khatam hota hai
-
-
 // ======= YAHAN SE PASTE KARIYE =======
 
 const manifest = {
@@ -1070,12 +1060,6 @@ if ('serviceWorker' in navigator) {
 }
 
 // ======= YAHAN TAK PASTE KARIYE =======
-
-
-</script>
-
-</body>
-</html>
 
 </script>
 
