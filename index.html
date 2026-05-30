@@ -1057,6 +1057,20 @@ if ('serviceWorker' in navigator) {
   });
 }
 
+<div id="installBanner" style="display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #111827; border: 1px solid #00d9ff; padding: 15px 25px; border-radius: 16px; box-shadow: 0 0 20px rgba(0, 217, 255, 0.3); z-index: 9999; width: 90%; max-width: 400px; justify-content: space-between; align-items: center; gap: 15px;">
+  <div style="display: flex; align-items: center; gap: 12px;">
+    <span style="font-size: 24px;">🚀</span>
+    <div>
+      <h4 style="margin: 0; color: white; font-size: 14px;">Install Fluxaa App</h4>
+      <p style="margin: 3px 0 0; color: #94a3b8; font-size: 12px;">For faster & smoother access</p>
+    </div>
+  </div>
+  <div style="display: flex; gap: 8px;">
+    <button id="btnInstall" style="background: linear-gradient(90deg,#00d9ff,#9333ea); border: none; color: white; padding: 8px 16px; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 12px;">Install</button>
+    <button id="btnCancelInstall" style="background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #cbd5e1; padding: 8px 12px; border-radius: 10px; cursor: pointer; font-size: 12px;">Later</button>
+  </div>
+</div>
+
   let deferredPrompt;
 const installBanner = document.getElementById('installBanner');
 const btnInstall = document.getElementById('btnInstall');
