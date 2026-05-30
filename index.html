@@ -1037,7 +1037,7 @@ if ('serviceWorker' in navigator) {
     const CACHE_NAME = 'fluxaa-single-v1';
     self.addEventListener('install', e => {
       e.waitUntil(
-        caches.open(CACHE_NAME).then(cache => cache.addAll(['/']))
+        caches.open(CACHE_NAME).then(cache => cache.addAll(['/', '/index.html']))
       );
     });
     self.addEventListener('fetch', e => {
