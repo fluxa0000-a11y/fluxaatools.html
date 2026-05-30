@@ -1003,10 +1003,18 @@ history.pushState(null, null, location.href);
 
 };
 
+// ... aapke windows.onpopstate waale code ke neech ka hissa ...
+else if (!isNavigating) {
+  let leaveSite = confirm("Do you want to leave?");
+  if (!leaveSite) {
+    history.pushState(null, null, location.href);
+  }
+}
+}; // Aapka purana code yahan khatam hota hai
 
-// ====================================================================
-// ONLY PWA CODE WITH NEON LOGO
-// ====================================================================
+
+// ======= YAHAN SE PASTE KARIYE =======
+
 const manifest = {
   "name": "Fluxaa Technologies",
   "short_name": "Fluxaa",
@@ -1016,12 +1024,12 @@ const manifest = {
   "theme_color": "#050816",
   "icons": [
     {
-      "src": "Gemini_Generated_Image_djo68sdjo68sdjo6.png",
+      "src": "https://img.icons8.com/fluent/192/000000/infinity.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "Gemini_Generated_Image_djo68sdjo68sdjo6.png",
+      "src": "https://img.icons8.com/fluent/512/000000/infinity.png",
       "sizes": "512x512",
       "type": "image/png"
     }
@@ -1060,9 +1068,15 @@ if ('serviceWorker' in navigator) {
       .catch(err => console.log('PWA Failed:', err));
   });
 }
-// ====================================================================
-// ONLY PWA CODE ENDS
-// ====================================================================
+
+// ======= YAHAN TAK PASTE KARIYE =======
+
+
+</script>
+
+</body>
+</html>
+
 </script>
 
 </body>
