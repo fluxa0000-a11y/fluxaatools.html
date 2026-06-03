@@ -5,18 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta property="og:site_name" content="Fluxaa">
 
-    <!--for ads verification-->
-  
-<meta name="google-adsense-account" content="ca-pub-4227503475496904">
+    <!-- 🔥 1. STYLISH EMBEDDED INLINE FAVICON (EXACT MATCH TO SCREENSHOT) 🔥 -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='fluxGlow' x1='0%'' y1='0%'' x2='100%'' y2='100%'><stop offset='0%'' stop-color='%2300b4db''/><stop offset='100%'' stop-color='%2300d2ff''/></linearGradient></defs><path d='M35 15 H80 L75 32 H51 L48 45 H70 L66 58 H45 L39 85 H20 Z' fill='url(%23fluxGlow)'/><path d='M15 45 H38 V50 H15 Z' fill='%23000000'/></svg>">
+
+    <!-- For Ads Verification -->
+    <meta name="google-adsense-account" content="ca-pub-4227503475496904">
     
-     <!-- Google SEO Specific Title & Meta Tags -->
-<title>Online Scientific Calculator & Graph Visualizer - Fluxaa</title>
-<meta name="description" content="Use Fluxaa's free online scientific calculator with live graph visualizer. Perfect for math, engineering, algebra, and advanced science calculations instantly.">
-<meta name="keywords" content="scientific calculator online, free scientific calculator, online graph calculator, advance calculator math, fluxaa tools">
+    <!-- 🔥 2. HIGH-COMPETITION SEO TITLE & META TAGS (FOR TOP RANKING) 🔥 -->
+    <title>Scientific Calculator & Graph Visualizer | Online Math & Engineering Calculator - Fluxaa</title>
+    <meta name="description" content="Fluxaa's free online scientific calculator & live graph visualizer. The ultimate advanced math, algebra, and engineering calculator for students and engineers.">
+    <meta name="keywords" content="scientific calculator online, free scientific calculator, online graph calculator, advance calculator math, math calculator, engineer calculator, graph calculator, fluxaa tools">
+    
     <meta property="og:type" content="website">
-<meta property="og:title" content="Online Scientific Calculator & Graph Visualizer - Fluxaa">
-<meta property="og:description" content="Use Fluxaa's free online scientific calculator with live graph visualizer. Perfect for advanced math and science calculations instantly.">
-<meta property="og:url" content="https://fluxaaofficial.vercel.app/scientific-calculator.html">
+    <meta property="og:title" content="Scientific Calculator & Graph Visualizer | Online Math & Engineering Calculator - Fluxaa">
+    <meta property="og:description" content="Use Fluxaa's free online scientific calculator with live graph visualizer. Perfect for advanced math, engineering, and science calculations instantly.">
+    <meta property="og:url" content="https://fluxaaofficial.vercel.app/scientific-calculator.html">
+
+    <!-- 🔥 3. GOOGLE SEARCH SCHEMA (TO REMOVE VERCEL NAME FROM SEARCH BAR) 🔥 -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Fluxaa",
+      "url": "https://fluxaaofficial.vercel.app/"
+    }
+    </script>
 
     <style>
         :root {
@@ -41,11 +54,12 @@
             background: var(--bg);
             color: var(--text-main);
             display: flex;
+            flex-direction: column; 
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             padding: 15px;
-            padding-bottom: 90px;
+            padding-bottom: 40px; 
         }
 
         /* SPLASH SCREEN */
@@ -74,13 +88,13 @@
             background: linear-gradient(135deg, var(--btn-light), #000);
             border-radius: 24px;
             margin: 0 auto 20px;
-            border: 2px solid var(--orange);
+            border: 2px solid #00d2ff;
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 2.5rem;
-            color: var(--orange);
-            box-shadow: 0 0 25px rgba(255, 152, 0, 0.3);
+            color: #00d2ff;
+            box-shadow: 0 0 25px rgba(0, 210, 255, 0.3);
         }
 
         #splash h1 {
@@ -194,12 +208,12 @@
 
         .buttons button.operator {
             background: var(--btn-light);
-            color: var(--orange); 
+            color: var(--blue); 
             font-size: 1.6rem;
         }
 
         .buttons button.equal {
-            background: var(--orange);
+            background: var(--blue);
             color: white;
             font-size: 1.6rem;
         }
@@ -268,39 +282,26 @@
         }
 
         .hist-expr { color: var(--text-dim); font-size: 0.85rem; }
-        .hist-res { color: var(--orange); font-weight: 600; font-size: 1rem; }
-
+        .hist-res { color: var(--blue); font-weight: 600; font-size: 1rem; }
 
         @media(max-width: 400px){
             .buttons { gap: 8px; }
             .buttons button { font-size: 1.2rem; }
             #expression { font-size: 2.6rem; }
         }
-        body {
-    background: var(--bg);
-    color: var(--text-main);
-    display: flex;
-    flex-direction: column; /* 👈 Yeh footer ko sahi se set karega */
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 15px;
-    padding-bottom: 40px; /* 👈 Footer ke liye space */
-}
     </style>
 </head>
 <body>
 
     <div id="splash">
         <div class="splash-content">
-            <div class="css-logo">√π</div>
-            <h1>Pocket Calculator</h1>
-            <p>Powered by Fluxaa</p>
+            <div class="css-logo">F</div>
+            <h1>Fluxaa Calculator</h1>
+            <p>Advanced Math & Engineering Tool</p>
         </div>
     </div>
 
     <div class="container">
-        
         <div class="mode">
             <button id="btn-norm" class="active" onclick="changeMode('normal')">NORMAL</button>
             <button id="btn-sci" onclick="changeMode('scientific')">SCIENTIFIC</button>
@@ -339,7 +340,7 @@
             <button onclick="inputDigit('0')">0</button>
             <button onclick="inputDigit('.')">.</button>
             <button class="operator" onclick="inputOperator('+')">+</button>
-            <button class="equal" onclick="calculate()">=</button>
+            <button class="equal" onclick="calculate('=')">=</button>
             <button class="operator sci-match" onclick="runFunc('cos')">cos</button>
 
             <button class="clear" onclick="clearDisplay()">C</button>
@@ -388,37 +389,36 @@
         </div>
     </div>
 
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4227503475496904" crossorigin="anonymous"></script>
-        <!-- For fluxaa main page only trending and tool 101 -->
-        <ins class="adsbygoogle"
-             style="display:block; width:100%;"
-             data-ad-client="ca-pub-4227503475496904"
-             data-ad-slot="5931782864"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>
-             (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
+    <!-- 🔥 4. TEXT RESOURCE FOR SEO (CRITICAL FOR RANKING #1 ON GOOGLE) 🔥 -->
+    <div style="width:100%; max-width:420px; margin-top:30px; padding:15px; background:#0a0e14; border-radius:16px; border:1px solid #1c1c1e;">
+        <h2 style="font-size:1.1rem; color:#00b7ff; margin-bottom:10px;">Why Fluxaa is the Ultimate Math & Graph Calculator?</h2>
+        <p style="font-size:0.85rem; color:#7d7d82; line-height:1.5; margin-bottom:12px;">
+            Fluxaa offers a powerful, all-in-one web utility featuring a **Scientific Calculator**, standard **Math Calculator**, advanced **Engineer Calculator**, and a real-time **Graph Calculator** engine. Whether solving algebraic formulas, processing calculus equations, or analyzing functions on a live graph visualizer, our clean interface scales flawlessly for students and professional engineers alike.
+        </p>
+    </div>
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4227503475496904" crossorigin="anonymous"></script>
+    <ins class="adsbygoogle"
+         style="display:block; width:100%;"
+         data-ad-client="ca-pub-4227503475496904"
+         data-ad-slot="5931782864"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>
+         (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
         
-
-    
-<!--PRODUCT FOOTER WITH HIGHLIGHTED LINK -->
-<footer style="margin-top: 40px; padding: 20px 15px; text-align: center; background: #020617; border-top: 1px solid rgba(255,255,255,0.08); border-radius: 16px; width: 100%; max-width: 420px; box-sizing: border-box;">
-    
-    <!-- Information Link -->
-    <p style="color: #94a3b8; font-family: 'Poppins', sans-serif; font-size: 14px; margin-bottom: 12px; letter-spacing: 0.5px; line-height: 1.5;">
-        For More Information About Fluxaa 
-        <a href="https://fluxaaofficial.vercel.app" target="_blank" style="color: #00d9ff; font-weight: 600; text-decoration: none; border-bottom: 1px dashed #00d9ff; padding-bottom: 2px; display: inline-block; white-space: nowrap; transition: 0.3s;" onmouseover="this.style.color='white'; this.style.borderColor='white'; this.style.textShadow='0 0 10px rgba(0, 217, 255, 0.6)';" onmouseout="this.style.color='#00d9ff'; this.style.borderColor='#00d9ff'; this.style.textShadow='none';">
-            Click Here 🚀
-        </a>
-    </p>
-
-    <!-- Copyright -->
-    <p style="color: #64748b; font-family: 'Poppins', sans-serif; font-size: 13px; letter-spacing: 0.5px;">
-        © 2026 <span style="color: #cbd5e1; font-weight: 500;">Fluxaa Technologies</span>. All rights reserved.
-    </p>
-
-</footer>
+    <footer style="margin-top: 40px; padding: 20px 15px; text-align: center; background: #020617; border-top: 1px solid rgba(255,255,255,0.08); border-radius: 16px; width: 100%; max-width: 420px; box-sizing: border-box;">
+        <p style="color: #94a3b8; font-size: 14px; margin-bottom: 12px; letter-spacing: 0.5px; line-height: 1.5;">
+            For More Information About Fluxaa 
+            <a href="https://fluxaaofficial.vercel.app" target="_blank" style="color: #00d9ff; font-weight: 600; text-decoration: none; border-bottom: 1px dashed #00d9ff; padding-bottom: 2px; display: inline-block; white-space: nowrap; transition: 0.3s;" onmouseover="this.style.color='white'; this.style.borderColor='white'; this.style.textShadow='0 0 10px rgba(0, 217, 255, 0.6)';" onmouseout="this.style.color='#00d9ff'; this.style.borderColor='#00d9ff'; this.style.textShadow='none';">
+                Click Here 🚀
+            </a>
+        </p>
+        <p style="color: #64748b; font-size: 13px; letter-spacing: 0.5px;">
+            © 2026 <span style="color: #cbd5e1; font-weight: 500;">Fluxaa Technologies</span>. All rights reserved.
+        </p>
+    </footer>
 
     <script>
         const exprDiv = document.getElementById("expression");
@@ -699,8 +699,7 @@
         }
 
         loadHistory();
-        
-</script>
+    </script>
 </body>
 </html>
     
