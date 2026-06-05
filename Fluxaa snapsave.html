@@ -304,19 +304,42 @@
             document.getElementById('outputArea').style.display = 'block';
         }
 
-        // Ad Script Automation Pipeline
-        function triggerAdNetwork(resolutionSelected) {
-            const adScreen = document.getElementById('adOverlay');
-            adScreen.style.display = 'flex';
+        // Upgraded Ad & Automatic Download Trigger
+function triggerAdNetwork(resolutionSelected) {
+    const adScreen = document.getElementById('adOverlay');
+    adScreen.style.display = 'flex'; // Pehle Ad popup dikhega
 
-            // Automatic 3-Second Commercial Display Delay Simulation
-            setTimeout(() => {
-                adScreen.style.display = 'none';
-                
-                // Triggers structural fallback automatic browser blob download initialization
-                alert(`🎉 Success! Your high quality ${resolutionSelected} file download initialized automatically.`);
-            }, 3500);
-        }
+    // 3.5 Seconds baad ad band hoga aur AUTOMATIC download shuru hoga
+    setTimeout(() => {
+        adScreen.style.display = 'none';
+        
+        // Real URL fetch karna jo user ne input box mein dala hai
+        const userLink = document.getElementById('targetLink').value.trim();
+        
+        // Actual download processing engine ko trigger karna
+        startActualDownload(userLink, resolutionSelected);
+    }, 3500);
+}
+
+// Backend Download Pipeline Function
+function startActualDownload(fileUrl, quality) {
+    if(!fileUrl) return;
+
+    // Ek temporary hidden download link create karna browser mein
+    const tempLink = document.createElement('a');
+    tempLink.href = fileUrl;
+    
+    // File ka naam secure karna (e.g., Fluxaa_1080p_Video.mp4)
+    tempLink.setAttribute('download', `Fluxaa_${quality}_Video.mp4`);
+    tempLink.target = '_blank';
+    
+    // Link ko page par inject karke automatic click karwana
+    document.body.appendChild(tempLink);
+    tempLink.click();
+    
+    // Kaam khatam hone baad link ko remove karna
+    document.body.removeChild(tempLink);
+      }
     </script>
 </body>
 </html>
