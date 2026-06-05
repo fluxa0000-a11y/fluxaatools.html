@@ -3,220 +3,314 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fluxaa ConvertPro | Universal Image Converter</title>
-    <!-- Native Layout Styling and Tailwind Integration Structure -->
+    <title>Fluxaa ConvertPro | Multi-Image Converter Portal</title>
     <style>
         :root {
-            --bg-dark: #050811;
-            --panel-glass: rgba(255, 255, 255, 0.03);
+            --bg-dark: #060913;
+            --panel-glass: rgba(30, 41, 59, 0.45);
             --border-glass: rgba(255, 255, 255, 0.08);
             --accent-blue: #06b6d4;
             --accent-purple: #8b5cf6;
             --text-main: #f8fafc;
-            --text-muted: #64748b;
+            --text-muted: #94a3b8;
+            
+            --jpg-color: #f59e0b;
+            --png-color: #10b981;
+            --pdf-color: #ef4444;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
         
-        body {
-            background: radial-gradient(circle at 50% 0%, #1e1b4b, #050811 80%);
-            color: var(--text-main); min-height: 100vh; padding: 20px;
-            display: flex; flex-direction: column; align-items: center;
+        body { 
+            background: radial-gradient(circle at top center, #1e1b4b, #060913 80%);
+            color: var(--text-main); min-height: 100vh; padding: 20px; 
+            display: flex; flex-direction: column; align-items: center; 
         }
 
-        .main-container { width: 100%; max-width: 650px; margin-top: 60px; flex-grow: 1; }
+        .main-container { width: 100%; max-width: 700px; margin-top: 50px; flex-grow: 1; }
         
-        .tool-header { text-align: center; margin-bottom: 35px; }
-        .tool-header h1 { font-size: 2.5rem; font-weight: 800; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .tool-header p { color: #94a3b8; font-size: 0.95rem; margin-top: 6px; }
+        .portal-header { text-align: center; margin-bottom: 40px; }
+        .portal-header h1 { font-size: 2.6rem; font-weight: 800; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .portal-header p { color: var(--text-muted); margin-top: 6px; font-size: 1rem; }
 
-        .glass-panel {
-            background: var(--panel-glass); border: 1px solid var(--border-glass);
-            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-            padding: 35px 25px; border-radius: 24px; box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-            text-align: center;
-        }
+        /* STAGE 1: FORMAT CARDS GRID */
+        .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        @media (max-width: 600px) { .cards-grid { grid-template-columns: 1fr; } }
 
-        /* Drag & Drop Zone Layout */
-        .upload-zone {
-            border: 2px dashed rgba(6, 182, 212, 0.3); background: rgba(15, 23, 42, 0.4);
-            border-radius: 16px; padding: 40px 20px; cursor: pointer; transition: 0.3s;
-            position: relative; overflow: hidden;
+        .portal-card {
+            background: var(--panel-glass); border: 1px solid var(--border-glass); backdrop-filter: blur(16px);
+            padding: 25px 15px; border-radius: 20px; cursor: pointer; text-align: center; transition: 0.3s; position: relative; overflow: hidden;
         }
-        .upload-zone:hover { border-color: var(--accent-blue); background: rgba(6, 182, 212, 0.05); }
+        .portal-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: transparent; transition: 0.3s; }
+        .portal-card:hover { transform: translateY(-4px); box-shadow: 0 15px 30px rgba(0,0,0,0.4); }
+        
+        .card-jpg:hover::before { background: var(--jpg-color); }
+        .card-png:hover::before { background: var(--png-color); }
+        .card-pdf:hover::before { background: var(--pdf-color); }
+
+        .card-icon { font-size: 2.2rem; margin-bottom: 8px; display: inline-block; }
+        .card-title { font-size: 1.15rem; font-weight: 700; margin-bottom: 4px; }
+        .card-desc { font-size: 0.8rem; color: var(--text-muted); }
+
+        /* STAGE 2: CONVERSION WORKSPACE */
+        .workspace-panel { background: var(--panel-glass); border: 1px solid var(--border-glass); backdrop-filter: blur(16px); padding: 35px 25px; border-radius: 24px; display: none; text-align: center; }
+        .back-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border-glass); color: #cbd5e1; padding: 8px 16px; border-radius: 10px; font-size: 0.85rem; font-weight: 600; cursor: pointer; float: left; }
+        .back-btn:hover { background: rgba(255,255,255,0.1); color: white; }
+        .platform-badge { display: inline-block; font-size: 0.8rem; font-weight: 700; padding: 4px 14px; border-radius: 20px; margin-bottom: 20px; clear: left; margin-top: 15px; }
+
+        /* Multi File Upload Area */
+        .upload-zone { border: 2px dashed rgba(6, 182, 212, 0.3); background: rgba(15, 23, 42, 0.4); border-radius: 16px; padding: 35px 20px; cursor: pointer; position: relative; margin-top: 10px; }
         .upload-zone input { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
-
-        .zone-icon { font-size: 2.8rem; margin-bottom: 12px; display: inline-block; }
-        .zone-text { font-size: 1rem; font-weight: 600; color: #cbd5e1; }
-        .zone-sub { font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; }
-
-        /* Preview Interface Component */
-        .preview-box { display: none; margin-top: 25px; animation: slideUp 0.4s ease; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .img-wrap { max-width: 100%; max-height: 220px; border-radius: 12px; border: 1px solid var(--border-glass); margin: 0 auto 15px auto; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
-        .img-wrap img { width: 100%; height: 100%; object-fit: contain; background: #0b111e; }
-        .file-meta { font-size: 0.85rem; color: #94a3b8; margin-bottom: 25px; font-weight: 500; }
-
-        /* Format Conversion Controls */
-        .format-label { font-size: 0.85rem; font-weight: 700; color: var(--accent-blue); text-transform: uppercase; letter-spacing: 0.5px; text-align: left; margin-bottom: 12px; }
-        .format-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
         
-        .btn-convert {
-            background: rgba(255,255,255,0.03); border: 1px solid var(--border-glass); color: #fff;
-            padding: 14px; border-radius: 12px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: 0.2s;
-        }
-        .btn-convert:hover { background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); border-color: transparent; transform: translateY(-2px); box-shadow: 0 8px 16px rgba(6, 182, 212, 0.2); }
+        /* Thumbnail Gallery Roll */
+        .gallery-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 20px; max-height: 180px; overflow-y: auto; padding: 5px; }
+        @media (max-width: 480px) { .gallery-container { grid-template-columns: repeat(2, 1fr); } }
+        .thumb-wrapper { position: relative; aspect-ratio: 1; border-radius: 8px; overflow: hidden; border: 1px solid var(--border-glass); background: #000; }
+        .thumb-wrapper img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* Ads Frame Structure Layout */
-        .ad-banner-space { width: 100%; height: 90px; background: rgba(255,255,255,0.01); border: 1px dashed #1e293b; border-radius: 12px; margin-top: 30px; display: flex; align-items: center; justify-content: center; color: #334155; font-size: 0.8rem; font-weight: 600; }
+        .btn-generate { width: 100%; margin-top: 20px; padding: 15px; border-radius: 12px; border: none; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); color: white; font-size: 1rem; font-weight: 700; cursor: pointer; transition: 0.2s; }
+        .btn-generate:hover { filter: brightness(1.1); transform: translateY(-1px); }
 
-        /* Core Matched Premium Footer Component Layout */
+        /* Loader Animation */
+        .loader-box { display: none; margin: 25px 0; font-size: 0.95rem; color: var(--accent-blue); font-weight: 600; }
+        .dots-span::after { content: '.'; animation: dots 1.5s steps(5, end) infinite; }
+        @keyframes dots { 0%, 20% { content: ''; } 40% { content: '.'; } 60% { content: '..'; } 80%, 100% { content: '...'; } }
+
+        /* STAGE 3: OUTPUT RESULT PANEL */
+        .output-container { display: none; margin-top: 25px; border-top: 1px solid var(--border-glass); padding-top: 25px; animation: panelFade 0.4s ease; }
+        @keyframes panelFade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .success-banner { color: #10b981; font-weight: 700; font-size: 1.1rem; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .final-dl-btn { background: #10b981; color: white; border: none; width: 100%; padding: 16px; border-radius: 12px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: 0.2s; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2); }
+        .final-dl-btn:hover { background: #059669; transform: translateY(-2px); }
+
+        /* Ad Modal Screen Overlay */
+        .ad-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 1000; justify-content: center; align-items: center; }
+        .ad-box { background: #111827; border: 1px solid var(--border-glass); padding: 40px; border-radius: 20px; text-align: center; max-width: 400px; width: 90%; }
+        .spinner { border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid var(--accent-blue); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 20px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Brand Matches Footer */
         .fluxaa-footer { margin-top: auto; padding: 50px 0 20px 0; text-align: center; width: 100%; }
-        .footer-text { color: #7dd3fc; font-size: 1.2rem; font-weight: 400; margin-bottom: 8px; opacity: 0.85; }
+        .footer-text { color: #7dd3fc; font-size: 1.2rem; font-weight: 400; margin-bottom: 8px; }
         .footer-link { color: #00d2ff; font-size: 1.6rem; font-weight: 700; text-decoration: none; display: inline-block; margin-bottom: 24px; border-bottom: 2px dashed rgba(0, 210, 255, 0.4); padding-bottom: 4px; }
-        .footer-link:hover { opacity: 0.8; }
         .footer-copyright { color: #475569; font-size: 0.95rem; }
-        .footer-copyright strong { color: #94a3b8; }
     </style>
 </head>
 <body>
 
     <div class="main-container">
-        <!-- Main Tool Brand Header -->
-        <div class="tool-header">
+        <div class="portal-header" id="portalHeader">
             <h1>Fluxaa ConvertPro</h1>
-            <p>Convert your image assets instantly into PDF document maps, PNG nodes or clean JPG streams.</p>
+            <p>Select target architecture grid format wrapper to compile image streams.</p>
         </div>
 
-        <div class="glass-panel">
-            <!-- Upload Drag-Drop Area Component -->
-            <div class="upload-zone" id="dropZone">
-                <input type="file" id="imageInput" accept="image/*" onchange="handleFileProcessing(event)">
-                <span class="zone-icon">🖼️</span>
-                <div class="zone-text">Choose file or drag it here</div>
-                <div class="zone-sub">Supports JPEG, PNG, WEBP, BMP up to 25MB</div>
+        <!-- STAGE 1: PORTAL HOMEPAGE GRID -->
+        <div class="cards-grid" id="homeGrid">
+            <div class="portal-card card-jpg" onclick="initWorkspace('JPG', 'var(--jpg-color)')">
+                <span class="card-icon">🖼️</span>
+                <div class="card-title">Convert to JPG</div>
+                <div class="card-desc">Batch process multiple source photos directly into standard white-base JPG formats.</div>
             </div>
-
-            <!-- Dynamic File Render Engine Preview Box -->
-            <div class="preview-box" id="previewArea">
-                <div class="img-wrap">
-                    <img id="sourceRender" src="" alt="Target Asset Cache Source">
-                </div>
-                <div class="file-meta" id="fileDetails">filename.jpg (0 KB)</div>
-
-                <div class="format-label">Select Output Format Pipeline:</div>
-                <div class="format-grid">
-                    <button class="btn-convert" onclick="executeImageTransformation('jpeg')">Convert to JPG</button>
-                    <button class="btn-convert" onclick="executeImageTransformation('png')">Convert to PNG</button>
-                    <!-- PDF Generation uses standard device canvas prints natively across standard browser builds -->
-                    <button class="btn-convert" onclick="executePdfCompilation()">Compile to PDF</button>
-                </div>
+            <div class="portal-card card-png" onclick="initWorkspace('PNG', 'var(--png-color)')">
+                <span class="card-icon">🧬</span>
+                <div class="card-title">Convert to PNG</div>
+                <div class="card-desc">Extract binary files cleanly holding custom transparency dimensions layers.</div>
+            </div>
+            <div class="portal-card card-pdf" onclick="initWorkspace('PDF', 'var(--pdf-color)')">
+                <span class="card-icon">📄</span>
+                <div class="card-title">Compile to PDF</div>
+                <div class="card-desc">Bind single or countless photo assets together into one compiled document script page.</div>
             </div>
         </div>
 
-        <!-- Static Marketing Advertisement Space Node -->
-        <div class="ad-banner-space">Google AdSense - Auto Responsive Placement</div>
+        <!-- STAGE 2: CORE PROCESSING WORKSPACE -->
+        <div class="workspace-panel" id="workspacePanel">
+            <button class="back-btn" onclick="goHome()">⬅ Back</button>
+            <div class="platform-badge" id="targetBadge">FORMAT</div>
+            
+            <div class="upload-zone">
+                <!-- multiple attribute captures infinite user file stack additions seamlessly -->
+                <input type="file" id="multiImageInput" accept="image/*" multiple onchange="processBulkImages(event)">
+                <span style="font-size: 2.2rem; display:block; margin-bottom:5px;">📥</span>
+                <div style="font-weight:700; color:#cbd5e1;">Upload Multiple Images</div>
+                <div style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;">Select as many files as you want to compile</div>
+            </div>
+
+            <!-- Dynamic Image Storage Preview Grid -->
+            <div class="gallery-container" id="imageGallery"></div>
+
+            <button class="btn-generate" id="genBtn" style="display:none;" onclick="startGenerationEngine()">Generate Target Files</button>
+            
+            <!-- Live Status Processing Node Spinner Box -->
+            <div class="loader-box" id="loaderBox">
+                ⚙️ Compiling digital assets framework buffer<span class="dots-span"></span>
+            </div>
+
+            <!-- STAGE 3: OUTPUT RETRIEVAL AREA BUTTON -->
+            <div class="output-container" id="outputArea">
+                <div class="success-banner">✨ Asset Processing Arrays Ready!</div>
+                <button class="final-dl-btn" onclick="triggerAdNetworkDownload()">Download Package Document</button>
+            </div>
+        </div>
     </div>
 
-    <!-- Connected Brand Template Sticky Footer Panel Element -->
+    <!-- HIGH PAYING INTERSTITIAL POPUP OVERLAY SYSTEM -->
+    <div class="ad-modal" id="adOverlay">
+        <div class="ad-box">
+            <h3 style="color: var(--accent-blue); margin-bottom: 10px;">⚡ Syncing File Packages</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Completing direct cloud pipe download request protocols...</p>
+            <div class="spinner"></div>
+            <div style="background: rgba(255,255,255,0.02); height: 110px; border: 1px dashed rgba(255,255,255,0.1); border-radius: 10px; padding-top: 45px; color: #475569; font-size: 0.8rem; font-weight: bold;">
+                [ High Traffic CPM Ad Network Script Target Code Container ]
+            </div>
+        </div>
+    </div>
+
     <footer class="fluxaa-footer">
         <div class="footer-text">For More Information About Fluxaa</div>
         <a href="https://fluxaa.com" class="footer-link" target="_blank">Click Here 🚀</a>
         <div class="footer-copyright">© 2026 <strong>Fluxaa Technologies</strong>. All rights reserved.</div>
     </footer>
 
-    <!-- Image Core Operational Manipulation Pipeline Scripts -->
     <script>
-        let rawImageObject = null;
-        let incomingFileName = 'fluxaa_asset';
+        let selectedFormat = '';
+        let fileCollectionMemory = [];
 
-        // Handles Local Binary Stream File Analysis 
-        function handleFileProcessing(event) {
-            const inputTarget = event.target;
-            if (inputTarget.files && inputTarget.files[0]) {
-                const targetFile = inputTarget.files[0];
-                incomingFileName = targetFile.name.substring(0, targetFile.name.lastIndexOf('.')) || targetFile.name;
-                
-                const streamReader = new FileReader();
-                streamReader.onload = function (e) {
-                    const renderImg = document.getElementById('sourceRender');
-                    renderImg.src = e.target.result;
-                    
-                    // Create image element cache reference object natively for canvas processing manipulation
-                    rawImageObject = new Image();
-                    rawImageObject.src = e.target.result;
-
-                    // Convert file size into human readable structures
-                    const calculatedSize = (targetFile.size / 1024).toFixed(1);
-                    document.getElementById('fileDetails').innerText = `${targetFile.name} (${calculatedSize} KB)`;
-                    
-                    // Trigger UI state shift animation displays
-                    document.getElementById('previewArea').style.display = 'block';
-                };
-                streamReader.readAsDataURL(targetFile);
-            }
-        }
-
-        // Processing Canvas Operations for Standard Output Compression Extensions (JPG/PNG)
-        function executeImageTransformation(targetExtension) {
-            if (!rawImageObject) return alert("Please upload an asset object context first!");
-
-            const stagingCanvas = document.createElement('canvas');
-            const contextualEngine = stagingCanvas.getContext('2d');
+        function initWorkspace(formatName, badgeColor) {
+            selectedFormat = formatName;
+            document.getElementById('homeGrid').style.display = 'none';
+            document.getElementById('portalHeader').style.display = 'none';
             
-            stagingCanvas.width = rawImageObject.naturalWidth;
-            stagingCanvas.height = rawImageObject.naturalHeight;
+            const badge = document.getElementById('targetBadge');
+            badge.innerText = `CONVERT TO ${formatName}`;
+            badge.style.background = badgeColor;
+            badge.style.color = '#fff';
 
-            // If processing solid lossy JPEG formats fill white base background structure blocks natively to stop alpha channel blackouts
-            if (targetExtension === 'jpeg') {
-                contextualEngine.fillStyle = '#ffffff';
-                contextualEngine.fillRect(0, 0, stagingCanvas.width, stagingCanvas.height);
+            // Clear old cache files state parameters loops
+            fileCollectionMemory = [];
+            document.getElementById('imageGallery').innerHTML = '';
+            document.getElementById('genBtn').style.display = 'none';
+            document.getElementById('outputArea').style.display = 'none';
+            document.getElementById('loaderBox').style.display = 'none';
+            
+            document.getElementById('workspacePanel').style.display = 'block';
+        }
+
+        function goHome() {
+            document.getElementById('workspacePanel').style.display = 'none';
+            document.getElementById('homeGrid').style.display = 'grid';
+            document.getElementById('portalHeader').style.display = 'block';
+        }
+
+        // Handles unlimited image upload injection tracking logic loops cleanly
+        function processBulkImages(event) {
+            const files = event.target.files;
+            if(!files.length) return;
+
+            const gallery = document.getElementById('imageGallery');
+
+            for(let i = 0; i < files.length; i++) {
+                fileCollectionMemory.push(files[i]);
+                
+                const virtualReader = new FileReader();
+                virtualReader.onload = function(e) {
+                    const wrap = document.createElement('div');
+                    wrap.className = 'thumb-wrapper';
+                    wrap.innerHTML = `<img src="${e.target.result}" alt="Preview Asset Matrix Node">`;
+                    gallery.appendChild(wrap);
+                }
+                virtualReader.readAsDataURL(files[i]);
             }
-
-            contextualEngine.drawImage(rawImageObject, 0, 0);
-
-            // Export pure blob base64 data nodes strings direct to structural device browser memory downloads
-            const compiledMime = `image/${targetExtension}`;
-            const streamOutputData = stagingCanvas.toDataURL(compiledMime, 0.92);
-
-            triggerBrowserBinaryDownload(streamOutputData, `${incomingFileName}_fluxaa.${targetExtension}`);
+            
+            if(fileCollectionMemory.length > 0) {
+                document.getElementById('genBtn').style.display = 'block';
+                document.getElementById('genBtn').innerText = `Generate (${fileCollectionMemory.length}) ${selectedFormat} Files`;
+            }
         }
 
-        // Native PDF Structural Print Compilation Pipeline Engine
-        function executePdfCompilation() {
-            if (!rawImageObject) return alert("No active image asset structural stream located!");
+        // Step 2: Simulate processing latency buffer (2-3 seconds delay trigger)
+        function startGenerationEngine() {
+            document.getElementById('genBtn').style.display = 'none';
+            document.getElementById('outputArea').style.display = 'none';
+            document.getElementById('loaderBox').style.display = 'block';
 
-            // To compile clean lightweight standard structural image vectors straight into single container document bounds natively 
-            // without complex 3rd party frameworks bloat loads - open print frame context streaming mapping windows
-            const virtualPrintWindow = window.open('', '_blank');
-            virtualPrintWindow.document.write(`
-                <html>
-                <head>
-                    <title>${incomingFileName}_fluxaa_document</title>
-                    <style>
-                        * { margin:0; padding:0; }
-                        body { display:flex; justify-content:center; align-items:center; min-height:100vh; background:#fff; }
-                        img { max-width:100%; max-height:100%; object-fit:contain; page-break-inside:avoid; }
-                        @page { size: auto; margin: 0mm; }
-                    </style>
-                </head>
-                <body>
-                    <img src="${rawImageObject.src}" onload="window.print(); window.close();">
-                </body>
-                </html>
-            `);
-            virtualPrintWindow.document.close();
+            setTimeout(() => {
+                document.getElementById('loaderBox').style.display = 'none';
+                document.getElementById('outputArea').style.display = 'block';
+            }, 2500); // 2.5 seconds real delay loop
         }
 
-        // Shared Low Level Virtual Link Binary Trigger Download Framework Component
-        function triggerBrowserBinaryDownload(dataUrlString, filenameOutputString) {
-            const virtualAnchorNode = document.createElement('a');
-            virtualAnchorNode.href = dataUrlString;
-            virtualAnchorNode.download = filenameOutputString;
-            document.body.appendChild(virtualAnchorNode);
-            virtualAnchorNode.click();
-            document.body.removeChild(virtualAnchorNode);
+        // Step 3: Download click triggers fake ad screen layout popup, then forces physical device saves
+        function triggerAdNetworkDownload() {
+            const overlay = document.getElementById('adOverlay');
+            overlay.style.display = 'flex';
+
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                
+                // Triggers structural native browser bulk download array loops engine
+                if(fileCollectionMemory.length === 0) return;
+
+                if (selectedFormat === 'PDF') {
+                    // Fallback Native Print compilation method for PDF
+                    const virtualPrintWindow = window.open('', '_blank');
+                    let imagesHtmlString = '';
+                    
+                    // Create continuous page breaking image nodes stream arrays elements strings block loops
+                    const promises = fileCollectionMemory.map(file => {
+                        return new Promise((resolve) => {
+                            const reader = new FileReader();
+                            reader.onload = (e) => {
+                                imagesHtmlString += `<img src="${e.target.result}" style="max-width:100%; max-height:100vh; display:block; page-break-after:always; object-fit:contain; margin:auto;">`;
+                                resolve();
+                            };
+                            reader.readAsDataURL(file);
+                        });
+                    });
+
+                    Promise.all(promises).then(() => {
+                        virtualPrintWindow.document.write(`<html><head><title>Fluxaa_Compiled_Doc</title><style>* {margin:0; padding:0; background:#fff;}</style></head><body>${imagesHtmlString}<script>window.onload = function(){ window.print(); window.close(); }<\/script></body></html>`);
+                        virtualPrintWindow.document.close();
+                    });
+
+                } else {
+                    // Triggers Individual Image Canvas Transformation Processing Streams across sequential device downloads automatically
+                    fileCollectionMemory.forEach((file, index) => {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const tempImg = new Image();
+                            tempImg.src = e.target.result;
+                            tempImg.onload = function() {
+                                const canvas = document.createElement('canvas');
+                                const ctx = canvas.getContext('2d');
+                                canvas.width = tempImg.naturalWidth;
+                                canvas.height = tempImg.naturalHeight;
+                                
+                                if(selectedFormat === 'JPG') {
+                                    ctx.fillStyle = '#ffffff';
+                                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                                    ctx.drawImage(tempImg, 0, 0);
+                                    forceDownloadLink(canvas.toDataURL('image/jpeg', 0.9), `Fluxaa_Export_${index + 1}.jpg`);
+                                } else {
+                                    ctx.drawImage(tempImg, 0, 0);
+                                    forceDownloadLink(canvas.toDataURL('image/png'), `Fluxaa_Export_${index + 1}.png`);
+                                }
+                            };
+                        };
+                        reader.readAsDataURL(file);
+                    });
+                }
+            }, 3500); // 3.5 seconds High Converting Advertisement Screen Hold Time
+        }
+
+        function forceDownloadLink(uriStream, title) {
+            const a = document.createElement('a');
+            a.href = uriStream;
+            a.download = title;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         }
     </script>
 </body>
