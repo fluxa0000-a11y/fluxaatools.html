@@ -174,124 +174,133 @@
     </footer>
 
     <script>
-        let selectedFormat = '';
-        let fileCollectionMemory = [];
+            let selectedFormat = '';
+let fileCollectionMemory = [];
 
-        function initWorkspace(formatName, badgeColor) {
-            selectedFormat = formatName;
-            document.getElementById('homeGrid').style.display = 'none';
-            document.getElementById('portalHeader').style.display = 'none';
-            
-            const badge = document.getElementById('targetBadge');
-            badge.innerText = `CONVERT TO ${formatName}`;
-            badge.style.background = badgeColor;
-            badge.style.color = '#fff';
+function initWorkspace(formatName, badgeColor) {
+    selectedFormat = formatName;
+    document.getElementById('homeGrid').style.display = 'none';
+    document.getElementById('portalHeader').style.display = 'none';
+    
+    const badge = document.getElementById('targetBadge');
+    badge.innerText = `CONVERT TO ${formatName}`;
+    badge.style.background = badgeColor;
+    badge.style.color = '#fff';
 
-            // Clear old cache files state parameters loops
-            fileCollectionMemory = [];
-            document.getElementById('imageGallery').innerHTML = '';
-            document.getElementById('genBtn').style.display = 'none';
-            document.getElementById('outputArea').style.display = 'none';
-            document.getElementById('loaderBox').style.display = 'none';
-            
-            document.getElementById('workspacePanel').style.display = 'block';
+    fileCollectionMemory = [];
+    document.getElementById('imageGallery').innerHTML = '';
+    document.getElementById('genBtn').style.display = 'none';
+    document.getElementById('outputArea').style.display = 'none';
+    document.getElementById('loaderBox').style.display = 'none';
+    
+    document.getElementById('workspacePanel').style.display = 'block';
+}
+
+function goHome() {
+    document.getElementById('workspacePanel').style.display = 'none';
+    document.getElementById('homeGrid').style.display = 'grid';
+    document.getElementById('portalHeader').style.display = 'block';
+}
+
+function processBulkImages(event) {
+    const files = event.target.files;
+    if(!files.length) return;
+
+    const gallery = document.getElementById('imageGallery');
+
+    for(let i = 0; i < files.length; i++) {
+        fileCollectionMemory.push(files[i]);
+        
+        const virtualReader = new FileReader();
+        virtualReader.onload = function(e) {
+            const wrap = document.createElement('div');
+            wrap.className = 'thumb-wrapper';
+            wrap.innerHTML = `<img src="${e.target.result}">`;
+            gallery.appendChild(wrap);
         }
+        virtualReader.readAsDataURL(files[i]);
+    }
+    
+    if(fileCollectionMemory.length > 0) {
+        document.getElementById('genBtn').style.display = 'block';
+        document.getElementById('genBtn').innerText = `Generate (${fileCollectionMemory.length}) ${selectedFormat} Files`;
+    }
+}
 
-        function goHome() {
-            document.getElementById('workspacePanel').style.display = 'none';
-            document.getElementById('homeGrid').style.display = 'grid';
-            document.getElementById('portalHeader').style.display = 'block';
-        }
-
-        // Handles unlimited image upload injection tracking logic loops cleanly
-        function processBulkImages(event) {
-            const files = event.target.files;
-            if(!files.length) return;
-
-            const gallery = document.getElementById('imageGallery');
-
-            for(let i = 0; i < files.length; i++) {
-                fileCollectionMemory.push(files[i]);
-                
-                const virtualReader = new FileReader();
-                virtualReader.onload = function(e) {
-                    const wrap = document.createElement('div');
-                    wrap.className = 'thumb-wrapper';
-                    wrap.innerHTML = `<img src="${e.target.result}" alt="Preview Asset Matrix Node">`;
-                    gallery.appendChild(wrap);
-                }
-                virtualReader.readAsDataURL(files[i]);
-            }
-            
-            if(fileCollectionMemory.length > 0) {
-                document.getElementById('genBtn').style.display = 'block';
-                document.getElementById('genBtn').innerText = `Generate (${fileCollectionMemory.length}) ${selectedFormat} Files`;
-            }
-        }
-
-        // Step 2: Simulate processing latency buffer (2-3 seconds delay trigger)
-        function startGenerationEngine() {
-            document.getElementById('genBtn').style.display = 'none';
-            document.getElementById('outputArea').style.display = 'none';
-            document.getElementById('loaderBox').style.display = 'block';
-
-            setTimeout(() => {
-                document.getElementById('loaderBox').style.display = 'none';
-                document.getElementById('outputArea').style.display = 'block';
-            }, 2500); // 2.5 seconds real delay loop
-        }
-
-        // Direct Binary Package Download Engine (Bina Print Screen Ke)
-function triggerAdNetworkDownload() {
-    const overlay = document.getElementById('adOverlay');
-    overlay.style.display = 'flex'; // Pehle Ad dikhega
+function startGenerationEngine() {
+    document.getElementById('genBtn').style.display = 'none';
+    document.getElementById('outputArea').style.display = 'none';
+    document.getElementById('loaderBox').style.display = 'block';
 
     setTimeout(() => {
-        overlay.style.display = 'none'; // Ad band hoga
+        document.getElementById('loaderBox').style.display = 'none';
+        document.getElementById('outputArea').style.display = 'block';
+    }, 2500); 
+}
+
+// Global Master Download Control with Ad Screen (Asynchronous Upgraded)
+async function triggerAdNetworkDownload() {
+    const overlay = document.getElementById('adOverlay');
+    overlay.style.display = 'flex'; // Pehle Ad popup dikhega
+
+    setTimeout(async () => {
+        overlay.style.display = 'none'; // 3.5 sec baad ad band
         
-        if(fileCollectionMemory.length === 0) return alert("Bhai, pehle photos toh upload karo!");
+        if(fileCollectionMemory.length === 0) return alert("Bhai, pehle photos upload karo!");
 
         if (selectedFormat === 'PDF') {
-            // Force Direct Download PDF Stream Logic
-            // Ek aisi framework create karna jo browser images ko direct blob canvas wrapper de
-            let compiledHtmlContent = `
-                <html>
-                <head>
-                    <style>
-                        body { margin:0; padding:0; background:#fff; text-align:center; }
-                        img { max-width:100%; width:auto; height:auto; display:block; margin:20px auto; page-break-after:always; }
-                    </style>
-                </head>
-                <body>`;
-            
-            let processedFiles = 0;
-
-            fileCollectionMemory.forEach((file) => {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    compiledHtmlContent += `<img src="${e.target.result}">`;
-                    processedFiles++;
-
-                    // Jab saari 4 photos convert ho jayein, use blob bana kar download karwana
-                    if (processedFiles === fileCollectionMemory.length) {
-                        compiledHtmlContent += `</body></html>`;
-                        
-                        // Creating clean standalone binary object stream blob
-                        const dataBlob = new Blob([compiledHtmlContent], { type: 'application/pdf' });
-                        const blobUrl = URL.createObjectURL(dataBlob);
-                        
-                        // Direct File Download Trigger
-                        forceDownloadLink(blobUrl, `Fluxaa_Compiled_Document.pdf`);
-                        
-                        // Clear memory buffer cache
-                        setTimeout(() => URL.revokeObjectURL(blobUrl), 100);
-                    }
+            try {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                
+                // Har image ko serial-wise pure binary buffer mein read karne ka helper function
+                const loadImageData = (file) => {
+                    return new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            const img = new Image();
+                            img.src = e.target.result;
+                            img.onload = () => resolve(img);
+                            img.onerror = (err) => reject(err);
+                        };
+                        reader.readAsDataURL(file);
+                    });
                 };
-                reader.readAsDataURL(file);
-            });
+
+                // Saari uploaded images ko sequence mein array ke andar load karwana
+                for (let index = 0; index < fileCollectionMemory.length; index++) {
+                    const img = await loadImageData(fileCollectionMemory[index]);
+                    
+                    if (index > 0) {
+                        doc.addPage();
+                    }
+                    
+                    const pageWidth = doc.internal.pageSize.getWidth();
+                    const pageHeight = doc.internal.pageSize.getHeight();
+                    
+                    const widthRatio = pageWidth / img.width;
+                    const heightRatio = pageHeight / img.height;
+                    const optimalRatio = Math.min(widthRatio, heightRatio);
+                    
+                    const finalWidth = img.width * optimalRatio;
+                    const finalHeight = img.height * optimalRatio;
+                    
+                    const xOffset = (pageWidth - finalWidth) / 2;
+                    const yOffset = (pageHeight - finalHeight) / 2;
+
+                    doc.addImage(img, 'JPEG', xOffset, yOffset, finalWidth, finalHeight);
+                }
+
+                // Perfect compilation complete hone ke baad forced direct save trigger
+                doc.save('Fluxaa_Compiled_Document.pdf');
+
+            } catch (error) {
+                console.error(error);
+                alert("PDF compile karne mein koi dikkat aayi bhai!");
+            }
 
         } else {
-            // JPG / PNG Bulk Direct Auto-Save Engine
+            // JPG / PNG Bulk Save Module (Reliable Pipeline)
             fileCollectionMemory.forEach((file, index) => {
                 const reader = new FileReader();
                 reader.onload = function(e) {
@@ -317,8 +326,20 @@ function triggerAdNetworkDownload() {
                 reader.readAsDataURL(file);
             });
         }
-    }, 3500); // 3.5 Seconds Ad Overlay Screen
+    }, 3500);
 }
+
+function forceDownloadLink(uriStream, title) {
+    const a = document.createElement('a');
+    a.href = uriStream;
+    a.download = title;
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => {
+        document.body.removeChild(a);
+    }, 150);
+                                         }                    
     </script>
 </body>
 </html>
