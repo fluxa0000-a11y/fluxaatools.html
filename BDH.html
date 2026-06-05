@@ -241,10 +241,10 @@
             }, 2500); // 2.5 seconds real delay loop
         }
 
-        // Upgraded Complete Download Engine (With Fix for Multi-Image PDF)
+        // Direct Binary Package Download Engine (Bina Print Screen Ke)
 function triggerAdNetworkDownload() {
     const overlay = document.getElementById('adOverlay');
-    overlay.style.display = 'flex'; // Pehle Ad popup dikhega
+    overlay.style.display = 'flex'; // Pehle Ad dikhega
 
     setTimeout(() => {
         overlay.style.display = 'none'; // Ad band hoga
@@ -252,56 +252,46 @@ function triggerAdNetworkDownload() {
         if(fileCollectionMemory.length === 0) return alert("Bhai, pehle photos toh upload karo!");
 
         if (selectedFormat === 'PDF') {
-            // New Foolproof HTML-to-PDF Print System
-            const virtualPrintWindow = window.open('', '_blank');
-            if (!virtualPrintWindow) return alert("Bhai, pop-up blocker ko allow karo taaki PDF print window khul sake!");
-
-            let loadedCount = 0;
-            let imagesHtmlString = '';
+            // Force Direct Download PDF Stream Logic
+            // Ek aisi framework create karna jo browser images ko direct blob canvas wrapper de
+            let compiledHtmlContent = `
+                <html>
+                <head>
+                    <style>
+                        body { margin:0; padding:0; background:#fff; text-align:center; }
+                        img { max-width:100%; width:auto; height:auto; display:block; margin:20px auto; page-break-after:always; }
+                    </style>
+                </head>
+                <body>`;
             
-            // Sabse pehle saari images ko load hone ke liye queue karna
-            fileCollectionMemory.forEach((file, index) => {
+            let processedFiles = 0;
+
+            fileCollectionMemory.forEach((file) => {
                 const reader = new FileReader();
                 reader.onload = (e) => {
-                    imagesHtmlString += `
-                        <div style="page-break-after: always; display: flex; justify-content: center; align-items: center; height: 100vh; background: #fff;">
-                            <img src="${e.target.result}" style="max-width: 100%; max-height: 100vh; object-fit: contain;">
-                        </div>`;
-                    
-                    loadedCount++;
-                    
-                    // Jab saari 4 ya usse zyada photos render ho jayengi, tabhi print window trigger hogi
-                    if (loadedCount === fileCollectionMemory.length) {
-                        virtualPrintWindow.document.write(`
-                            <html>
-                            <head>
-                                <title>Fluxaa_Compiled_Doc</title>
-                                <style>
-                                    * { margin:0; padding:0; box-sizing: border-box; }
-                                    body { background:#fff; }
-                                    @page { size: A4; margin: 0; }
-                                </style>
-                            </head>
-                            <body>
-                                ${imagesHtmlString}
-                                <script>
-                                    // Chota sa delay taaki browser dom images ko confirm karle
-                                    setTimeout(() => {
-                                        window.print();
-                                        window.close();
-                                    }, 500);
-                                <\/script>
-                            </body>
-                            </html>
-                        `);
-                        virtualPrintWindow.document.close();
+                    compiledHtmlContent += `<img src="${e.target.result}">`;
+                    processedFiles++;
+
+                    // Jab saari 4 photos convert ho jayein, use blob bana kar download karwana
+                    if (processedFiles === fileCollectionMemory.length) {
+                        compiledHtmlContent += `</body></html>`;
+                        
+                        // Creating clean standalone binary object stream blob
+                        const dataBlob = new Blob([compiledHtmlContent], { type: 'application/pdf' });
+                        const blobUrl = URL.createObjectURL(dataBlob);
+                        
+                        // Direct File Download Trigger
+                        forceDownloadLink(blobUrl, `Fluxaa_Compiled_Document.pdf`);
+                        
+                        // Clear memory buffer cache
+                        setTimeout(() => URL.revokeObjectURL(blobUrl), 100);
                     }
                 };
                 reader.readAsDataURL(file);
             });
 
         } else {
-            // JPG/PNG Extraction Engine Loop
+            // JPG / PNG Bulk Direct Auto-Save Engine
             fileCollectionMemory.forEach((file, index) => {
                 const reader = new FileReader();
                 reader.onload = function(e) {
@@ -327,19 +317,7 @@ function triggerAdNetworkDownload() {
                 reader.readAsDataURL(file);
             });
         }
-    }, 3500); // 3.5 Seconds Ad Screen Hold
-}
-
-function forceDownloadLink(uriStream, title) {
-    const a = document.createElement('a');
-    a.href = uriStream;
-    a.download = title;
-    a.style.display = 'none';
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(() => {
-        document.body.removeChild(a);
-    }, 100);
+    }, 3500); // 3.5 Seconds Ad Overlay Screen
 }
     </script>
 </body>
