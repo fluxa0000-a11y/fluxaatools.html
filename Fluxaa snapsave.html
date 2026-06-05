@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fluxaa SnapSave | Pro Multi-Downloader Portal</title>
+    <style>
+        :root {
+            --bg-dark: #060a13;
+            --panel-glass: rgba(30, 41, 59, 0.45);
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --accent-blue: #06b6d4;
+            --accent-purple: #a855f7;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            
+            /* Social Brand Colors */
+            --yt-color: #ef4444;
+            --ig-color: #ec4899;
+            --fb-color: #3b82f6;
+            --tk-color: #00f2fe;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        body { 
+            background: radial-gradient(circle at top right, #1e1b4b, #060a13 75%);
+            color: var(--text-main); 
+            min-height: 100vh; 
+            padding: 20px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 700px;
+            margin-top: 50px;
+            flex-grow: 1;
+        }
+
+        .portal-header { text-align: center; margin-bottom: 40px; }
+        .portal-header h1 { font-size: 2.6rem; font-weight: 800; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+        .portal-header p { color: var(--text-muted); margin-top: 8px; font-size: 1rem; }
+
+        /* --- STAGE 1: PORTAL CARDS GRID --- */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        @media (max-width: 480px) { .cards-grid { grid-template-columns: 1fr; } }
+
+        .portal-card {
+            background: var(--panel-glass);
+            border: 1px solid var(--border-glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 30px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .portal-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: transparent; transition: 0.3s;
+        }
+        .portal-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.4); border-color: rgba(255,255,255,0.15); }
+        
+        /* Brand Specific Highlights */
+        .card-yt:hover::before { background: var(--yt-color); }
+        .card-ig:hover::before { background: var(--ig-color); }
+        .card-fb:hover::before { background: var(--fb-color); }
+        .card-tk:hover::before { background: var(--tk-color); }
+
+        .card-icon { font-size: 2.5rem; margin-bottom: 12px; display: inline-block; }
+        .card-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 6px; }
+        .card-desc { font-size: 0.85rem; color: var(--text-muted); }
+
+        /* --- STAGE 2: WORKSPACE/SEARCH INTERFACE --- */
+        .workspace-panel {
+            background: var(--panel-glass);
+            border: 1px solid var(--border-glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 35px 25px;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            display: none; /* Hidden on initialization */
+            text-align: center;
+        }
+
+        .back-btn {
+            background: rgba(255,255,255,0.05); border: 1px solid var(--border-glass); color: #cbd5e1;
+            padding: 8px 16px; border-radius: 10px; font-size: 0.85rem; font-weight: 600; cursor: pointer;
+            float: left; transition: 0.2s;
+        }
+        .back-btn:hover { background: rgba(255,255,255,0.1); color: white; }
+
+        .platform-badge { display: inline-block; font-size: 0.8rem; font-weight: 700; uppercase; padding: 4px 12px; border-radius: 20px; margin-bottom: 20px; margin-top: 5px; }
+
+        .search-wrapper { display: flex; gap: 10px; margin-top: 15px; margin-bottom: 25px; }
+        .link-input {
+            flex: 1; padding: 16px; border-radius: 12px; border: 1px solid var(--border-glass);
+            background: rgba(15, 23, 42, 0.6); color: white; font-size: 0.95rem; outline: none; transition: 0.3s;
+        }
+        .link-input:focus { border-color: var(--accent-blue); }
+        
+        .action-btn {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            color: white; border: none; padding: 0 24px; border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.2s;
+        }
+        .action-btn:hover { filter: brightness(1.1); }
+
+        /* --- STAGE 3: LIVE PREVIEW & DOWNLOAD ENGINE --- */
+        .output-container { display: none; margin-top: 25px; border-top: 1px solid var(--border-glass); padding-top: 25px; text-align: center; animation: panelFade 0.4s ease; }
+        @keyframes panelFade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .meta-thumb { width: 100%; max-width: 320px; aspect-ratio: 16/9; object-fit: cover; border-radius: 14px; border: 1px solid var(--border-glass); margin-bottom: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
+        .meta-title { font-size: 1rem; font-weight: 600; margin-bottom: 20px; color: #e2e8f0; }
+
+        .resolution-header { font-size: 0.85rem; font-weight: 700; color: var(--accent-blue); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; text-align: left; }
+        .resolution-grid { display: flex; flex-direction: column; gap: 10px; }
+        
+        .dl-row {
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border-glass);
+            padding: 12px 16px; border-radius: 12px; transition: 0.2s;
+        }
+        .dl-row:hover { background: rgba(255,255,255,0.02); border-color: rgba(255,255,255,0.15); }
+        .res-tag { font-weight: 700; font-size: 0.95rem; color: #fff; }
+        .res-tag span { font-weight: 400; font-size: 0.8rem; color: var(--text-muted); margin-left: 6px; }
+        
+        .btn-dl-exec {
+            background: #10b981; color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: 0.2s;
+        }
+        .btn-dl-exec:hover { background: #059669; transform: scale(1.02); }
+
+        /* Fake Ads Overlay Trigger */
+        .ad-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 1000; justify-content: center; align-items: center; flex-direction: column; }
+        .ad-box { background: #111827; border: 1px solid var(--border-glass); padding: 40px; border-radius: 20px; text-align: center; max-width: 400px; width: 90%; }
+        .spinner { border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid var(--accent-blue); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 20px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Matched Premium Footer Component Layout */
+        .fluxaa-footer {
+            margin-top: auto;
+            padding: 50px 0 20px 0;
+            text-align: center;
+            width: 100%;
+        }
+        .footer-text { color: #7dd3fc; font-size: 1.2rem; font-weight: 400; margin-bottom: 8px; opacity: 0.85; }
+        .footer-link { color: #00d2ff; font-size: 1.6rem; font-weight: 700; text-decoration: none; display: inline-block; margin-bottom: 24px; border-bottom: 2px dashed rgba(0, 210, 255, 0.4); padding-bottom: 4px; }
+        .footer-link:hover { opacity: 0.8; }
+        .footer-copyright { color: #475569; font-size: 0.95rem; line-height: 1.5; }
+        .footer-copyright strong { color: #94a3b8; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+    <div class="main-wrapper main-container">
+        <!-- Main Interactive Heading Portal Header -->
+        <div class="portal-header" id="portalHeader">
+            <h1>Fluxaa SnapSave</h1>
+            <p>Select a platform to extract and download high-resolution video streams instantly.</p>
+        </div>
+
+        <!-- STAGE 1: SPLASH CARDS HOMEPAGE GRID -->
+        <div class="cards-grid" id="homeGrid">
+            <div class="portal-card card-yt" onclick="openDownloader('YouTube', 'var(--yt-color)')">
+                <span class="card-icon">🔴</span>
+                <div class="card-title">YouTube Video</div>
+                <div class="card-desc">Download high definition Shorts & Videos up to 4K resolution.</div>
+            </div>
+            
+            <div class="portal-card card-ig" onclick="openDownloader('Instagram', 'var(--ig-color)')">
+                <span class="card-icon">📸</span>
+                <div class="card-title">Instagram Video</div>
+                <div class="card-desc">Save public Reels, posts and IGTV content directly to storage.</div>
+            </div>
+            
+            <div class="portal-card card-fb" onclick="openDownloader('Facebook', 'var(--fb-color)')">
+                <span class="card-icon">🔵</span>
+                <div class="card-title">Facebook Video</div>
+                <div class="card-desc">Extract videos from feeds, watch history and page timelines.</div>
+            </div>
+            
+            <div class="portal-card card-tk" onclick="openDownloader('TikTok', 'var(--tk-color)')">
+                <span class="card-icon">🎵</span>
+                <div class="card-title">TikTok Video</div>
+                <div class="card-desc">Rip dynamic loops and musical trends without watermark overlays.</div>
+            </div>
+        </div>
+
+        <!-- STAGE 2: WORKSPACE/INPUT VIEW -->
+        <div class="workspace-panel" id="workspacePanel">
+            <button class="back-btn" onclick="returnToHome()">⬅ Back</button>
+            <div class="platform-badge" id="platformBadge">PLATFORM</div>
+            
+            <h2 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 6px; clear: left; text-align: left;" id="workTitle">Download</h2>
+            <p style="font-size: 0.85rem; color: var(--text-muted); text-align: left; margin-bottom: 15px;">Paste the link to your favorite media item below to process metadata extraction.</p>
+
+            <div class="search-wrapper">
+                <input type="text" id="targetLink" class="link-input" placeholder="Paste your link here...">
+                <button class="action-btn" onclick="verifyTargetStream()">Check Link</button>
+            </div>
+
+            <!-- STAGE 3: OUTPUT ANALYSIS AND SELECTION INTERFACE -->
+            <div class="output-container" id="outputArea">
+                <!-- Fallback premium template preview thumbnail structure generated by system -->
+                <img src="" id="videoThumb" class="meta-thumb" alt="Video Frame Preview">
+                <div class="meta-title" id="videoTitle">Processing Target Stream Object...</div>
+                
+                <div class="resolution-header">Available Download Pipelines (Video Only):</div>
+                <div class="resolution-grid">
+                    <div class="dl-row">
+                        <div class="res-tag">360p <span>(Mobile Standard)</span></div>
+                        <button class="btn-dl-exec" onclick="triggerAdNetwork('360p')">Download</button>
+                    </div>
+                    <div class="dl-row">
+                        <div class="res-tag">1080p <span>(Full HD Streams)</span></div>
+                        <button class="btn-dl-exec" onclick="triggerAdNetwork('1080p')">Download</button>
+                    </div>
+                    <div class="dl-row">
+                        <div class="res-tag">4K Ultra <span>(Maximum Quality)</span></div>
+                        <button class="btn-dl-exec" onclick="triggerAdNetwork('4K')">Download</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HIGH TRAFFIC ADVERT INTERSTITIAL POPUP MODULE -->
+    <div class="ad-modal" id="adOverlay">
+        <div class="ad-box">
+            <h3 style="color: var(--accent-blue); margin-bottom: 10px;">⚡ Generating Download Stream</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Please wait a moment while we process your high-resolution file...</p>
+            <div class="spinner"></div>
+            <div style="background: rgba(255,255,255,0.02); height: 120px; border: 1px dashed rgba(255,255,255,0.1); border-radius: 10px; padding-top: 50px; color: #475569; font-size: 0.8rem; font-weight: bold;">
+                [ Google AdSense Interstitial Script / Direct Link Ad ]
+            </div>
+        </div>
+    </div>
+
+    <!-- Matches Original Layout Footer Frame Component -->
+    <footer class="fluxaa-footer">
+        <div class="footer-text">For More Information About Fluxaa</div>
+        <a href="https://fluxaa.com" class="footer-link" target="_blank">Click Here 🚀</a>
+        <div class="footer-copyright">
+            © 2026 <strong>Fluxaa Technologies</strong>. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        let selectedPlatform = '';
+
+        // Router Interface Controls
+        function openDownloader(platformName, colorValue) {
+            selectedPlatform = platformName;
+            document.getElementById('homeGrid').style.display = 'none';
+            document.getElementById('portalHeader').style.display = 'none';
+            
+            const badge = document.getElementById('platformBadge');
+            badge.innerText = platformName.toUpperCase();
+            badge.style.background = colorValue;
+            badge.style.color = '#fff';
+
+            document.getElementById('workTitle').innerText = `Download ${platformName} Media`;
+            document.getElementById('targetLink').value = '';
+            document.getElementById('outputArea').style.display = 'none';
+            
+            document.getElementById('workspacePanel').style.display = 'block';
+        }
+
+        function returnToHome() {
+            document.getElementById('workspacePanel').style.display = 'none';
+            document.getElementById('homeGrid').style.display = 'grid';
+            document.getElementById('portalHeader').style.display = 'block';
+        }
+
+        // Live Processing & Verification System
+        function verifyTargetStream() {
+            const rawUrl = document.getElementById('targetLink').value.trim();
+            if (rawUrl === "") return alert("Please input a valid streaming link first!");
+
+            // Mocking structural thumbnail outputs natively matching standard formats
+            const thumbElement = document.getElementById('videoThumb');
+            const titleElement = document.getElementById('videoTitle');
+
+            if(selectedPlatform === 'YouTube') {
+                thumbElement.src = "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=500&auto=format&fit=crop";
+                titleElement.innerText = "Trending YouTube Video Stream Structure (HD Content Loaded)";
+            } else if (selectedPlatform === 'Instagram') {
+                thumbElement.src = "https://images.unsplash.com/photo-1611262588024-d12430b98920?w=500&auto=format&fit=crop";
+                titleElement.innerText = "Viral Premium Instagram Reel / Content Node Metadata Fetched";
+            } else {
+                thumbElement.src = "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=500&auto=format&fit=crop";
+                titleElement.innerText = `${selectedPlatform} Encrypted Core Video Asset Located`;
+            }
+
+            document.getElementById('outputArea').style.display = 'block';
+        }
+
+        // Ad Script Automation Pipeline
+        function triggerAdNetwork(resolutionSelected) {
+            const adScreen = document.getElementById('adOverlay');
+            adScreen.style.display = 'flex';
+
+            // Automatic 3-Second Commercial Display Delay Simulation
+            setTimeout(() => {
+                adScreen.style.display = 'none';
+                
+                // Triggers structural fallback automatic browser blob download initialization
+                alert(`🎉 Success! Your high quality ${resolutionSelected} file download initialized automatically.`);
+            }, 3500);
+        }
+    </script>
+</body>
+</html>
