@@ -1,402 +1,96 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bhraava Di Hatti | Powered by Fluxaa</title>
-
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial,sans-serif;
-}
-
-body{
-    background:#f8f8f8;
-}
-
-/* Header */
-
-header{
-    background:#6b0f1a;
-    color:white;
-    padding:20px;
-    text-align:center;
-    position:sticky;
-    top:0;
-    z-index:1000;
-}
-
-.logo{
-    font-size:28px;
-    font-weight:bold;
-}
-
-.tagline{
-    font-size:13px;
-    opacity:.9;
-}
-
-/* Hero */
-
-.hero{
-    background:linear-gradient(135deg,#6b0f1a,#a83232);
-    color:white;
-    padding:60px 20px;
-    text-align:center;
-}
-
-.hero h1{
-    font-size:36px;
-    margin-bottom:10px;
-}
-
-.hero p{
-    margin-bottom:20px;
-}
-
-.hero button{
-    padding:12px 25px;
-    border:none;
-    background:gold;
-    color:black;
-    font-weight:bold;
-    border-radius:8px;
-    cursor:pointer;
-}
-
-/* Search */
-
-.search-box{
-    padding:20px;
-}
-
-.search-box input{
-    width:100%;
-    padding:14px;
-    border:none;
-    border-radius:10px;
-    box-shadow:0 0 10px rgba(0,0,0,.1);
-}
-
-/* Categories */
-
-.categories{
-    display:flex;
-    gap:10px;
-    overflow:auto;
-    padding:0 20px 20px;
-}
-
-.categories button{
-    border:none;
-    background:white;
-    padding:10px 16px;
-    border-radius:20px;
-    cursor:pointer;
-    box-shadow:0 2px 8px rgba(0,0,0,.1);
-}
-
-/* Products */
-
-.section-title{
-    padding:20px;
-    font-size:24px;
-    font-weight:bold;
-}
-
-.products{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:20px;
-    padding:20px;
-}
-
-.card{
-    background:white;
-    border-radius:15px;
-    overflow:hidden;
-    box-shadow:0 3px 12px rgba(0,0,0,.1);
-}
-
-.card img{
-    width:100%;
-    height:260px;
-    object-fit:cover;
-}
-
-.card-content{
-    padding:15px;
-}
-
-.card h3{
-    margin-bottom:8px;
-}
-
-.price{
-    color:#6b0f1a;
-    font-size:20px;
-    font-weight:bold;
-    margin-bottom:10px;
-}
-
-.card button{
-    width:100%;
-    padding:12px;
-    border:none;
-    background:#6b0f1a;
-    color:white;
-    border-radius:8px;
-    cursor:pointer;
-}
-
-/* Cart */
-
-.cart-bar{
-    position:fixed;
-    bottom:0;
-    left:0;
-    right:0;
-    background:#111;
-    color:white;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:15px;
-}
-
-.cart-btn{
-    background:gold;
-    color:black;
-    border:none;
-    padding:10px 20px;
-    border-radius:8px;
-    font-weight:bold;
-}
-
-/* Footer */
-
-footer{
-    background:#111;
-    color:white;
-    text-align:center;
-    padding:30px 20px 80px;
-    margin-top:30px;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bhraava Di Hatti</title>
+    <!-- Google Fonts for modern typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for clean icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<header>
-    <div class="logo">Bhraava Di Hatti</div>
-    <div class="tagline">Traditional Roots, Modern Styles</div>
-</header>
+    <div class="app-container">
+        
+        <!-- Header Section -->
+        <header class="app-header">
+            <div class="brand-info">
+                <div class="logo-box">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                </div>
+                <div class="brand-text">
+                    <h1>Bhraava Di Hatti</h1>
+                    <p>PREMIUM UNSTITCHED SUITS</p>
+                </div>
+            </div>
+            <button class="lang-btn">ਪੰਜਾਬੀ</button>
+        </header>
 
-<section class="hero">
-    <h1>Premium Punjabi Collection</h1>
-    <p>Latest Fashion, Traditional Elegance</p>
-    <button onclick="scrollToProducts()">Shop Now</button>
-</section>
+        <!-- Search Bar Section -->
+        <div class="search-section">
+            <div class="search-bar">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" placeholder="Search in English or P...">
+                <button class="ai-btn">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                </button>
+            </div>
+            <button class="wishlist-btn">
+                <i class="fa-regular fa-heart"></i>
+            </button>
+        </div>
 
-<div class="search-box">
-    <input
-        type="text"
-        id="searchInput"
-        placeholder="Search products..."
-        onkeyup="searchProducts()"
-    >
-</div>
+        <!-- Categories / Tabs -->
+        <div class="categories-tabs">
+            <button class="tab-btn active"><span class="dot"></span> ALL COLLECTIONS</button>
+            <button class="tab-btn">SILK SUITS</button>
+            <button class="tab-btn">COTTON</button>
+        </div>
 
-<div class="categories">
-    <button onclick="filterCategory('All')">All</button>
-    <button onclick="filterCategory('Suit')">Suit</button>
-    <button onclick="filterCategory('Kurti')">Kurti</button>
-    <button onclick="filterCategory('Wedding')">Wedding</button>
-</div>
+        <!-- Hero Banner Card -->
+        <main class="main-content">
+            <div class="hero-card">
+                <div class="badge">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <span>PREMIUM UNSTITCHED SUITS</span>
+                </div>
+                <h2 class="hero-title">Crafting<br><span class="italic-text">Unstitched</span><br>Art.</h2>
+                
+                <!-- Floating Video/Image PIP Overlapping -->
+                <div class="floating-pip">
+                    <img src="https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?q=80&w=500" alt="Video Preview">
+                </div>
+            </div>
+        </main>
 
-<div class="section-title" id="productsSection">
-    Featured Collection
-</div>
+        <!-- Bottom Navigation Bar -->
+        <nav class="bottom-nav">
+            <a href="#" class="nav-item active">
+                <i class="fa-solid fa-house-chimney"></i>
+                <span>HOME</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa-solid fa-arrow-rotate-left"></i>
+                <span>ORDERS</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa-solid fa-basket-shopping"></i>
+                <span>CART</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa-solid fa-truck-fast"></i>
+                <span>TRACK</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa-solid fa-circle-info"></i>
+                <span>HELP</span>
+            </a>
+        </nav>
 
-<div class="products" id="productGrid"></div>
-
-<div class="cart-bar">
-    <div>
-        Cart Items:
-        <span id="cartCount">0</span>
     </div>
-
-    <button class="cart-btn">
-        View Cart
-    </button>
-</div>
-
-<footer>
-    <h3>Bhraava Di Hatti</h3>
-    <p>Traditional Roots, Modern Styles</p>
-    <br>
-    <p>Powered by Fluxaa</p>
-    <p>© 2026 All Rights Reserved</p>
-</footer>
-
-<script>
-
-const products = [
-
-{
-id:1,
-name:"Royal Punjabi Suit",
-price:2499,
-category:"Suit",
-image:"https://picsum.photos/400/500?1"
-},
-
-{
-id:2,
-name:"Designer Kurti",
-price:1499,
-category:"Kurti",
-image:"https://picsum.photos/400/500?2"
-},
-
-{
-id:3,
-name:"Wedding Collection",
-price:3999,
-category:"Wedding",
-image:"https://picsum.photos/400/500?3"
-},
-
-{
-id:4,
-name:"Premium Cotton Suit",
-price:1999,
-category:"Suit",
-image:"https://picsum.photos/400/500?4"
-}
-
-];
-
-let cart =
-JSON.parse(localStorage.getItem("cart")) || [];
-
-function renderProducts(data){
-
-const grid =
-document.getElementById("productGrid");
-
-grid.innerHTML = "";
-
-data.forEach(product=>{
-
-grid.innerHTML += `
-
-<div class="card">
-
-<img src="${product.image}">
-
-<div class="card-content">
-
-<h3>${product.name}</h3>
-
-<div class="price">
-₹${product.price}
-</div>
-
-<button onclick="addToCart(${product.id})">
-Add To Cart
-</button>
-
-</div>
-
-</div>
-
-`;
-
-});
-
-}
-
-function addToCart(id){
-
-const item =
-products.find(p=>p.id===id);
-
-cart.push(item);
-
-localStorage.setItem(
-"cart",
-JSON.stringify(cart)
-);
-
-updateCart();
-
-alert(item.name + " added to cart");
-
-}
-
-function updateCart(){
-
-document.getElementById(
-"cartCount"
-).innerText = cart.length;
-
-}
-
-function searchProducts(){
-
-const value =
-document.getElementById(
-"searchInput"
-).value.toLowerCase();
-
-const filtered =
-products.filter(product=>
-product.name
-.toLowerCase()
-.includes(value)
-);
-
-renderProducts(filtered);
-
-}
-
-function filterCategory(category){
-
-if(category==="All"){
-
-renderProducts(products);
-
-return;
-
-}
-
-const filtered =
-products.filter(
-product=>
-product.category===category
-);
-
-renderProducts(filtered);
-
-}
-
-function scrollToProducts(){
-
-document
-.getElementById("productsSection")
-.scrollIntoView({
-behavior:"smooth"
-});
-
-}
-
-renderProducts(products);
-updateCart();
-
-</script>
 
 </body>
 </html>
