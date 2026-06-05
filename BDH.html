@@ -241,77 +241,106 @@
             }, 2500); // 2.5 seconds real delay loop
         }
 
-        // Step 3: Download click triggers fake ad screen layout popup, then forces physical device saves
-        function triggerAdNetworkDownload() {
-            const overlay = document.getElementById('adOverlay');
-            overlay.style.display = 'flex';
+        // Upgraded Complete Download Engine (With Fix for Multi-Image PDF)
+function triggerAdNetworkDownload() {
+    const overlay = document.getElementById('adOverlay');
+    overlay.style.display = 'flex'; // Pehle Ad popup dikhega
 
-            setTimeout(() => {
-                overlay.style.display = 'none';
-                
-                // Triggers structural native browser bulk download array loops engine
-                if(fileCollectionMemory.length === 0) return;
+    setTimeout(() => {
+        overlay.style.display = 'none'; // Ad band hoga
+        
+        if(fileCollectionMemory.length === 0) return alert("Bhai, pehle photos toh upload karo!");
 
-                if (selectedFormat === 'PDF') {
-                    // Fallback Native Print compilation method for PDF
-                    const virtualPrintWindow = window.open('', '_blank');
-                    let imagesHtmlString = '';
+        if (selectedFormat === 'PDF') {
+            // New Foolproof HTML-to-PDF Print System
+            const virtualPrintWindow = window.open('', '_blank');
+            if (!virtualPrintWindow) return alert("Bhai, pop-up blocker ko allow karo taaki PDF print window khul sake!");
+
+            let loadedCount = 0;
+            let imagesHtmlString = '';
+            
+            // Sabse pehle saari images ko load hone ke liye queue karna
+            fileCollectionMemory.forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    imagesHtmlString += `
+                        <div style="page-break-after: always; display: flex; justify-content: center; align-items: center; height: 100vh; background: #fff;">
+                            <img src="${e.target.result}" style="max-width: 100%; max-height: 100vh; object-fit: contain;">
+                        </div>`;
                     
-                    // Create continuous page breaking image nodes stream arrays elements strings block loops
-                    const promises = fileCollectionMemory.map(file => {
-                        return new Promise((resolve) => {
-                            const reader = new FileReader();
-                            reader.onload = (e) => {
-                                imagesHtmlString += `<img src="${e.target.result}" style="max-width:100%; max-height:100vh; display:block; page-break-after:always; object-fit:contain; margin:auto;">`;
-                                resolve();
-                            };
-                            reader.readAsDataURL(file);
-                        });
-                    });
-
-                    Promise.all(promises).then(() => {
-                        virtualPrintWindow.document.write(`<html><head><title>Fluxaa_Compiled_Doc</title><style>* {margin:0; padding:0; background:#fff;}</style></head><body>${imagesHtmlString}<script>window.onload = function(){ window.print(); window.close(); }<\/script></body></html>`);
+                    loadedCount++;
+                    
+                    // Jab saari 4 ya usse zyada photos render ho jayengi, tabhi print window trigger hogi
+                    if (loadedCount === fileCollectionMemory.length) {
+                        virtualPrintWindow.document.write(`
+                            <html>
+                            <head>
+                                <title>Fluxaa_Compiled_Doc</title>
+                                <style>
+                                    * { margin:0; padding:0; box-sizing: border-box; }
+                                    body { background:#fff; }
+                                    @page { size: A4; margin: 0; }
+                                </style>
+                            </head>
+                            <body>
+                                ${imagesHtmlString}
+                                <script>
+                                    // Chota sa delay taaki browser dom images ko confirm karle
+                                    setTimeout(() => {
+                                        window.print();
+                                        window.close();
+                                    }, 500);
+                                <\/script>
+                            </body>
+                            </html>
+                        `);
                         virtualPrintWindow.document.close();
-                    });
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
 
-                } else {
-                    // Triggers Individual Image Canvas Transformation Processing Streams across sequential device downloads automatically
-                    fileCollectionMemory.forEach((file, index) => {
-                        const reader = new FileReader();
-                        reader.onload = function(e) {
-                            const tempImg = new Image();
-                            tempImg.src = e.target.result;
-                            tempImg.onload = function() {
-                                const canvas = document.createElement('canvas');
-                                const ctx = canvas.getContext('2d');
-                                canvas.width = tempImg.naturalWidth;
-                                canvas.height = tempImg.naturalHeight;
-                                
-                                if(selectedFormat === 'JPG') {
-                                    ctx.fillStyle = '#ffffff';
-                                    ctx.fillRect(0, 0, canvas.width, canvas.height);
-                                    ctx.drawImage(tempImg, 0, 0);
-                                    forceDownloadLink(canvas.toDataURL('image/jpeg', 0.9), `Fluxaa_Export_${index + 1}.jpg`);
-                                } else {
-                                    ctx.drawImage(tempImg, 0, 0);
-                                    forceDownloadLink(canvas.toDataURL('image/png'), `Fluxaa_Export_${index + 1}.png`);
-                                }
-                            };
-                        };
-                        reader.readAsDataURL(file);
-                    });
-                }
-            }, 3500); // 3.5 seconds High Converting Advertisement Screen Hold Time
+        } else {
+            // JPG/PNG Extraction Engine Loop
+            fileCollectionMemory.forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const tempImg = new Image();
+                    tempImg.src = e.target.result;
+                    tempImg.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        canvas.width = tempImg.naturalWidth;
+                        canvas.height = tempImg.naturalHeight;
+                        
+                        if(selectedFormat === 'JPG') {
+                            ctx.fillStyle = '#ffffff';
+                            ctx.fillRect(0, 0, canvas.width, canvas.height);
+                            ctx.drawImage(tempImg, 0, 0);
+                            forceDownloadLink(canvas.toDataURL('image/jpeg', 0.9), `Fluxaa_Export_${index + 1}.jpg`);
+                        } else {
+                            ctx.drawImage(tempImg, 0, 0);
+                            forceDownloadLink(canvas.toDataURL('image/png'), `Fluxaa_Export_${index + 1}.png`);
+                        }
+                    };
+                };
+                reader.readAsDataURL(file);
+            });
         }
+    }, 3500); // 3.5 Seconds Ad Screen Hold
+}
 
-        function forceDownloadLink(uriStream, title) {
-            const a = document.createElement('a');
-            a.href = uriStream;
-            a.download = title;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        }
+function forceDownloadLink(uriStream, title) {
+    const a = document.createElement('a');
+    a.href = uriStream;
+    a.download = title;
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => {
+        document.body.removeChild(a);
+    }, 100);
+}
     </script>
 </body>
 </html>
