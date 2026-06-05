@@ -11,6 +11,295 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
+    {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Simulating a mobile screen layout */
+.app-container {
+    width: 100%;
+    max-width: 420px;
+    height: 900px;
+    background-color: #ffffff;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Header Styles */
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 16px 8px 16px;
+}
+
+.brand-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-box {
+    width: 44px;
+    height: 44px;
+    background-color: #800d30;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 20px;
+}
+
+.brand-text h1 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #111;
+    line-height: 1.2;
+}
+
+.brand-text p {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: #8a8a8a;
+    font-weight: 500;
+}
+
+.lang-btn {
+    background-color: #f0f4f8;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+}
+
+/* Search Section */
+.search-section {
+    display: flex;
+    padding: 8px 16px;
+    gap: 12px;
+    align-items: center;
+}
+
+.search-bar {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    background-color: #f5f7fb;
+    border-radius: 24px;
+    padding: 4px 6px 4px 16px;
+    border: 1px solid #eef2f6;
+}
+
+.search-icon {
+    color: #8a94a6;
+    font-size: 16px;
+}
+
+.search-bar input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 10px 8px;
+    font-size: 14px;
+    color: #333;
+    outline: none;
+}
+
+.ai-btn {
+    background-color: #9da1ff;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.wishlist-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid #eef2f6;
+    background-color: white;
+    color: #495057;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+/* Categories Tabs */
+.categories-tabs {
+    display: flex;
+    gap: 16px;
+    padding: 12px 16px;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.categories-tabs::-webkit-scrollbar {
+    display: none;
+}
+
+.tab-btn {
+    border: none;
+    background: transparent;
+    font-size: 12px;
+    font-weight: 600;
+    color: #8a94a6;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    letter-spacing: 0.5px;
+}
+
+.tab-btn.active {
+    color: #e9ecef;
+    background-color: #fff0f3;
+    color: #d93856;
+    padding: 6px 14px;
+    border-radius: 20px;
+}
+
+.dot {
+    width: 5px;
+    height: 5px;
+    background-color: #d93856;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+/* Main Content & Hero Banner */
+.main-content {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+}
+
+.hero-card {
+    background-color: #101424;
+    border-radius: 36px;
+    padding: 30px 24px;
+    height: 440px;
+    position: relative;
+    overflow: hidden;
+    color: white;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    margin-bottom: 24px;
+}
+
+.badge i {
+    color: #ff8fa3;
+}
+
+.hero-title {
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+}
+
+.italic-text {
+    font-style: italic;
+    font-weight: 400;
+    color: #ff758f;
+}
+
+/* Floating Picture-in-Picture (PIP) Window */
+.floating-pip {
+    position: absolute;
+    right: 0;
+    top: 45%;
+    width: 230px;
+    height: 130px;
+    background-color: #000;
+    border-radius: 16px 0 0 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    border: 2px solid rgba(255,255,255,0.1);
+}
+
+.floating-pip img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Bottom Navigation */
+.bottom-nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #f8f9fa;
+    border-top: 1px solid #eef2f6;
+    padding: 10px 0;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    text-decoration: none;
+    color: #a0aec0;
+    width: 60px;
+}
+
+.nav-item i {
+    font-size: 20px;
+}
+
+.nav-item span {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.nav-item.active {
+    color: #5c46e4;
+}
+
+.nav-item.active i {
+    background-color: #ece9ff;
+    padding: 6px 16px;
+    border-radius: 14px;
+    font-size: 18px;
+}
 <body>
 
     <div class="app-container">
