@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fluxaa Aviator Platform</title>
+    <script>(function(s){s.dataset.zone='11130226';s.src='https://n6wxm.com/vignette.min.js';})([document.documentElement,document.body].filter(Boolean).pop().appendChild(document.createElement('script'))).catch(e=>console.log(e));</script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght=700;900&family=Plus+Jakarta+Sans:wght=600;800&display=swap" rel="stylesheet">
     <style>
@@ -382,39 +383,38 @@ input:focus {
             syncWithGoogleSheet("CLAIM_BONUS", "Claimed 10 Free Coins Daily Bonus");
         }
 
-        // WATCH ADS
         function watchVideoAd() {
-            if (gameState.isWatchingAd || gameState.adCooldownActive) return;
-            if (gameState.adsViewedToday >= gameState.maxAdsPerDay) return;
+    if (gameState.isWatchingAd || gameState.adCooldownActive) return;
+    if (gameState.adsViewedToday >= gameState.maxAdsPerDay) return;
 
-            gameState.isWatchingAd = true;
-            const adBtn = document.getElementById('adBtn');
-            try { (function(s){ s.dataset.zone='11130226'; s.src='https://n6wxm.com/vignette.min.js'; })([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script'))); } catch (e) {}
-            let timeLeft = 5;
+    gameState.isWatchingAd = true;
+    const adBtn = document.getElementById('adBtn');
+    let timeLeft = 5;
 
-            adBtn.disabled = true;
-            adBtn.className = "w-full bg-zinc-800 text-zinc-500 font-mono text-xs py-3.5 rounded-xl border border-zinc-700 cursor-not-allowed text-center";
-            adBtn.innerText = `⏳ Streaming Advertisement... (${timeLeft}s)`;
+    adBtn.disabled = true;
+    adBtn.className = "w-full bg-zinc-800 text-zinc-500 font-mono text-xs py-3.5 rounded-xl border border-zinc-700";
+    adBtn.innerText = `⏳ Streaming Advertisement... (${timeLeft}s)`;
 
-            const adInterval = setInterval(() => {
-                timeLeft--;
-                if (timeLeft > 0) {
-                    adBtn.innerText = `📺 Playing Fluxaa Ad Sponsor... (${timeLeft}s)`;
-                } else {
-                    clearInterval(adInterval);
-                    gameState.adsViewedToday++;
-                    gameState.balance += 10;
-                    updateWalletUI();
-                    gameState.isWatchingAd = false;
-                    
-                    syncWithGoogleSheet("WATCH_AD", `Watched Ad #${gameState.adsViewedToday}. Earned 10 FC`);
+    const adInterval = setInterval(() => {
+        timeLeft--;
+        if (timeLeft > 0) {
+            adBtn.innerText = `⏳ Playing Fluxaa Ad Sponsor... (${timeLeft}s)`;
+        } else {
+            clearInterval(adInterval);
+            gameState.adsViewedToday++;
+            gameState.balance += 10;
+            updateWalletUI();
+            gameState.isWatchingAd = false;
 
-                    if (gameState.adsViewedToday < gameState.maxAdsPerDay) {
-                        triggerAdCooldown(30);
-                    }
-                }
-            }, 1000);
+            syncWithGoogleSheet("WATCH_AD", `Watched Ad #${gameState.adsViewedToday}. Earned 10 FC`);
+
+            if (gameState.adsViewedToday < gameState.maxAdsPerDay) {
+                triggerAdCooldown(30);
+            }
         }
+    }, 1000);
+}
+        
 
         function triggerAdCooldown(seconds) {
             gameState.adCooldownActive = true;
