@@ -274,7 +274,7 @@ input:focus {
         canvas.height = canvas.offsetHeight;
 
         let gameState = {
-            balance: 0, 
+            balance: parseFloat(localStorage.getItem('fluxaa_balance')) || 0, 
             betAmount: 10,
             multiplier: 1.00,
             status: 'IDLE', 
@@ -284,13 +284,37 @@ input:focus {
             isWatchingAd: false,
             adCooldownActive: false,
             
-            adsViewedToday: 0,
+            adsViewedToday: parseInt(localStorage.getItem('fluxaa_adsViewedToday')) || 0,
             maxAdsPerDay: 8,
-            isBonusClaimed: false,
+            isBonusClaimed: localStorage.getItem('fluxaa_isBonusClaimed') === 'true',
             
-            dailyWithdrawnToday: 0,
-            maxDailyLimitINR: 10
+            dailyWithdrawnToday: parseFloat(localStorage.getItem('fluxaa_dailyWithdrawn')) || 0,
+            maxDailyLimitINR: 10,
+            lastCheckedDate: localStorage.getItem('fluxaa_lastDate') || ""
         };
+
+        // 🔄 DAILY RESET PROTOCOL
+        const todayDate = new Date().toDateString();
+        if (gameState.lastCheckedDate !== todayDate) {
+            gameState.adsViewedToday = 0;
+            gameState.isBonusClaimed = false;
+            gameState.dailyWithdrawnToday = 0;
+            gameState.lastCheckedDate = todayDate;
+            
+            localStorage.setItem('fluxaa_adsViewedToday', '0');
+            localStorage.setItem('fluxaa_isBonusClaimed', 'false');
+            localStorage.setItem('fluxaa_dailyWithdrawn', '0');
+            localStorage.setItem('fluxaa_lastDate', todayDate);
+        }
+
+        // 💾 STATE SYNC WITH BROWSER STORAGE
+        function saveToLocalStorage() {
+            localStorage.setItem('fluxaa_balance', gameState.balance);
+            localStorage.setItem('fluxaa_adsViewedToday', gameState.adsViewedToday);
+            localStorage.setItem('fluxaa_isBonusClaimed', gameState.isBonusClaimed);
+            localStorage.setItem('fluxaa_dailyWithdrawn', gameState.dailyWithdrawnToday);
+            localStorage.setItem('fluxaa_lastDate', gameState.lastCheckedDate);
+        }
 
         // 📊 DATA TO GOOGLE SHEET FUNCTION
         function syncWithGoogleSheet(actionType, details) {
@@ -336,7 +360,10 @@ input:focus {
             buttonElement.classList.add('text-amber-500', 'font-bold');
         }
 
+        // 🌟 LOCAL STORAGE UPDATED WALLET FUNCTION
         function updateWalletUI() {
+            saveToLocalStorage();
+
             document.getElementById('globalBalance').innerText = Math.round(gameState.balance);
             const inr = gameState.balance / 100;
             document.getElementById('inrValue').innerText = "₹" + inr.toFixed(2);
@@ -345,17 +372,24 @@ input:focus {
             
             if (gameState.adsViewedToday >= gameState.maxAdsPerDay) {
                 const adBtn = document.getElementById('adBtn');
-                adBtn.disabled = true;
-                adBtn.className = "w-full bg-red-950/40 text-red-400 border border-red-900/50 font-mono text-xs py-3 rounded-xl text-center cursor-not-allowed";
-                adBtn.innerText = "🛑 Daily Ad Limit Reached (8/8)";
+                if (adBtn) {
+                    adBtn.disabled = true;
+                    adBtn.className = "w-full bg-red-950/40 text-red-400 border border-red-900/50 font-mono text-xs py-3 rounded-xl text-center cursor-not-allowed";
+                    adBtn.innerText = "🛑 Daily Ad Limit Reached (8/8)";
+                }
             }
 
             if (gameState.isBonusClaimed) {
                 const bonusBtn = document.getElementById('bonusBtn');
-                bonusBtn.disabled = true;
-                bonusBtn.className = "bg-zinc-800 text-zinc-500 border border-zinc-700 font-bold text-[10px] px-3 py-2 rounded-xl cursor-not-allowed";
-                bonusBtn.innerText = "CLAIMED ✓";
-                document.getElementById('bonusCard').className = "bg-zinc-900/40 border border-white/5 p-4 rounded-3xl flex justify-between items-center opacity-60";
+                if (bonusBtn) {
+                    bonusBtn.disabled = true;
+                    bonusBtn.className = "bg-zinc-800 text-zinc-500 border border-zinc-700 font-bold text-[10px] px-3 py-2 rounded-xl cursor-not-allowed";
+                    bonusBtn.innerText = "CLAIMED ✓";
+                }
+                const bonusCard = document.getElementById('bonusCard');
+                if (bonusCard) {
+                    bonusCard.className = "bg-zinc-900/40 border border-white/5 p-4 rounded-3xl flex justify-between items-center opacity-60";
+                }
             }
         }
 
