@@ -423,52 +423,75 @@ input:focus {
         }
         
 
-
         function watchVideoAd() {
             if (gameState.isWatchingAd || gameState.adCooldownActive) return;
             if (gameState.adsViewedToday >= gameState.maxAdsPerDay) return;
 
-            // 💸 1. APNA MONETAG DIRECT LINK/SMARTLINK YAHAN DAALO
-            const REAL_MONETAG_LINK = "https://omg10.com/4/11130581"; // Iski jagah apna Direct Link URL paste kar dena
+            // 🔗 1. APNA MONETAG DIRECT LINK LINK YAHAN DAALO
+            const MY_MONETAG_LINK = "https://omg10.com/4/11130581"; // Isme apni Direct Link paste kar dena
 
             gameState.isWatchingAd = true;
-
-            // 🛠️ 2. UI BUTTON UPDATE
+            
+            // UI elements fetch karo
             const adBtn = document.getElementById('adBtn');
+            const adModal = document.getElementById('secureAdModal');
+            const adFrame = document.getElementById('adFrameSrc');
+            const closeBtn = document.getElementById('closeAdModalBtn');
+
+            // 🛠️ 2. Main UI Button Update
             adBtn.disabled = true;
             adBtn.className = "w-full bg-zinc-800 text-zinc-500 font-mono text-xs py-3.5 rounded-xl border border-zinc-700 cursor-not-allowed";
-            adBtn.innerText = `⏳ Initializing Premium Ad Sponsor...`;
+            adBtn.innerText = `⏳ Ad Modal Active...`;
 
-            // 🚀 3. HAR BAR 100% AD OPEN KARNE KA SYSTEM (Bina loop ke new window)
-            // '_blank' ke sath window options dene par browser ise safe pop-up treat karta hai aur ad guaranteed load hoti hai
-            const adWindow = window.open(REAL_MONETAG_LINK, '_blank', 'width=500,height=800,scrollbars=yes,resizable=yes');
+            // 🚀 3. IFRAME MEIN AD LOAD KARO AUR BOX KO FULL SCREEN SHOW KARO
+            adFrame.src = MY_MONETAG_LINK;
+            adModal.classList.remove('hidden');
+            adModal.classList.add('flex');
 
-            // ⏳ 4. REWARD COUNTDOWN TIMER ON YOUR MAIN SITE
-            let timeLeft = 6;
-            const adInterval = setInterval(() => {
-                timeLeft--;
-                if (timeLeft > 0) {
-                    adBtn.innerText = `📺 Watch Ad Tab & Return... (${timeLeft}s)`;
+            // ⏳ 4. COUNTDOWN TIMER FOR [X] CLOSE BUTTON
+            let adTimeLeft = 5;
+            closeBtn.disabled = true;
+            closeBtn.innerText = `⏳ Wait (${adTimeLeft}s)`;
+            closeBtn.className = "bg-zinc-900 text-zinc-600 border border-zinc-800 font-bold text-xs px-4 py-2 rounded-xl cursor-not-allowed";
+
+            const modalCountInterval = setInterval(() => {
+                adTimeLeft--;
+                if (adTimeLeft > 0) {
+                    closeBtn.innerText = `⏳ Wait (${adTimeLeft}s)`;
                 } else {
-                    clearInterval(adInterval);
+                    clearInterval(modalCountInterval);
                     
-                    // 🎯 COIN REWARD SUCCESS SYSTEM
-                    gameState.adsViewedToday++;
-                    gameState.balance += 10;
-                    updateWalletUI(); // Automatic saved to browser LocalStorage
+                    // 🔥 5. 5 SECOND BAAD BUTTON BANEGA RED AUR CATCHY [X] CLOSE
+                    closeBtn.disabled = false;
+                    closeBtn.innerText = "❌ CLOSE AD";
+                    closeBtn.className = "bg-red-600 hover:bg-red-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition-all shadow-lg shadow-red-600/30 cursor-pointer scale-105 transform duration-200";
+                    
+                    // Jab banda is active [X] Close button par click karega
+                    closeBtn.onclick = function() {
+                        // Box band karo aur Iframe khali karo
+                        adModal.classList.remove('flex');
+                        adModal.classList.add('hidden');
+                        adFrame.src = ""; 
 
-                    // Google Sheet Sync Tracker
-                    syncWithGoogleSheet("WATCH_AD", `Successfully Watched Guaranteed On-Click Ad #${gameState.adsViewedToday}. Earned 10 FC`);
+                        // 🎯 REWARD WALLET SYSTEM TRIGGER
+                        gameState.adsViewedToday++;
+                        gameState.balance += 10;
+                        updateWalletUI(); // Balance update aur LocalStorage mein auto-save
 
-                    gameState.isWatchingAd = false;
+                        // Google Sheet sync report
+                        syncWithGoogleSheet("WATCH_AD", `Watched Secured Custom Modal Ad #${gameState.adsViewedToday}. Earned 10 FC`);
 
-                    // 30 Seconds ka automatic safe cooldown loop protection
-                    if (gameState.adsViewedToday < gameState.maxAdsPerDay) {
-                        triggerAdCooldown(30);
-                    }
+                        gameState.isWatchingAd = false;
+
+                        // 30 Seconds Cooldown Lagao
+                        if (gameState.adsViewedToday < gameState.maxAdsPerDay) {
+                            triggerAdCooldown(30);
+                        }
+                    };
                 }
             }, 1000);
         }
+
         
 
         function triggerAdCooldown(seconds) {
@@ -655,6 +678,24 @@ input:focus {
         }
 
         updateWalletUI();
+
+        <!-- 📺 HIGH PERFORMANCE FULL SCREEN AD MODAL -->
+    <div id="secureAdModal" class="fixed inset-0 bg-black z-[9999] hidden flex-col items-center justify-center p-4 transition-all duration-300">
+        <!-- Upur ka Header Area -->
+        <div class="w-full max-w-lg flex justify-between items-center mb-4 px-2">
+            <span class="text-zinc-400 font-mono text-xs tracking-wider">🔒 Fluxaa Secured Sponsor Ad</span>
+            <!-- Yeh hai aapka dynamic Close Button -->
+            <button id="closeAdModalBtn" disabled class="bg-zinc-800 text-zinc-600 border border-zinc-700/50 font-bold text-xs px-4 py-2 rounded-xl cursor-not-allowed transition-all">
+                ⏳ Wait (5s)
+            </button>
+        </div>
+        
+        <!-- Ad Content Area: Iske andar aapki ad makkhan jaise load hogi -->
+        <div class="w-full max-w-lg h-[80vh] bg-zinc-950 border border-zinc-800 rounded-3xl overflow-hidden relative shadow-2xl">
+            <iframe id="adFrameSrc" src="" class="w-full h-full border-0"></iframe>
+        </div>
+    </div>
+
     </script>
 </body>
 </html>
