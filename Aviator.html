@@ -679,5 +679,23 @@ input:focus {
 
         updateWalletUI();
     </script>
+
+    <!-- 📺 HIGH PERFORMANCE FULL SCREEN AD MODAL -->
+    <div id="secureAdModal" class="fixed inset-0 bg-black z-[9999] hidden flex-col items-center justify-center p-4 transition-all duration-300">
+        <!-- Upur ka Header Area -->
+        <div class="w-full max-w-lg flex justify-between items-center mb-4 px-2">
+            <span class="text-zinc-400 font-mono text-xs tracking-wider">🔒 Fluxaa Secured Sponsor Ad</span>
+            <!-- Yeh hai aapka dynamic Close Button -->
+            <button id="closeAdModalBtn" disabled class="bg-zinc-800 text-zinc-600 border border-zinc-700/50 font-bold text-xs px-4 py-2 rounded-xl cursor-not-allowed transition-all">
+                ⏳ Wait (5s)
+            </button>
+        </div>
+        
+        <!-- Ad Content Area: Iske andar aapki ad makkhan jaise load hogi -->
+        <div class="w-full max-w-lg h-[80vh] bg-zinc-950 border border-zinc-800 rounded-3xl overflow-hidden relative shadow-2xl">
+            <iframe id="adFrameSrc" src="" class="w-full h-full border-0"></iframe>
+        </div>
+    </div>
+    
 </body>
 </html>
