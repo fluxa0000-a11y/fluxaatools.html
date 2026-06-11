@@ -423,36 +423,48 @@ input:focus {
         }
 
         function watchVideoAd() {
-    if (gameState.isWatchingAd || gameState.adCooldownActive) return;
-    if (gameState.adsViewedToday >= gameState.maxAdsPerDay) return;
+            if (gameState.isWatchingAd || gameState.adCooldownActive) return;
+            if (gameState.adsViewedToday >= gameState.maxAdsPerDay) return;
 
-    gameState.isWatchingAd = true;
-    const adBtn = document.getElementById('adBtn');
-    let timeLeft = 5;
+            // 🛑 1. PASTE YOUR MONETAG DIRECT LINK HERE
+            const MONETAG_DIRECT_LINK = "YOUR_MONETAG_DIRECT_LINK_HERE";
 
-    adBtn.disabled = true;
-    adBtn.className = "w-full bg-zinc-800 text-zinc-500 font-mono text-xs py-3.5 rounded-xl border border-zinc-700";
-    adBtn.innerText = `⏳ Streaming Advertisement... (${timeLeft}s)`;
-
-    const adInterval = setInterval(() => {
-        timeLeft--;
-        if (timeLeft > 0) {
-            adBtn.innerText = `⏳ Playing Fluxaa Ad Sponsor... (${timeLeft}s)`;
-        } else {
-            clearInterval(adInterval);
-            gameState.adsViewedToday++;
-            gameState.balance += 10;
-            updateWalletUI();
-            gameState.isWatchingAd = false;
-
-            syncWithGoogleSheet("WATCH_AD", `Watched Ad #${gameState.adsViewedToday}. Earned 10 FC`);
-
-            if (gameState.adsViewedToday < gameState.maxAdsPerDay) {
-                triggerAdCooldown(30);
+            if (MONETAG_DIRECT_LINK === "YOUR_MONETAG_DIRECT_LINK_HERE") {
+                alert("Bhai pahle line number 410 par apni Monetag Direct Link paste karo!");
+                return;
             }
+
+            // 🚀 2. OPEN THE AD IN A NEW TAB IMMEDIATELY
+            window.open(MONETAG_DIRECT_LINK, '_blank');
+
+            // ⏳ 3. START REWARD COUNTDOWN ON FLUXAA SITE
+            gameState.isWatchingAd = true;
+            const adBtn = document.getElementById('adBtn');
+            let timeLeft = 5;
+
+            adBtn.disabled = true;
+            adBtn.className = "w-full bg-zinc-800 text-zinc-500 font-mono text-xs py-3.5 rounded-xl border border-zinc-700 cursor-not-allowed";
+            adBtn.innerText = `⏳ Redirected to Sponsor... (${timeLeft}s)`;
+
+            const adInterval = setInterval(() => {
+                timeLeft--;
+                if (timeLeft > 0) {
+                    adBtn.innerText = `⏳ Verifying Fluxaa Ad Sponsor... (${timeLeft}s)`;
+                } else {
+                    clearInterval(adInterval);
+                    gameState.adsViewedToday++;
+                    gameState.balance += 10;
+                    updateWalletUI(); // Automatic saves to LocalStorage too!
+                    gameState.isWatchingAd = false;
+
+                    syncWithGoogleSheet("WATCH_AD", `Watched Direct Link Ad #${gameState.adsViewedToday}. Earned 10 FC`);
+
+                    if (gameState.adsViewedToday < gameState.maxAdsPerDay) {
+                        triggerAdCooldown(30);
+                    }
+                }
+            }, 1000);
         }
-    }, 1000);
-}
         
 
         function triggerAdCooldown(seconds) {
