@@ -53,8 +53,9 @@
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(9, 9, 11, 0.98); z-index: 10000; justify-content: center; align-items: center; flex-direction: column;
         }
-        .ad-box { width: 90%; max-width: 380px; height: 75vh; background: #1c1917; border: 1px solid #444; border-radius: 24px; overflow: hidden; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.7); display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        .close-ad-btn { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.8); color: #fff; border: 1px solid #555; padding: 6px 14px; border-radius: 20px; cursor: pointer; font-size: 12px; font-weight: bold; z-index: 10001; }
+        .ad-box { width: 90%; max-width: 380px; height: 75vh; background: #1c1917; border: 1px solid #444; border-radius: 24px; overflow: hidden; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.7); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 0; box-sizing: border-box; }
+        .close-ad-btn { position: absolute; top: 15px; right: 15px; background: rgba(239, 68, 68, 0.9); color: #fff; border: 1px solid #ef4444; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 12px; font-weight: bold; z-index: 10001; transition: 0.2s; }
+        .close-ad-btn:disabled { background: rgba(0,0,0,0.8); border-color: #555; color: #aaa; cursor: not-allowed; }
 
         /* QUIZ ENGINE DEDICATED VIEW */
         #quizPageNode { text-align: center; }
@@ -214,15 +215,18 @@
 
 <div id="adOverlayWindow" class="ad-overlay">
     <button class="close-ad-btn" id="skipAdActionBtn" disabled onclick="dismissAdWindow()">Skip Ad 5s...</button>
-    <div class="ad-box">
+    <div class="ad-box" style="padding: 0; overflow: hidden; width: 90%; max-width: 380px; height: 75vh;">
         
-        <script>(function(s){s.dataset.zone='11135914',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+        <iframe 
+            id="adSmartlinkFrame"
+            src="about:blank" 
+            style="width: 100%; height: 100%; border: none; background: #1c1917;">
+        </iframe>
         
     </div>
 </div>
 
 <script>
-    // ── GOOGLE SHEET DEPLOYMENT LINK ──
     const GOOGLE_SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycby7a2GgRFSCqFU_h1cBUO5cO8P97GKInVRKAnrqKmrSMvwOfmbdwGlO5RzsPAiyzoVI/exec"; 
 
     let appState = {
@@ -284,11 +288,10 @@
         document.getElementById('mathUserAnswer').value = "";
     }
 
-    /* FULL SCREEN ADS PIPELINE CONTROLLER */
+    /* SMARTLINK TIMED ADS CONTROLLER */
     function triggerAdSequence(taskType) {
         if (!verifyLoginState()) return;
 
-        // Validation mapping filters
         if (taskType === 'attendance') {
             const now = Date.now();
             if (now < appState.attendanceLastClaimed + (24 * 60 * 60 * 1000)) return;
@@ -300,6 +303,12 @@
         
         const overlay = document.getElementById('adOverlayWindow');
         const skipBtn = document.getElementById('skipAdActionBtn');
+        const adFrame = document.getElementById('adSmartlinkFrame');
+        
+        // 🔗 🎯 YAHAN PAR APNA DIRECT LINK (SMARTLINK) LINK PASTE KARNA HAI!
+        const myMonetagSmartlink = "https://example.com/watch?key=YOUR_SMARTLINK_HERE"; 
+        
+        adFrame.src = myMonetagSmartlink;
         overlay.style.display = 'flex';
 
         let timerLeft = 5;
@@ -311,7 +320,7 @@
             if (timerLeft <= 0) {
                 clearInterval(interval);
                 skipBtn.disabled = false;
-                skipBtn.innerText = "✖ Skip Advertisement";
+                skipBtn.innerText = "✖ Close Ad";
             } else {
                 skipBtn.innerText = `Skip Ad in ${timerLeft}s...`;
             }
@@ -320,11 +329,11 @@
 
     function dismissAdWindow() {
         document.getElementById('adOverlayWindow').style.display = 'none';
+        document.getElementById('adSmartlinkFrame').src = "about:blank"; // Reset window
         
-        // 💰 REVENUE BOOST: Skip click behavior alignment 
         try {
             document.body.click(); 
-        } catch(e) { console.log("Ad loop optimization"); }
+        } catch(e) {}
 
         executeTaskPostAd(activeAdTargetType);
     }
@@ -370,7 +379,7 @@
         wheelIsRotating = true;
 
         const wheel = document.getElementById('wheelCanvas');
-        const deg = Math.floor(Math.random() * 360) + 2160; // 6 core rotations
+        const deg = Math.floor(Math.random() * 360) + 2160; 
         
         wheel.style.transform = `rotate(${deg}deg)`;
 
@@ -382,7 +391,6 @@
             alert(`Rotation Sequence Stalled! Prize: +${reward} FC 🎡`);
             processTaskSuccess('spin', reward);
             
-            // Clean interface alignment resets
             wheel.style.transition = 'none';
             wheel.style.transform = `rotate(${deg % 360}deg)`;
             setTimeout(() => { wheel.style.transition = 'transform 4s cubic-bezier(0.1, 0.75, 0.25, 1)'; }, 50);
@@ -499,8 +507,7 @@
         appState = {
             balance: 0, profile: null, attendanceLastClaimed: 0,
             videoCount: 0, videoResetTime: 0, videoCooldownEnd: 0,
-            quizCount: 0, quizResetTime: 0, quizCooldownEnd: 0,
-            spinCount: 0, spinResetTime: 0, spinCooldownEnd: 0, quizAns: 0
+            quizCount: 0, quizResetTime: 0, quizCooldownEnd: 0, spinCount: 0, spinResetTime: 0, spinCooldownEnd: 0, quizAns: 0
         };
         saveStateToLocalStorage();
         renderUiComponents();
