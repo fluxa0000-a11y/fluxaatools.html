@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,14 +51,14 @@
         .input-field:focus { border-color: var(--primary); outline: none; }
         .cooldown-overlay { display: none; position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(9,9,11,0.95); border-radius: 20px; justify-content: center; align-items: center; font-family: monospace; color: #ef4444; font-weight: bold; font-size: 14px; border: 1px solid rgba(239, 68, 68, 0.4); z-index: 5; }
 
-        /* ── DYNAMIC FULL SCREEN POP-UP AD MODAL ── */
+        /* ── CLEAN AD VERIFICATION MODAL (NO IFRAME) ── */
         .ad-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(9, 9, 11, 0.98); z-index: 10000; justify-content: center; align-items: center; flex-direction: column;
+            background: rgba(9, 9, 11, 0.96); z-index: 10000; justify-content: center; align-items: center; flex-direction: column;
         }
-        .ad-box { width: 90%; max-width: 380px; height: 75vh; background: #1c1917; border: 1px solid #444; border-radius: 24px; overflow: hidden; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.7); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 0; box-sizing: border-box; }
-        .close-ad-btn { position: absolute; top: 15px; right: 15px; background: rgba(239, 68, 68, 0.9); color: #fff; border: 1px solid #ef4444; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 12px; font-weight: bold; z-index: 10001; transition: 0.2s; }
-        .close-ad-btn:disabled { background: rgba(0,0,0,0.8); border-color: #555; color: #aaa; cursor: not-allowed; }
+        .ad-box { width: 85%; max-width: 360px; background: #1c1917; border: 1px solid #333; border-radius: 24px; padding: 30px 20px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.7); box-sizing: border-box; }
+        .close-ad-btn { background: var(--success); color: #fff; border: none; padding: 14px 28px; border-radius: 12px; cursor: pointer; font-size: 14px; font-weight: bold; width: 100%; text-transform: uppercase; margin-top: 15px; transition: 0.2s; }
+        .close-ad-btn:disabled { background: #27272a; color: #71717a; border: 1px solid #3f3f46; cursor: not-allowed; }
 
         /* QUIZ ENGINE DEDICATED VIEW */
         #quizPageNode { text-align: center; }
@@ -226,15 +227,12 @@
 </div>
 
 <div id="adOverlayWindow" class="ad-overlay">
-    <button class="close-ad-btn" id="skipAdActionBtn" disabled onclick="dismissAdWindow()">Skip Ad 5s...</button>
-    <div class="ad-box" style="padding: 0; overflow: hidden; width: 90%; max-width: 380px; height: 75vh;">
-        
-        <iframe 
-            id="adSmartlinkFrame"
-            src="about:blank" 
-            style="width: 100%; height: 100%; border: none; background: #1c1917;">
-        </iframe>
-        
+    <div class="ad-box">
+        <h3 style="color: var(--gold); margin-top: 0; font-size: 18px;">⚡ Task Ad Verification ⚡</h3>
+        <p style="color: #a1a1aa; font-size: 13px; line-height: 1.5; margin: 15px 0;">
+            Aapka ad naye tab mein khul chuka hai. Rewards paane ke liye 5 second tak ad page check karein aur fir wapas aayein!
+        </p>
+        <button class="close-ad-btn" id="skipAdActionBtn" disabled onclick="dismissAdWindow()">Wait 5s...</button>
     </div>
 </div>
 
@@ -300,7 +298,7 @@
         document.getElementById('mathUserAnswer').value = "";
     }
 
-    /* SMARTLINK TIMED ADS CONTROLLER */
+    /* DIRECT LINK TIMER CONTROLLER (WITHOUT IFRAME) */
     function triggerAdSequence(taskType) {
         if (!verifyLoginState()) return;
 
@@ -315,33 +313,33 @@
         
         const overlay = document.getElementById('adOverlayWindow');
         const skipBtn = document.getElementById('skipAdActionBtn');
-        const adFrame = document.getElementById('adSmartlinkFrame');
         
-        // 🔗 🎯 YAHAN PAR APNA DIRECT LINK (SMARTLINK) LINK PASTE KARNA HAI!
         const myMonetagSmartlink = "https://omg10.com/4/11130634"; 
         
-        adFrame.src = myMonetagSmartlink;
+        // 🚀 DIRECT LINK WITHOUT IFRAME (OPENS IN NEW TAB SMOOTHLY)
+        window.open(myMonetagSmartlink, '_blank');
+        
+        // Show Verification Window with back lock
         overlay.style.display = 'flex';
 
         let timerLeft = 5;
         skipBtn.disabled = true;
-        skipBtn.innerText = `Skip Ad in ${timerLeft}s...`;
+        skipBtn.innerText = `Wait ${timerLeft}s to verify...`;
 
         const interval = setInterval(() => {
             timerLeft--;
             if (timerLeft <= 0) {
                 clearInterval(interval);
                 skipBtn.disabled = false;
-                skipBtn.innerText = "✖ Close Ad";
+                skipBtn.innerText = "✖ Back to Task";
             } else {
-                skipBtn.innerText = `Skip Ad in ${timerLeft}s...`;
+                skipBtn.innerText = `Wait ${timerLeft}s to verify...`;
             }
         }, 1000);
     }
 
     function dismissAdWindow() {
         document.getElementById('adOverlayWindow').style.display = 'none';
-        document.getElementById('adSmartlinkFrame').src = "about:blank"; // Reset window
         
         try {
             document.body.click(); 
