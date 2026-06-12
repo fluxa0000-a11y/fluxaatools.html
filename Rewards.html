@@ -16,6 +16,8 @@
             --secondary: #a855f7;
             --accent: #06b6d4;
             --gold: #fbbf24;
+            --success: #10b981;
+            --danger: #ef4444;
         }
         body {
             margin: 0; background-color: var(--bg-deep); color: white; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; min-height: 100vh; display: flex; flex-direction: column;
@@ -28,7 +30,7 @@
         .header-balance { font-size: 26px; font-weight: 900; color: var(--gold); margin: 0; }
         
         /* Navigation Components */
-        .tab-view { display: none; padding: 16px; animation: fadeIn 0.3s ease-in-out; }
+        .tab-view { display: none; padding: 16px; animation: fadeIn 0.3s ease-in-out; box-sizing: border-box;}
         .tab-view.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
         
@@ -38,12 +40,36 @@
         .nav-btn.active { color: var(--primary); }
         .nav-icon { font-size: 18px; }
 
-        /* Generic Framework Cards & Inputs */
+        /* Framework Cards & Buttons */
         .card { background: var(--bg-card); border: 1px solid var(--border-color); padding: 18px; border-radius: 20px; margin-bottom: 14px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); position: relative; }
         .btn { border: none; border-radius: 12px; font-weight: 800; font-size: 12px; cursor: pointer; text-transform: uppercase; transition: 0.2s; padding: 12px 20px; display: inline-block; text-align: center; color: white; }
+        .btn:hover { transform: scale(1.02); }
         .input-field { width: 100%; background: #09090b; border: 1px solid var(--border-color); border-radius: 12px; padding: 12px; color: white; font-weight: bold; box-sizing: border-box; margin-bottom: 12px; font-size: 14px; }
         .input-field:focus { border-color: var(--primary); outline: none; }
-        .cooldown-overlay { display: none; position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(9,9,11,0.9); border-radius: 20px; justify-content: center; align-items: center; font-family: monospace; color: #ef4444; font-weight: bold; font-size: 14px; border: 1px solid rgba(239, 68, 68, 0.4); }
+        .cooldown-overlay { display: none; position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(9,9,11,0.95); border-radius: 20px; justify-content: center; align-items: center; font-family: monospace; color: #ef4444; font-weight: bold; font-size: 14px; border: 1px solid rgba(239, 68, 68, 0.4); z-index: 5; }
+
+        /* ── DYNAMIC FULL SCREEN POP-UP AD MODAL ── */
+        .ad-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(9, 9, 11, 0.98); z-index: 10000; justify-content: center; align-items: center; flex-direction: column;
+        }
+        .ad-box { width: 90%; max-width: 380px; height: 75vh; background: #1c1917; border: 1px solid #444; border-radius: 24px; overflow: hidden; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.7); display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .close-ad-btn { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.8); color: #fff; border: 1px solid #555; padding: 6px 14px; border-radius: 20px; cursor: pointer; font-size: 12px; font-weight: bold; z-index: 10001; }
+
+        /* QUIZ ENGINE DEDICATED VIEW */
+        #quizPageNode { text-align: center; }
+        .quiz-feedback-box { font-size: 20px; font-weight: 900; margin-top: 20px; min-height: 30px; letter-spacing: 0.5px; }
+        
+        /* SPIN WHEEL ARCHITECTURE */
+        .wheel-shell { position: relative; width: 280px; height: 280px; margin: 25px auto; }
+        .actual-wheel { width: 100%; height: 100%; border-radius: 50%; border: 6px solid #27272a; transition: transform 4s cubic-bezier(0.1, 0.75, 0.25, 1);
+            background: conic-gradient(
+                #ef4444 0deg 72deg, #3b82f6 72deg 144deg, 
+                #10b981 144deg 216deg, #f59e0b 216deg 288deg, 
+                #8b5cf6 288deg 360deg
+            );
+        }
+        .wheel-pin { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 14px solid transparent; border-right: 14px solid transparent; border-top: 24px solid var(--gold); z-index: 20; filter: drop-shadow(0 4px 6px black); }
     </style>
 </head>
 <body>
@@ -64,7 +90,7 @@
                     <h4 style="margin: 0 0 4px 0; font-size: 15px;">📅 Daily Attendance Check-In</h4>
                     <p style="margin: 0; font-size: 11px; color: #a1a1aa;">Claim 1 time every 24 hours • <span style="color: var(--gold);">+30 FC</span></p>
                 </div>
-                <button class="btn" onclick="executeAttendance()" style="background: var(--primary);">Claim</button>
+                <button class="btn" onclick="triggerAdSequence('attendance')" style="background: var(--primary);">Claim</button>
             </div>
             <div class="cooldown-overlay" id="coolAttendance">TIMER OVERLAY</div>
         </div>
@@ -77,25 +103,19 @@
                 </div>
                 <div style="font-weight: bold; color: var(--gold); font-size: 12px; font-family: monospace;" id="countVideo">0/5</div>
             </div>
-            <button class="btn" onclick="executeVideoTask()" style="background: var(--secondary); width: 100%;">Initialize Stream</button>
+            <button class="btn" onclick="triggerAdSequence('video')" style="background: var(--secondary); width: 100%;">Initialize Stream</button>
             <div class="cooldown-overlay" id="coolVideo">TIMER OVERLAY</div>
         </div>
 
         <div class="card" id="cardQuiz">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
                 <div>
                     <h4 style="margin: 0 0 4px 0; font-size: 15px;">🧮 Quantum Arithmetic Engine</h4>
                     <p style="margin: 0; font-size: 11px; color: #a1a1aa;">Solve math questions • <span style="color: var(--gold);">+15 FC</span></p>
                 </div>
-                <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
-                    <div style="font-weight: bold; color: var(--gold); font-size: 12px; font-family: monospace;" id="countQuiz">0/5</div>
-                    <div id="mathQuestionDisplay" style="background: #27272a; padding: 4px 8px; border-radius: 6px; font-weight: bold; font-family: monospace; color: var(--accent); font-size: 12px;">0 + 0 = ?</div>
-                </div>
+                <div style="font-weight: bold; color: var(--gold); font-size: 12px; font-family: monospace;" id="countQuiz">0/5</div>
             </div>
-            <div style="display: flex; gap: 10px;">
-                <input type="number" id="mathUserAnswer" placeholder="Type Answer" class="input-field" style="margin-bottom:0;">
-                <button class="btn" onclick="executeQuizTask()" style="background: var(--accent);">Verify</button>
-            </div>
+            <button class="btn" onclick="triggerAdSequence('quiz_portal')" style="background: var(--accent); width: 100%; margin-top: 10px;">Open Dedicated Quiz</button>
             <div class="cooldown-overlay" id="coolQuiz">TIMER OVERLAY</div>
         </div>
 
@@ -105,36 +125,61 @@
                     <h4 style="margin: 0 0 4px 0; font-size: 15px;">🎡 Probability Lucky Wheel</h4>
                     <p style="margin: 0; font-size: 11px; color: #a1a1aa;">Randomized reward matrix • <span style="color: var(--gold);">Up to 25 FC</span></p>
                 </div>
-                <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 6px;">
-                    <div style="font-weight: bold; color: var(--gold); font-size: 12px; font-family: monospace;" id="countSpin">0/5</div>
-                    <button class="btn" onclick="executeSpinTask()" style="background: #10b981;">Spin</button>
-                </div>
+                <div style="font-weight: bold; color: var(--gold); font-size: 12px; font-family: monospace;" id="countSpin">0/5</div>
             </div>
+            <button class="btn" onclick="triggerAdSequence('spin_portal')" style="background: #10b981; width:100%; margin-top:10px;">Enter Spin Arena</button>
             <div class="cooldown-overlay" id="coolSpin">TIMER OVERLAY</div>
+        </div>
+    </div>
+
+    <div id="quizPageNode" class="tab-view container">
+        <div class="card">
+            <h2 style="color:var(--accent); font-size:18px; margin-top:0; text-transform:uppercase;">Arithmetic Terminal</h2>
+            <hr style="border-color:var(--border-color); margin:15px 0;">
+            <div id="mathQuestionDisplay" style="background: #09090b; padding: 20px; border-radius: 16px; font-weight: 900; font-family: monospace; color: var(--gold); font-size: 32px; border: 1px dashed var(--border-color); margin-bottom:20px;">0 + 0 = ?</div>
+            
+            <input type="number" id="mathUserAnswer" placeholder="Input Evaluated Output" class="input-field" style="text-align:center; font-size:18px;">
+            <button class="btn" onclick="submitQuizComputation()" style="background: var(--accent); width:100%; padding:14px; font-size:14px;">Verify Signature Answer</button>
+            
+            <div id="quizFeedbackBox" class="quiz-feedback-box"></div>
+            
+            <button class="btn" onclick="switchTab('homePage', 'btnHome')" style="background:#27272a; width:60%; margin-top:30px; font-size:11px;">⬅ Exit Engine</button>
+        </div>
+    </div>
+
+    <div id="spinPageNode" class="tab-view container">
+        <div class="card" style="text-align:center;">
+            <h2 style="color:#10b981; font-size:18px; margin-top:0; text-transform:uppercase;">Probability Matrix</h2>
+            <p style="font-size:12px; color:#a1a1aa; margin:0;">High yields security wheel framework</p>
+            
+            <div class="wheel-shell">
+                <div class="wheel-pin"></div>
+                <div id="wheelCanvas" class="actual-wheel"></div>
+            </div>
+
+            <button class="btn" id="spinCoreBtn" onclick="initiateWheelRotation()" style="background:#10b981; width:80%; padding:14px; font-size:14px; border-radius:30px;">Launch Rotation</button>
+            <br>
+            <button class="btn" onclick="switchTab('homePage', 'btnHome')" style="background:#27272a; width:60%; margin-top:25px; font-size:11px;">⬅ Back Terminal</button>
         </div>
     </div>
 
     <div id="walletPage" class="tab-view">
         <h3 style="color: var(--gold); margin-top:0; font-size: 14px; text-transform: uppercase;">Ledger Exchange Financials</h3>
-        
         <div class="card" style="text-align: center; background: linear-gradient(180deg, #18181b 0%, #111113 100%);">
             <p style="margin:0; font-size: 12px; color:#a1a1aa;">Current Valuation Rate</p>
             <h4 style="margin: 8px 0; font-size: 18px; color: var(--gold); font-family: monospace;">1,000 Fluxaa Coins = ₹10.00 Real Cash</h4>
             <p style="margin:0; font-size: 11px; color: #71717a;">Minimum allowable checkout: ₹50.00 (5,000 FC)</p>
         </div>
-
         <div class="card">
             <h4 style="margin: 0 0 12px 0; font-size: 14px; text-transform: uppercase; color: #a1a1aa;">Withdraw Pipeline</h4>
             <label style="font-size:11px; color:#a1a1aa; display:block; margin-bottom:6px;">Coins to Redeem</label>
             <input type="number" id="withdrawInputCoins" placeholder="Min 5000 Coins" class="input-field">
-            
             <button class="btn" onclick="processWithdrawal()" style="background: var(--gold); color: black; width: 100%; font-size: 13px;">Execute UPI Cashout</button>
         </div>
     </div>
 
     <div id="profilePage" class="tab-view">
         <h3 style="color: var(--secondary); margin-top:0; font-size: 14px; text-transform: uppercase;">Identity Verification</h3>
-        
         <div id="profileFormBox" class="card">
             <h4 style="margin:0 0 14px 0; font-size: 14px; color:#a1a1aa;">Create Station Account</h4>
             <input type="text" id="profName" placeholder="Full Name" class="input-field">
@@ -142,16 +187,13 @@
             <input type="email" id="profEmail" placeholder="Email Address" class="input-field">
             <button class="btn" onclick="saveProfile()" style="background: var(--primary); width:100%;">Submit & Sync Profile</button>
         </div>
-
         <div id="profileActiveBox" class="card" style="display: none; text-align: center;">
             <div style="width: 64px; height: 64px; background: #27272a; border-radius: 50%; margin: 0 auto 12px auto; display: flex; align-items: center; justify-content: center; font-size: 24px;">👤</div>
             <h2 id="activeProfileName" style="margin: 0 0 4px 0; font-size: 20px; color: white;">Varun Goyal</h2>
             <p id="activeProfileEmail" style="margin: 0 0 16px 0; font-size: 12px; color: #a1a1aa;">varun@email.com</p>
-            
             <div style="background:#09090b; padding:12px; border-radius:12px; text-align:left; font-size:12px; margin-bottom:20px; border:1px solid var(--border-color);">
                 <strong>Linked UPI Handle:</strong> <span id="activeProfileUpi" style="color:var(--accent); font-family:monospace;">xyz@okaxis</span>
             </div>
-            
             <button class="btn" onclick="clearProfileLogout()" style="background: #ef4444; width: 100%;">Destroy Identity session (Logout)</button>
         </div>
     </div>
@@ -170,24 +212,30 @@
 
 </div>
 
+<div id="adOverlayWindow" class="ad-overlay">
+    <button class="close-ad-btn" id="skipAdActionBtn" disabled onclick="dismissAdWindow()">Skip Ad 5s...</button>
+    <div class="ad-box">
+        
+        <script>(function(s){s.dataset.zone='11135914',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+        
+    </div>
+</div>
+
 <script>
-    // System Constants Configuration Variables
-    const AD_DIRECT_LINK = "https://omg10.com/4/11130634";
-    // 🌐 GOOGLE SHEETS API APNI LINK YAHAN REPLACE KAREIN
+    // ── GOOGLE SHEET DEPLOYMENT LINK ──
     const GOOGLE_SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycby7a2GgRFSCqFU_h1cBUO5cO8P97GKInVRKAnrqKmrSMvwOfmbdwGlO5RzsPAiyzoVI/exec"; 
 
-    // Operational Global Variable Storage Memory
     let appState = {
-        balance: 0,
-        profile: null,
-        attendanceLastClaimed: 0,
+        balance: 0, profile: null, attendanceLastClaimed: 0,
         videoCount: 0, videoResetTime: 0, videoCooldownEnd: 0,
         quizCount: 0, quizResetTime: 0, quizCooldownEnd: 0,
         spinCount: 0, spinResetTime: 0, spinCooldownEnd: 0,
         quizAns: 0
     };
 
-    // Bootstrap Sync Initialization Lifecycle Hook
+    let activeAdTargetType = '';
+    let wheelIsRotating = false;
+
     window.addEventListener('load', () => {
         loadDataFromLocalStore();
         renderUiComponents();
@@ -195,13 +243,10 @@
         initTimerSystemLoop();
     });
 
-    // Local Storage Layer Operations
     function loadDataFromLocalStore() {
         const stored = localStorage.getItem('fluxaa_app_secure_state');
         if (stored) {
-            try {
-                appState = Object.assign(appState, JSON.parse(stored));
-            } catch(e) { console.error("Memory parsing anomaly detected.", e); }
+            try { appState = Object.assign(appState, JSON.parse(stored)); } catch(e) {}
         }
     }
 
@@ -210,20 +255,15 @@
         document.getElementById('globalCoinDisplay').innerText = appState.balance;
     }
 
-    // Tab Interface Swapping View Controller 
     function switchTab(viewId, btnId) {
         document.querySelectorAll('.tab-view').forEach(tab => tab.classList.remove('active'));
         document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-        
         document.getElementById(viewId).classList.add('active');
-        document.getElementById(btnId).classList.add('active');
+        if(btnId) document.getElementById(btnId).classList.add('active');
     }
 
-    // Dynamic UI Updates Module Engine
     function renderUiComponents() {
         document.getElementById('globalCoinDisplay').innerText = appState.balance;
-        
-        // Profile Identity Switching Mechanism Look
         if(appState.profile) {
             document.getElementById('profileFormBox').style.display = 'none';
             document.getElementById('profileActiveBox').style.display = 'block';
@@ -236,7 +276,6 @@
         }
     }
 
-    // Mathematics Engine Generation Nodes
     function generateNewMathQuestion() {
         let n1 = Math.floor(Math.random() * 20) + 1;
         let n2 = Math.floor(Math.random() * 19) + 2;
@@ -245,12 +284,116 @@
         document.getElementById('mathUserAnswer').value = "";
     }
 
-    // Central Live Process Timer Loop Scheduler Engine
+    /* FULL SCREEN ADS PIPELINE CONTROLLER */
+    function triggerAdSequence(taskType) {
+        if (!verifyLoginState()) return;
+
+        // Validation mapping filters
+        if (taskType === 'attendance') {
+            const now = Date.now();
+            if (now < appState.attendanceLastClaimed + (24 * 60 * 60 * 1000)) return;
+        } else if (taskType === 'video' && !checkTaskAvailability('video')) return;
+          else if (taskType === 'quiz_portal' && !checkTaskAvailability('quiz')) return;
+          else if (taskType === 'spin_portal' && !checkTaskAvailability('spin')) return;
+
+        activeAdTargetType = taskType;
+        
+        const overlay = document.getElementById('adOverlayWindow');
+        const skipBtn = document.getElementById('skipAdActionBtn');
+        overlay.style.display = 'flex';
+
+        let timerLeft = 5;
+        skipBtn.disabled = true;
+        skipBtn.innerText = `Skip Ad in ${timerLeft}s...`;
+
+        const interval = setInterval(() => {
+            timerLeft--;
+            if (timerLeft <= 0) {
+                clearInterval(interval);
+                skipBtn.disabled = false;
+                skipBtn.innerText = "✖ Skip Advertisement";
+            } else {
+                skipBtn.innerText = `Skip Ad in ${timerLeft}s...`;
+            }
+        }, 1000);
+    }
+
+    function dismissAdWindow() {
+        document.getElementById('adOverlayWindow').style.display = 'none';
+        
+        // 💰 REVENUE BOOST: Skip click behavior alignment 
+        try {
+            document.body.click(); 
+        } catch(e) { console.log("Ad loop optimization"); }
+
+        executeTaskPostAd(activeAdTargetType);
+    }
+
+    function executeTaskPostAd(type) {
+        if (type === 'attendance') {
+            appState.balance += 30;
+            appState.attendanceLastClaimed = Date.now();
+            saveStateToLocalStorage();
+            alert("Daily Attendance Checked In! +30 FC Added 🪙");
+        } else if (type === 'video') {
+            processTaskSuccess('video', 10);
+            alert("Video Ad Impression Verified! +10 FC Added 🎥");
+        } else if (type === 'quiz_portal') {
+            switchTab('quizPageNode', null);
+        } else if (type === 'spin_portal') {
+            switchTab('spinPageNode', null);
+        }
+    }
+
+    /* SEPARATE QUIZ VIEW OPERATIONS */
+    function submitQuizComputation() {
+        let ans = parseInt(document.getElementById('mathUserAnswer').value);
+        let feedback = document.getElementById('quizFeedbackBox');
+
+        if (ans === appState.quizAns) {
+            feedback.innerHTML = "<span style='color:var(--success);'>✅ CORRECT LOGIC! (+15 FC)</span>";
+            processTaskSuccess('quiz', 15);
+            
+            setTimeout(() => {
+                feedback.innerText = "";
+                generateNewMathQuestion();
+                switchTab('homePage', 'btnHome');
+            }, 2000);
+        } else {
+            feedback.innerHTML = "<span style='color:var(--danger);'>❌ WRONG VALUE! RETRY COMPUTATION</span>";
+        }
+    }
+
+    /* SEPARATE WHEEL ARENA OPERATIONS */
+    function initiateWheelRotation() {
+        if (wheelIsRotating) return;
+        wheelIsRotating = true;
+
+        const wheel = document.getElementById('wheelCanvas');
+        const deg = Math.floor(Math.random() * 360) + 2160; // 6 core rotations
+        
+        wheel.style.transform = `rotate(${deg}deg)`;
+
+        let spinPrizes = [5, 10, 15, 20, 25];
+        let reward = spinPrizes[Math.floor(Math.random() * spinPrizes.length)];
+
+        setTimeout(() => {
+            wheelIsRotating = false;
+            alert(`Rotation Sequence Stalled! Prize: +${reward} FC 🎡`);
+            processTaskSuccess('spin', reward);
+            
+            // Clean interface alignment resets
+            wheel.style.transition = 'none';
+            wheel.style.transform = `rotate(${deg % 360}deg)`;
+            setTimeout(() => { wheel.style.transition = 'transform 4s cubic-bezier(0.1, 0.75, 0.25, 1)'; }, 50);
+            switchTab('homePage', 'btnHome');
+        }, 4100);
+    }
+
+    // Cooldown Core Engines
     function initTimerSystemLoop() {
         setInterval(() => {
             const now = Date.now();
-
-            // 1. Attendance Renderer Processing
             const coolAtt = document.getElementById('coolAttendance');
             if (now < appState.attendanceLastClaimed + (24 * 60 * 60 * 1000)) {
                 let diff = (appState.attendanceLastClaimed + (24 * 60 * 60 * 1000)) - now;
@@ -258,25 +401,20 @@
                 coolAtt.style.display = 'flex';
             } else { coolAtt.style.display = 'none'; }
 
-            // 2. Multi-Task Core Cooldown Computations (Video, Quiz, Spin)
             evaluateTaskCooldowns('video', 'coolVideo', 'countVideo', now);
             evaluateTaskCooldowns('quiz', 'coolQuiz', 'countQuiz', now);
             evaluateTaskCooldowns('spin', 'coolSpin', 'countSpin', now);
-
         }, 1000);
     }
 
     function evaluateTaskCooldowns(prefix, overlayId, counterId, now) {
         const overlay = document.getElementById(overlayId);
         const counter = document.getElementById(counterId);
-        
-        // Dynamic Variable Mapping Accessors
         let count = appState[`${prefix}Count`];
         let resetTime = appState[`${prefix}ResetTime`];
         let cdEnd = appState[`${prefix}CooldownEnd`];
         let maxLimit = 5;
 
-        // Reset system check if 1.5 Hour Window has elapsed
         if (resetTime > 0 && now >= resetTime) {
             appState[`${prefix}Count`] = 0;
             appState[`${prefix}ResetTime`] = 0;
@@ -286,16 +424,13 @@
 
         counter.innerText = `${count}/${maxLimit}`;
 
-        // Priority Visibility Evaluator Loops
         if (count >= maxLimit && resetTime > 0 && now < resetTime) {
             overlay.innerText = `MACRO LOCK: ${formatMilliToTime(resetTime - now)}`;
             overlay.style.display = 'flex';
         } else if (now < cdEnd) {
             overlay.innerText = `COOLDOWN: ${formatMilliToTime(cdEnd - now)}`;
             overlay.style.display = 'flex';
-        } else {
-            overlay.style.display = 'none';
-        }
+        } else { overlay.style.display = 'none'; }
     }
 
     function formatMilliToTime(ms) {
@@ -305,56 +440,6 @@
         return `${h.toString().padStart(2, '0')}:${(m % 60).toString().padStart(2, '0')}:${(s % 60).toString().padStart(2, '0')}`;
     }
 
-    // Execution Vectors Logic Pipeline
-    function executeAttendance() {
-        if (!verifyLoginState()) return;
-        const now = Date.now();
-        if (now < appState.attendanceLastClaimed + (24 * 60 * 60 * 1000)) return;
-
-        window.open(AD_DIRECT_LINK, '_blank');
-        appState.balance += 30;
-        appState.attendanceLastClaimed = now;
-        saveStateToLocalStorage();
-        alert("Daily Attendance Checked In! +30 FC Added 🪙");
-    }
-
-    function executeVideoTask() {
-        if (!verifyLoginState()) return;
-        if (!checkTaskAvailability('video')) return;
-
-        window.open(AD_DIRECT_LINK, '_blank');
-        processTaskSuccess('video', 10);
-        alert("Video Ad Impression Acknowledged! +10 FC Added 🎥");
-    }
-
-    function executeQuizTask() {
-        if (!verifyLoginState()) return;
-        if (!checkTaskAvailability('quiz')) return;
-
-        let ans = parseInt(document.getElementById('mathUserAnswer').value);
-        if (ans === appState.quizAns) {
-            window.open(AD_DIRECT_LINK, '_blank');
-            processTaskSuccess('quiz', 15);
-            generateNewMathQuestion();
-            alert("Correct Equation Solved! +15 FC Added 🧮");
-        } else {
-            alert("Invalid computations. Recalculate your input!");
-        }
-    }
-
-    function executeSpinTask() {
-        if (!verifyLoginState()) return;
-        if (!checkTaskAvailability('spin')) return;
-
-        window.open(AD_DIRECT_LINK, '_blank');
-        let spinPrizes = [5, 10, 15, 20, 25];
-        let reward = spinPrizes[Math.floor(Math.random() * spinPrizes.length)];
-        
-        processTaskSuccess('spin', reward);
-        alert(`Wheel sequence stopped! Reward yield: +${reward} FC 🎡`);
-    }
-
-    // Structural Rule Processor Component Evaluators
     function checkTaskAvailability(prefix) {
         const now = Date.now();
         if (appState[`${prefix}Count`] >= 5 && now < appState[`${prefix}ResetTime`]) return false;
@@ -368,31 +453,30 @@
         appState[`${prefix}Count`]++;
 
         if (appState[`${prefix}Count`] >= 5) {
-            appState[`${prefix}ResetTime`] = now + (1.5 * 60 * 60 * 1000); // 1 Hour 30 Mins Mega Cooldown
+            appState[`${prefix}ResetTime`] = now + (1.5 * 60 * 60 * 1000);
             appState[`${prefix}CooldownEnd`] = 0;
         } else {
-            appState[`${prefix}CooldownEnd`] = now + (30 * 1000); // 30 Secs Standard Cooldown
+            appState[`${prefix}CooldownEnd`] = now + (30 * 1000);
         }
         saveStateToLocalStorage();
     }
 
     function verifyLoginState() {
         if (!appState.profile) {
-            alert("Security Notice: Session unauthenticated. Access Profile tab to authenticate first.");
+            alert("Security Notice: Session unauthenticated. Access Profile tab first.");
             switchTab('profilePage', 'btnProfile');
             return false;
         }
         return true;
     }
 
-    // Cloud Data Sync Operations Layer (Google Sheets Connect)
     function saveProfile() {
         const name = document.getElementById('profName').value.trim();
         const upi = document.getElementById('profUpi').value.trim();
         const email = document.getElementById('profEmail').value.trim();
 
         if (!name || !upi || !email) {
-            alert("Validation failed: Empty parameter cells detected.");
+            alert("Validation failed: Empty fields detected.");
             return;
         }
 
@@ -400,7 +484,6 @@
         saveStateToLocalStorage();
         renderUiComponents();
 
-        // Background Pipeline Sync to Google Sheets Engine
         dispatchNetworkRequest({
             action: "registerUser",
             name: name,
@@ -408,11 +491,10 @@
             email: email,
             currentBalance: appState.balance
         });
-        alert("Identity Session successfully verified and saved locally!");
+        alert("Identity Session verified and synchronized successfully!");
     }
 
     function clearProfileLogout() {
-        // Complete Local Identity Deletion Erase Command
         localStorage.removeItem('fluxaa_app_secure_state');
         appState = {
             balance: 0, profile: null, attendanceLastClaimed: 0,
@@ -422,7 +504,7 @@
         };
         saveStateToLocalStorage();
         renderUiComponents();
-        alert("Session states flushed. Storage cleaned successfully.");
+        alert("Session states flushed successfully.");
         switchTab('homePage', 'btnHome');
     }
 
@@ -431,18 +513,17 @@
         const coins = parseInt(document.getElementById('withdrawInputCoins').value);
 
         if (isNaN(coins) || coins < 5000) {
-            alert("Limit error: Minimum withdrawal constraint must equal or cross 5000 FC (₹50).");
+            alert("Limit error: Minimum withdrawal constraint is 5000 FC.");
             return;
         }
         if (coins > appState.balance) {
-            alert("Transaction Denied: Insufficient tokens balance inside primary pool.");
+            alert("Transaction Denied: Insufficient tokens.");
             return;
         }
 
         appState.balance -= coins;
         saveStateToLocalStorage();
         
-        // Direct Action Injection Data To Sheets Web App
         dispatchNetworkRequest({
             action: "payoutRequest",
             name: appState.profile.name,
@@ -452,15 +533,10 @@
             payoutRupees: (coins / 100).toFixed(2)
         });
 
-        alert(`Cashout Requested! ₹${(coins / 100).toFixed(2)} transfer processing linked UPI. Sheets synchronized.`);
+        alert(`Cashout Requested! ₹${(coins / 100).toFixed(2)} transfer processing.`);
     }
 
     function dispatchNetworkRequest(payloadData) {
-        if(GOOGLE_SHEET_WEBAPP_URL === "YOUR_GOOGLE_SCRIPT_WEBAPP_URL_HERE") {
-            console.warn("API Link missing. Google Sheets stream ignored.");
-            return;
-        }
-        // Fetch architecture script asynchronous deployment
         fetch(GOOGLE_SHEET_WEBAPP_URL, {
             method: 'POST',
             mode: 'no-cors',
