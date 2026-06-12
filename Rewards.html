@@ -176,6 +176,11 @@
             <label style="font-size:11px; color:#a1a1aa; display:block; margin-bottom:6px;">Coins to Redeem</label>
             <input type="number" id="withdrawInputCoins" placeholder="Min 5000 Coins" class="input-field">
             <button class="btn" onclick="processWithdrawal()" style="background: var(--gold); color: black; width: 100%; font-size: 13px;">Execute UPI Cashout</button>
+
+            <p style="color: #ffcc00; text-align: center; font-size: 14px; margin-top: 10px;">
+  ⚠️ <b>Note:</b> All payments are processed every <b>Sunday at 6:00 PM</b>. Creating multiple accounts will lead to a payout block. Fluxaa always guarantees 100% real rewards! 🚀
+            </p>
+            
         </div>
     </div>
 
@@ -552,9 +557,7 @@
         }).then(() => console.log("Cloud server updated successfully."))
           .catch(err => console.error("Network synchronization abort.", err));
     }
-    <p style="color: #ffcc00; text-align: center; font-size: 14px; margin-top: 10px;">
-  ⚠️ <b>Note:</b> All payments are processed every <b>Sunday at 6:00 PM</b>. Creating multiple accounts will lead to a payout block. Fluxaa always guarantees 100% real rewards! 🚀
-</p>
+    
 </script>
 </body>
 </html>
