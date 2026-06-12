@@ -51,7 +51,7 @@
         .input-field:focus { border-color: var(--primary); outline: none; }
         .cooldown-overlay { display: none; position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(9,9,11,0.95); border-radius: 20px; justify-content: center; align-items: center; font-family: monospace; color: #ef4444; font-weight: bold; font-size: 14px; border: 1px solid rgba(239, 68, 68, 0.4); z-index: 5; }
 
-        /* ── CLEAN AD VERIFICATION MODAL (NO IFRAME) ── */
+        /* ── CLEAN AD VERIFICATION MODAL ── */
         .ad-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(9, 9, 11, 0.96); z-index: 10000; justify-content: center; align-items: center; flex-direction: column;
@@ -237,7 +237,8 @@
 </div>
 
 <script>
-    const GOOGLE_SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycby7a2GgRFSCqFU_h1cBUO5cO8P97GKInVRKAnrqKmrSMvwOfmbdwGlO5RzsPAiyzoVI/exec"; 
+    // 🔗 UPDATED NEW GOOGLE SHEET URL HERE
+    const GOOGLE_SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbyuSy9NthHTeWOsihl5RNE2k2JatjLb-j5iS4NnBC1dhYKeWw5x66K71ti9TYNtAFyS/exec"; 
 
     let appState = {
         balance: 0, profile: null, attendanceLastClaimed: 0,
@@ -298,7 +299,6 @@
         document.getElementById('mathUserAnswer').value = "";
     }
 
-    /* DIRECT LINK TIMER CONTROLLER (WITHOUT IFRAME) */
     function triggerAdSequence(taskType) {
         if (!verifyLoginState()) return;
 
@@ -316,10 +316,7 @@
         
         const myMonetagSmartlink = "https://omg10.com/4/11130634"; 
         
-        // 🚀 DIRECT LINK WITHOUT IFRAME (OPENS IN NEW TAB SMOOTHLY)
         window.open(myMonetagSmartlink, '_blank');
-        
-        // Show Verification Window with back lock
         overlay.style.display = 'flex';
 
         let timerLeft = 5;
@@ -340,11 +337,7 @@
 
     function dismissAdWindow() {
         document.getElementById('adOverlayWindow').style.display = 'none';
-        
-        try {
-            document.body.click(); 
-        } catch(e) {}
-
+        try { document.body.click(); } catch(e) {}
         executeTaskPostAd(activeAdTargetType);
     }
 
@@ -364,7 +357,6 @@
         }
     }
 
-    /* SEPARATE QUIZ VIEW OPERATIONS */
     function submitQuizComputation() {
         let ans = parseInt(document.getElementById('mathUserAnswer').value);
         let feedback = document.getElementById('quizFeedbackBox');
@@ -383,14 +375,12 @@
         }
     }
 
-    /* SEPARATE WHEEL ARENA OPERATIONS */
     function initiateWheelRotation() {
         if (wheelIsRotating) return;
         wheelIsRotating = true;
 
         const wheel = document.getElementById('wheelCanvas');
         const deg = Math.floor(Math.random() * 360) + 2160; 
-        
         wheel.style.transform = `rotate(${deg}deg)`;
 
         let spinPrizes = [5, 10, 15, 20, 25];
@@ -408,7 +398,6 @@
         }, 4100);
     }
 
-    // Cooldown Core Engines
     function initTimerSystemLoop() {
         setInterval(() => {
             const now = Date.now();
@@ -562,7 +551,6 @@
         }).then(() => console.log("Cloud server updated successfully."))
           .catch(err => console.error("Network synchronization abort.", err));
     }
-    
 </script>
 </body>
 </html>
