@@ -781,8 +781,7 @@
         }).then(() => console.log("Cloud server updated successfully."))
           .catch(err => console.error("Network synchronization abort.", err));
     }
-
-      function loadUserTransactionHistory() {
+function loadUserTransactionHistory() {
     const wrapper = document.getElementById('transactionHistoryWrapper');
     const statusBox = document.getElementById('historyLoadingStatus');
     
@@ -878,7 +877,8 @@ function renderHistoryDOM(dataArray, wrapper) {
         wrapper.appendChild(txCard);
     });
 }
-      
+
+    
 </script>
 </body>
 </html>
