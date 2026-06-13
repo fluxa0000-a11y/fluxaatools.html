@@ -172,30 +172,33 @@
         </div>
     </div>
 
-    <div id="walletPage" class="tab-view">
-        <h3 style="color: var(--gold); margin-top:0; font-size: 14px; text-transform: uppercase;">Ledger Exchange Financials</h3>
-        <div class="card" style="text-align: center; background: linear-gradient(180deg, #18181b 0%, #111113 100%);">
-            <p style="margin:0; font-size: 12px; color:#a1a1aa;">Current Valuation Rate</p>
-            <h4 style="margin: 8px 0; font-size: 18px; color: var(--gold); font-family: monospace;">1,000 Fluxaa Coins = ₹10.00 Real Cash</h4>
-            <p style="margin:0; font-size: 11px; color: #71717a;">Minimum allowable checkout: ₹50.00 (5,000 FC)</p>
-        </div>
-        <div class="card">
-            <h4 style="margin: 0 0 12px 0; font-size: 14px; text-transform: uppercase; color: #a1a1aa;">Withdraw Pipeline</h4>
-            <label style="font-size:11px; color:#a1a1aa; display:block; margin-bottom:6px;">Coins to Redeem</label>
-            <input type="number" id="withdrawInputCoins" placeholder="Min 5000 Coins" class="input-field">
-            <button class="btn" onclick="processWithdrawal()" style="background: var(--gold); color: black; width: 100%; font-size: 13px;">Execute UPI Cashout</button>
+<div id="walletPage" class="tab-view">
+        <h3 style="color: var(--gold); margin-top:0; font-size: 14px; text-transform: uppercase;">Ledger Exchange Financials</h3>
+        
+        <div class="card" style="text-align: center; background: linear-gradient(180deg, #18181b 0%, #111113 100%);">
+            <p style="margin:0; font-size: 12px; color:#a1a1aa;">Current Valuation Rate</p>
+            <h4 style="margin: 8px 0; font-size: 18px; color: var(--gold); font-family: monospace;">1,000 Fluxaa Coins = ₹10.00 Real Cash</h4>
+            <p style="margin:0; font-size: 11px; color: #71717a;">Minimum allowable checkout: ₹50.00 (5,000 FC)</p>
+        </div>
 
-            <p style="color: #ffcc00; text-align: center; font-size: 14px; margin-top: 10px;">
-                ⚠️ <b>Note:</b> All payments are processed every <b>Sunday at 6:00 PM</b>. Creating multiple accounts will lead to a payout block. Fluxaa always guarantees 100% real rewards! 🚀
-            </p>
-           </div>
+        <div class="card">
+            <h4 style="margin: 0 0 12px 0; font-size: 14px; text-transform: uppercase; color: #a1a1aa;">Withdraw Pipeline</h4>
+            <label style="font-size:11px; color:#a1a1aa; display:block; margin-bottom:6px;">Coins to Redeem</label>
+            <input type="number" id="withdrawInputCoins" placeholder="Min 5000 Coins" class="input-field">
+            <button class="btn" onclick="processWithdrawal()" style="background: var(--gold); color: black; width: 100%; font-size: 13px;">Execute UPI Cashout</button>
 
-      <h3 style="color: var(--primary); font-size: 13px; text-transform: uppercase; margin-top: 20px;">📜 Your Withdrawal Ledger</h3>
+            <p style="color: #ffcc00; text-align: center; font-size: 14px; margin-top: 10px;">
+                ⚠️ <b>Note:</b> All payments are processed every <b>Sunday at 6:00 PM</b>. Creating multiple accounts will lead to a payout block. Fluxaa always guarantees 100% real rewards! 🚀
+            </p>
+        </div>
+
+        <h3 style="color: var(--primary); font-size: 13px; text-transform: uppercase; margin-top: 20px;">📜 Your Withdrawal Ledger</h3>
+        
         <div class="card" style="padding: 12px;">
             <div id="historyLoadingStatus" style="text-align: center; color: #a1a1aa; font-size: 12px; padding: 10px;">Loading statements...</div>
             <div id="transactionHistoryWrapper" style="display: flex; flex-direction: column; gap: 10px;"></div>
         </div>
-    </div>
+</div>
     
 
     <div id="profilePage" class="tab-view">
