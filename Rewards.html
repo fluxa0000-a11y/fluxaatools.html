@@ -792,53 +792,92 @@
         return;
     }
     
-    statusBox.innerText = "Synchronizing live logs...";
-    statusBox.style.display = "block";
-    wrapper.innerHTML = "";
+    // 🔍 Unique Key taaki har user ko sirf uski apni history dikhe
+    const cacheKey = `fluxaa_history_${appState.profile.email}`;
+    const cachedData = localStorage.getItem(cacheKey);
+    
+    // 🚀 STEP 1: Agar phone memory mein purani history hai, toh use TURANT screen par dikhao
+    if (cachedData) {
+        try {
+            const parsedCache = JSON.parse(cachedData);
+            renderHistoryDOM(parsedCache, wrapper);
+            statusBox.innerText = "Updating ledger...";
+            statusBox.style.display = "block";
+        } catch (e) {
+            console.error("Cache parsing error:", e);
+        }
+    } else {
+        // Agar pehli baar khol raha hai aur cache nahi hai, toh hi khali karke loading dikhao
+        statusBox.innerText = "Synchronizing live logs...";
+        statusBox.style.display = "block";
+        wrapper.innerHTML = "";
+    }
 
+    // 🚀 STEP 2: Background mein Google Sheet se live data mangwao
     fetch(`${GOOGLE_SHEET_WEBAPP_URL}?email=${encodeURIComponent(appState.profile.email)}`)
     .then(response => response.json())
     .then(res => {
         statusBox.style.display = "none";
         if (res.status === "success" && res.data.length > 0) {
-            res.data.reverse().forEach(tx => {
-                let currentStatus = tx.status.trim().toLowerCase();
-                
-                // 🚀 DYNAMIC COLOR CONFIGURATION FOR ALL 4 STATUSES
-                let badgeColor = '#f59e0b'; // Default: Pending (Orange)
-                
-                if (currentStatus === 'success') {
-                    badgeColor = '#10b981'; // Green
-                } else if (currentStatus === 'rejected') {
-                    badgeColor = '#ef4444'; // Red
-                } else if (currentStatus === 'processing') {
-                    badgeColor = '#3b82f6'; // Blue
-                }
-                
-                let txCard = document.createElement('div');
-                txCard.style.cssText = "background: #09090b; padding: 12px; border-radius: 12px; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; font-size: 12px; margin-bottom: 8px;";
-                
-                txCard.innerHTML = `
-                    <div>
-                        <div style="font-weight: bold; color: white; margin-bottom: 4px;">${tx.details}</div>
-                        <div style="color: #71717a; font-size: 10px;">${tx.date}</div>
-                    </div>
-                    <div style="background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 20px; font-weight: 900; color: ${badgeColor}; font-family: monospace; text-transform: uppercase; font-size: 10px; border: 1px solid ${badgeColor}40; letter-spacing: 0.5px;">
-                        ${tx.status}
-                    </div>
-                `;
-                wrapper.appendChild(txCard);
-            });
+            // Live data ko phone memory (Cache) mein save karlo agli baar ke liye
+            localStorage.setItem(cacheKey, JSON.stringify(res.data));
+            
+            // Screen par fresh data load kar do (Pending se Success jo bhi badla ho)
+            renderHistoryDOM(res.data, wrapper);
         } else {
+            // Agar Sheet mein koi record nahi mila toh cache clear karo aur message dikhao
+            localStorage.removeItem(cacheKey);
+            wrapper.innerHTML = "";
+            statusBox.style.display = "block";
             statusBox.innerText = "No cashout records found in this session.";
         }
     })
     .catch(err => {
         console.error(err);
-        statusBox.innerText = "Network timeout. Could not load ledger.";
+        // Agar net slow ya band hai par cache available hai, toh use error mat dikhao, cache chalne do
+        if (!cachedData) {
+            statusBox.style.display = "block";
+            statusBox.innerText = "Network timeout. Could not load ledger.";
+        } else {
+            statusBox.innerText = "Offline mode: Showing saved logs.";
+        }
     });
-      }
+}
 
+// 🛠️ HELPER FUNCTION: Yeh aapke data ko HTML cards mein convert karega (Tumhara original logic)
+function renderHistoryDOM(dataArray, wrapper) {
+    wrapper.innerHTML = ""; // Purana data saaf karo taaki duplicate na ho
+    
+    // Data ko reverse karke chalayein (Latest transactions upar dikhane ke liye)
+    [...dataArray].reverse().forEach(tx => {
+        let currentStatus = tx.status.trim().toLowerCase();
+        
+        // 🚀 DYNAMIC COLOR CONFIGURATION FOR ALL 4 STATUSES
+        let badgeColor = '#f59e0b'; // Default: Pending
+        
+        if (currentStatus === 'success') {
+            badgeColor = '#10b981'; // Green
+        } else if (currentStatus === 'rejected') {
+            badgeColor = '#ef4444'; // Red
+        } else if (currentStatus === 'processing') {
+            badgeColor = '#3b82f6'; // Blue
+        }
+        
+        let txCard = document.createElement('div');
+        txCard.style.cssText = "background: #09090b; padding: 12px; border-radius: 12px; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; font-size: 12px; margin-bottom: 8px;";
+        
+        txCard.innerHTML = `
+            <div>
+                <div style="font-weight: bold; color: white; margin-bottom: 4px;">${tx.details}</div>
+                <div style="color: #71717a; font-size: 10px;">${tx.date}</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 20px; font-weight: 900; color: ${badgeColor}; font-family: monospace; text-transform: uppercase; font-size: 10px; border: 1px solid ${badgeColor}40; letter-spacing: 0.5px;">
+                ${tx.status}
+            </div>
+        `;
+        wrapper.appendChild(txCard);
+    });
+}
       
 </script>
 </body>
