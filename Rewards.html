@@ -276,11 +276,16 @@
     }
 
     function switchTab(viewId, btnId) {
-        document.querySelectorAll('.tab-view').forEach(tab => tab.classList.remove('active'));
-        document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-        document.getElementById(viewId).classList.add('active');
-        if(btnId) document.getElementById(btnId).classList.add('active');
-    }
+        document.querySelectorAll('.tab-view').forEach(tab => tab.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(viewId).classList.add('active');
+        if(btnId) document.getElementById(btnId).classList.add('active');
+        
+        // Agar user wallet page par jata hai toh dashboard refresh ho
+        if (viewId === 'walletPage') {
+            loadUserTransactionHistory();
+        }
+    }
 
     function renderUiComponents() {
         document.getElementById('globalCoinDisplay').innerText = appState.balance;
@@ -532,32 +537,37 @@
     }
 
     function processWithdrawal() {
-        if (!verifyLoginState()) return;
-        const coins = parseInt(document.getElementById('withdrawInputCoins').value);
+    if (!verifyLoginState()) return;
+    const coins = parseInt(document.getElementById('withdrawInputCoins').value);
 
-        if (isNaN(coins) || coins < 5000) {
-            alert("Limit error: Minimum withdrawal constraint is 5000 FC.");
-            return;
-        }
-        if (coins > appState.balance) {
-            alert("Transaction Denied: Insufficient tokens.");
-            return;
-        }
+    if (isNaN(coins) || coins < 5000) {
+        alert("Limit error: Minimum withdrawal constraint is 5000 FC.");
+        return;
+    }
+    if (coins > appState.balance) {
+        alert("Transaction Denied: Insufficient tokens.");
+        return;
+    }
 
-        appState.balance -= coins;
-        saveStateToLocalStorage();
-        
-        dispatchNetworkRequest({
-            action: "payoutRequest",
-            name: appState.profile.name,
-            upi: appState.profile.upi,
-            email: appState.profile.email,
-            debitedCoins: coins,
-            payoutRupees: (coins / 100).toFixed(2)
-        });
+    appState.balance -= coins;
+    saveStateToLocalStorage();
 
-        alert(`Cashout Requested! ₹${(coins / 100).toFixed(2)} transfer processing.`);
-    }
+    dispatchNetworkRequest({
+        action: "payoutRequest",
+        name: appState.profile.name,
+        upi: appState.profile.upi,
+        email: appState.profile.email,
+        debitedCoins: coins,
+        payoutRupees: (coins / 100).toFixed(2)
+    });
+
+    alert(`Cashout Requested! ₹${(coins / 100).toFixed(2)} transfer processing.`);
+    
+    // 🚀 NEW LOGIC: Yahan par add karna hai (Alert ke theek niche aur curly bracket } se pehle)
+    setTimeout(() => { 
+        loadUserTransactionHistory(); 
+    }, 1500);
+    }
 
     function dispatchNetworkRequest(payloadData) {
         fetch(GOOGLE_SHEET_WEBAPP_URL, {
