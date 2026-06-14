@@ -276,113 +276,167 @@
         }
     </style>
 </head>
-<body>
+    <body>
 
 <div class="app-container">
-    
-    <div class="global-header">
-        <div class="header-title">Rewards Hub<br> By Fluxaa</div>
-        <div class="header-balance">🪙 <span id="globalCoinDisplay">0</span> <span style="font-size: 12px; color:#a1a1aa; font-weight:400;">FC</span></div>
-    </div>
+    
+    <div class="global-header">
+        <div class="header-title">Rewards Hub<br> By Fluxaa</div>
+        <div class="header-balance">🪙 <span id="globalCoinDisplay">0</span> <span style="font-size: 12px; color:#a1a1aa; font-weight:400;">FC</span></div>
+    </div>
 
-    <div id="homePage" class="tab-view active">
-        <h3 style="color: var(--primary); margin-top:0; letter-spacing: 0.5px; text-transform: uppercase; font-size: 14px;">Available Station Portals</h3>
-        
-        <div class="card" id="cardAttendance">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div>
-                    <h4 style="margin: 0 0 4px 0; font-size: 15px;">📅 Daily Attendance Check-In</h4>
-                    <p style="margin: 0; font-size: 11px; color: #a1a1aa;">Claim 1 time every 24 hours • <span style="color: var(--gold);">+30 FC</span></p>
-                </div>
-                <button class="btn" onclick="triggerAdSequence('attendance')" style="background: var(--primary);">Claim</button>
-            </div>
-            <div class="cooldown-overlay" id="coolAttendance">TIMER OVERLAY</div>
-        </div>
+    <div id="homePage" class="tab-view active">
+        <h3 style="color: var(--primary); margin-top:0; letter-spacing: 0.5px; text-transform: uppercase; font-size: 14px;">Available Station Portals</h3>
+        
+        <!-- CARD 1: DAILY ATTENDANCE -->
+        <div class="card" id="cardAttendance">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h4 style="margin: 0 0 4px 0; font-size: 15px;">📅 Daily Attendance Check-In</h4>
+                    <p style="margin: 0; font-size: 11px; color: #a1a1aa;">Claim 1 time every 24 hours • <span style="color: var(--gold);">+30 FC</span></p>
+                </div>
+                <button class="btn" onclick="triggerAdSequence('attendance')" style="background: var(--primary);">Claim</button>
+            </div>
+            <div class="cooldown-overlay" id="coolAttendance">TIMER OVERLAY</div>
+        </div>
 
-        <div class="card" id="cardVideo">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                <div>
-                    <h4 style="margin: 0 0 4px 0; font-size: 15px;">🎥 Video Ads Accelerator</h4>
-                    <p style="margin: 0; font-size: 11px; color: #a1a1aa;">Watch network video • <span style="color: var(--gold);">+10 FC</span></p>
-                </div>
-                <div style="font-weight: bold; color: var(--gold); font-size: 12px; font-family: monospace;" id="countVideo">0/5</div>
-            </div>
-            <button class="btn" onclick="triggerAdSequence('video')" style="background: var(--secondary); width: 100%;">Initialize Stream</button>
-            <div class="cooldown-overlay" id="coolVideo">TIMER OVERLAY</div>
-        </div>
+        <!-- AD 1 AFTER DAILY ATTENDANCE: 320x50 Banner -->
+        <div class="ad-spacer" style="margin: 15px auto; text-align: center; min-height: 50px; overflow: hidden;">
+            <script>
+              atOptions = {
+                'key' : '7a7e16091a4e42ccfbd909e66c89b4ce',
+                'format' : 'iframe',
+                'height' : 50,
+                'width' : 320,
+                'params' : {}
+              };
+            </script>
+            <script src="https://www.highperformanceformat.com/7a7e16091a4e42ccfbd909e66c89b4ce/invoke.js"></script>
+        </div>
 
-        <div class="card" id="cardQuiz">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div>
-                    <h4 style="margin: 0 0 4px 0; font-size: 15px;">🧮 Quantum Arithmetic Engine</h4>
-                    <p style="margin: 0; font-size: 11px; color: #a1a1aa;">Solve math questions • <span style="color: var(--gold);">+15 FC</span></p>
-                </div>
-                <div style="font-weight: bold; color: var(--gold); font-size: 12px; font-family: monospace;" id="countQuiz">0/5</div>
-            </div>
-            <button class="btn" onclick="triggerAdSequence('quiz_portal')" style="background: var(--accent); width: 100%; margin-top: 10px;">Open Dedicated Quiz</button>
-            <div class="cooldown-overlay" id="coolQuiz">TIMER OVERLAY</div>
-        </div>
+        <!-- CARD 2: VIDEO ADS ACCELERATOR -->
+        <div class="card" id="cardVideo">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <div>
+                    <h4 style="margin: 0 0 4px 0; font-size: 15px;">🎥 Video Ads Accelerator</h4>
+                    <p style="margin: 0; font-size: 11px; color: #a1a1aa;">Watch network video • <span style="color: var(--gold);">+10 FC</span></p>
+                </div>
+                <div style="font-weight: bold; color: var(--gold); font-size: 12px; font-family: monospace;" id="countVideo">0/5</div>
+            </div>
+            <button class="btn" onclick="triggerAdSequence('video')" style="background: var(--secondary); width: 100%;">Initialize Stream</button>
+            <div class="cooldown-overlay" id="coolVideo">TIMER OVERLAY</div>
+        </div>
 
+        <!-- AD 2 AFTER VIDEO ADS: 300x250 Medium Rectangle -->
+        <div class="ad-spacer" style="margin: 20px auto; text-align: center; min-height: 250px; overflow: hidden;">
+            <script>
+              atOptions = {
+                'key' : 'f17313e4aacb960fbcabe27fe278aaf3',
+                'format' : 'iframe',
+                'height' : 250,
+                'width' : 300,
+                'params' : {}
+              };
+            </script>
+            <script src="https://www.highperformanceformat.com/f17313e4aacb960fbcabe27fe278aaf3/invoke.js"></script>
+        </div>
 
+        <!-- CARD 3: QUANTUM ARITHMETIC ENGINE -->
+        <div class="card" id="cardQuiz">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h4 style="margin: 0 0 4px 0; font-size: 15px;">🧮 Quantum Arithmetic Engine</h4>
+                    <p style="margin: 0; font-size: 11px; color: #a1a1aa;">Solve math questions • <span style="color: var(--gold);">+15 FC</span></p>
+                </div>
+                <div style="font-weight: bold; color: var(--gold); font-size: 12px; font-family: monospace;" id="countQuiz">0/5</div>
+            </div>
+            <button class="btn" onclick="triggerAdSequence('quiz_portal')" style="background: var(--accent); width: 100%; margin-top: 10px;">Open Dedicated Quiz</button>
+            <div class="cooldown-overlay" id="coolQuiz">TIMER OVERLAY</div>
+        </div>
 
-        <div class="card" id="cardSpin">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div>
-                    <h4 style="margin: 0 0 4px 0; font-size: 15px;">🎡 Probability Lucky Wheel</h4>
-                    <p style="margin: 0; font-size: 11px; color: #a1a1aa;">Randomized reward matrix • <span style="color: var(--gold);">Up to 25 FC</span></p>
-                </div>
-                <div style="font-weight: bold; color: var(--gold); font-size: 12px; font-family: monospace;" id="countSpin">0/5</div>
-            </div>
-            <button class="btn" onclick="triggerAdSequence('spin_portal')" style="background: #10b981; width:100%; margin-top:10px;">Enter Spin Arena</button>
-            <div class="cooldown-overlay" id="coolSpin">TIMER OVERLAY</div>
-        </div>
-    </div>
+        <!-- AD 3 AFTER QUIZ ENGINE: 468x60 (Fluid handling for mobile) -->
+        <div class="ad-spacer" style="margin: 15px auto; text-align: center; min-height: 60px; max-width: 100%; overflow-x: auto;">
+            <script>
+              atOptions = {
+                'key' : '08e7dd12cc44998ffd9c3bbde8112734',
+                'format' : 'iframe',
+                'height' : 60,
+                'width' : 468,
+                'params' : {}
+              };
+            </script>
+            <script src="https://www.highperformanceformat.com/08e7dd12cc44998ffd9c3bbde8112734/invoke.js"></script>
+        </div>
+
+        <!-- CARD 4: PROBABILITY LUCKY WHEEL -->
+        <div class="card" id="cardSpin">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h4 style="margin: 0 0 4px 0; font-size: 15px;">🎡 Probability Lucky Wheel</h4>
+                    <p style="margin: 0; font-size: 11px; color: #a1a1aa;">Randomized reward matrix • <span style="color: var(--gold);">Up to 25 FC</span></p>
+                </div>
+                <div style="font-weight: bold; color: var(--gold); font-size: 12px; font-family: monospace;" id="countSpin">0/5</div>
+            </div>
+            <button class="btn" onclick="triggerAdSequence('spin_portal')" style="background: #10b981; width:100%; margin-top:10px;">Enter Spin Arena</button>
+            <div class="cooldown-overlay" id="coolSpin">TIMER OVERLAY</div>
+        </div>
+
+        <!-- AD 4 AFTER SPIN ARENA: 728x90 (Responsive scroll wrapper for mobile views) -->
+        <div class="ad-spacer" style="margin: 20px auto; text-align: center; min-height: 90px; max-width: 100%; overflow-x: auto;">
+            <script>
+              atOptions = {
+                'key' : '6c31426ddfa8bb147bd473b708a117ed',
+                'format' : 'iframe',
+                'height' : 90,
+                'width' : 728,
+                'params' : {}
+              };
+            </script>
+            <script src="https://www.highperformanceformat.com/6c31426ddfa8bb147bd473b708a117ed/invoke.js"></script>
+        </div>
+    </div>
 
     
 
-    <div id="quizPageNode" class="tab-view container">
-        <div class="card">
-            <h2 style="color:var(--accent); font-size:18px; margin-top:0; text-transform:uppercase;">Arithmetic Terminal</h2>
-            <hr style="border-color:var(--border-color); margin:15px 0;">
-            
-            <div style="margin-bottom: 15px; display: flex; justify-content: center; min-height: 50px;">
-                <script src="https://pl29739099.effectivecpmnetwork.com/b6/6d/b6/b66db630d5250df9d38ba06416ae7db3.js"></script>
-
-            </div>
-
-
+    <div id="quizPageNode" class="tab-view container">
+        <div class="card">
+            <h2 style="color:var(--accent); font-size:18px; margin-top:0; text-transform:uppercase;">Arithmetic Terminal</h2>
+            <hr style="border-color:var(--border-color); margin:15px 0;">
             
+            <div style="margin-bottom: 15px; display: flex; justify-content: center; min-height: 50px;">
+                <script src="https://pl29739099.effectivecpmnetwork.com/b6/6d/b6/b66db630d5250df9d38ba06416ae7db3.js"></script>
+            </div>
 
-            <div id="mathQuestionDisplay" style="background: #09090b; padding: 20px; border-radius: 16px; font-weight: 900; font-family: monospace; color: var(--gold); font-size: 32px; border: 1px dashed var(--border-color); margin-bottom:20px;">0 + 0 = ?</div>
-            
-            <input type="number" id="mathUserAnswer" placeholder="Input Evaluated Output" class="input-field" style="text-align:center; font-size:18px;">
-            <button class="btn" onclick="submitQuizComputation()" style="background: var(--accent); width:100%; padding:14px; font-size:14px;">Verify Signature Answer</button>
-            
-            <div id="quizFeedbackBox" class="quiz-feedback-box"></div>
-            
-            <button class="btn" onclick="switchTab('homePage', 'btnHome')" style="background:#27272a; width:60%; margin-top:30px; font-size:11px;">⬅ Exit Engine</button>
-        </div>
-    </div>
+            <div id="mathQuestionDisplay" style="background: #09090b; padding: 20px; border-radius: 16px; font-weight: 900; font-family: monospace; color: var(--gold); font-size: 32px; border: 1px dashed var(--border-color); margin-bottom:20px;">0 + 0 = ?</div>
+            
+            <input type="number" id="mathUserAnswer" placeholder="Input Evaluated Output" class="input-field" style="text-align:center; font-size:18px;">
+            <button class="btn" onclick="submitQuizComputation()" style="background: var(--accent); width:100%; padding:14px; font-size:14px;">Verify Signature Answer</button>
+            
+            <div id="quizFeedbackBox" class="quiz-feedback-box"></div>
+            
+            <button class="btn" onclick="switchTab('homePage', 'btnHome')" style="background:#27272a; width:60%; margin-top:30px; font-size:11px;">⬅ Exit Engine</button>
+        </div>
+    </div>
 
 
     
     
 
-    <div id="spinPageNode" class="tab-view container">
-        <div class="card" style="text-align:center;">
-            <h2 style="color:#10b981; font-size:18px; margin-top:0; text-transform:uppercase;">Probability Matrix</h2>
-            <p style="font-size:12px; color:#a1a1aa; margin:0;">High yields security wheel framework</p>
-            
-            <div class="wheel-shell">
-                <div class="wheel-pin"></div>
-                <div id="wheelCanvas" class="actual-wheel"></div>
-            </div>
+    <div id="spinPageNode" class="tab-view container">
+        <div class="card" style="text-align:center;">
+            <h2 style="color:#10b981; font-size:18px; margin-top:0; text-transform:uppercase;">Probability Matrix</h2>
+            <p style="font-size:12px; color:#a1a1aa; margin:0;">High yields security wheel framework</p>
+            
+            <div class="wheel-shell">
+                <div class="wheel-pin"></div>
+                <div id="wheelCanvas" class="actual-wheel"></div>
+            </div>
 
-            <button class="btn" id="spinCoreBtn" onclick="initiateWheelRotation()" style="background:#10b981; width:80%; padding:14px; font-size:14px; border-radius:30px;">Launch Rotation</button>
-            <br>
-            <button class="btn" onclick="switchTab('homePage', 'btnHome')" style="background:#27272a; width:60%; margin-top:25px; font-size:11px;">⬅ Back Terminal</button>
-        </div>
-    </div>
+            <button class="btn" id="spinCoreBtn" onclick="initiateWheelRotation()" style="background:#10b981; width:80%; padding:14px; font-size:14px; border-radius:30px;">Launch Rotation</button>
+            <br>
+            <button class="btn" onclick="switchTab('homePage', 'btnHome')" style="background:#27272a; width:60%; margin-top:25px; font-size:11px;">⬅ Back Terminal</button>
+        </div>
+    </div>
 
     
 
@@ -406,7 +460,7 @@
             </p>
         </div>
 
-    
+        
 
         <h3 style="color: var(--primary); font-size: 13px; text-transform: uppercase; margin-top: 20px;">📜 Your Withdrawal Ledger</h3>
         
@@ -415,48 +469,48 @@
             <div id="transactionHistoryWrapper" style="display: flex; flex-direction: column; gap: 10px;"></div>
         </div>
 </div>
-    
+    
 
-    <div id="profilePage" class="tab-view">
-        <h3 style="color: var(--secondary); margin-top:0; font-size: 14px; text-transform: uppercase;">Identity Verification</h3>
-        <div id="profileFormBox" class="card">
-            <h4 style="margin:0 0 14px 0; font-size: 14px; color:#a1a1aa;">Create Station Account</h4>
-            <input type="text" id="profName" placeholder="Full Name" class="input-field">
-            <input type="text" id="profUpi" placeholder="UPI Handle Address (e.g. name@upi)" class="input-field">
-            <input type="email" id="profEmail" placeholder="Email Address" class="input-field">
-            <button class="btn" onclick="saveProfile()" style="background: var(--primary); width:100%;">Submit & Sync Profile</button>
-        </div>
-        <div id="profileActiveBox" class="card" style="display: none; text-align: center;">
-            <div style="width: 64px; height: 64px; background: #27272a; border-radius: 50%; margin: 0 auto 12px auto; display: flex; align-items: center; justify-content: center; font-size: 24px;">👤</div>
-            <h2 id="activeProfileName" style="margin: 0 0 4px 0; font-size: 20px; color: white;">Varun Goyal</h2>
-            <p id="activeProfileEmail" style="margin: 0 0 16px 0; font-size: 12px; color: #a1a1aa;">varun@email.com</p>
-            <div style="background:#09090b; padding:12px; border-radius:12px; text-align:left; font-size:12px; margin-bottom:20px; border:1px solid var(--border-color);">
-                <strong>Linked UPI Handle:</strong> <span id="activeProfileUpi" style="color:var(--accent); font-family:monospace;">xyz@okaxis</span>
-            </div>
-            <button class="btn" onclick="clearProfileLogout()" style="background: #ef4444; width: 100%;">Destroy Identity session (Logout)</button>
-        </div>
-    </div>
+    <div id="profilePage" class="tab-view">
+        <h3 style="color: var(--secondary); margin-top:0; font-size: 14px; text-transform: uppercase;">Identity Verification</h3>
+        <div id="profileFormBox" class="card">
+            <h4 style="margin:0 0 14px 0; font-size: 14px; color:#a1a1aa;">Create Station Account</h4>
+            <input type="text" id="profName" placeholder="Full Name" class="input-field">
+            <input type="text" id="profUpi" placeholder="UPI Handle Address (e.g. name@upi)" class="input-field">
+            <input type="email" id="profEmail" placeholder="Email Address" class="input-field">
+            <button class="btn" onclick="saveProfile()" style="background: var(--primary); width:100%;">Submit & Sync Profile</button>
+        </div>
+        <div id="profileActiveBox" class="card" style="display: none; text-align: center;">
+            <div style="width: 64px; height: 64px; background: #27272a; border-radius: 50%; margin: 0 auto 12px auto; display: flex; align-items: center; justify-content: center; font-size: 24px;">👤</div>
+            <h2 id="activeProfileName" style="margin: 0 0 4px 0; font-size: 20px; color: white;">Varun Goyal</h2>
+            <p id="activeProfileEmail" style="margin: 0 0 16px 0; font-size: 12px; color: #a1a1aa;">varun@email.com</p>
+            <div style="background:#09090b; padding:12px; border-radius:12px; text-align:left; font-size:12px; margin-bottom:20px; border:1px solid var(--border-color);">
+                <strong>Linked UPI Handle:</strong> <span id="activeProfileUpi" style="color:var(--accent); font-family:monospace;">xyz@okaxis</span>
+            </div>
+            <button class="btn" onclick="clearProfileLogout()" style="background: #ef4444; width: 100%;">Destroy Identity session (Logout)</button>
+        </div>
+    </div>
 
-    <div class="bottom-nav">
-        <button class="nav-btn active" id="btnHome" onclick="switchTab('homePage', 'btnHome')">
-            <span class="nav-icon">🎮</span><span>Home</span>
-        </button>
-        <button class="nav-btn" id="btnWallet" onclick="switchTab('walletPage', 'btnWallet')">
-            <span class="nav-icon">💰</span><span>Wallet</span>
-        </button>
-        <button class="nav-btn" id="btnProfile" onclick="switchTab('profilePage', 'btnProfile')">
-            <span class="nav-icon">👤</span><span>Profile</span>
-        </button>
-    </div>
+    <div class="bottom-nav">
+        <button class="nav-btn active" id="btnHome" onclick="switchTab('homePage', 'btnHome')">
+            <span class="nav-icon">🎮</span><span>Home</span>
+        </button>
+        <button class="nav-btn" id="btnWallet" onclick="switchTab('walletPage', 'btnWallet')">
+            <span class="nav-icon">💰</span><span>Wallet</span>
+        </button>
+        <button class="nav-btn" id="btnProfile" onclick="switchTab('profilePage', 'btnProfile')">
+            <span class="nav-icon">👤</span><span>Profile</span>
+        </button>
+    </div>
 
 <div id="adOverlayWindow" class="ad-overlay">
-    <div class="ad-box">
-        <h3 style="color: var(--gold); margin-top: 0; font-size: 18px;">⚡ Task Ad Verification ⚡</h3>
-        <p style="color: #a1a1aa; font-size: 13px; line-height: 1.5; margin: 15px 0;">
-            Aapka ad naye tab mein khul chuka hai. Rewards paane ke liye 5 second tak ad page check karein aur fir wapas aayein!
-        </p>
-        <button class="close-ad-btn" id="skipAdActionBtn" disabled onclick="dismissAdWindow()">Wait 5s...</button>
-    </div>
+    <div class="ad-box">
+        <h3 style="color: var(--gold); margin-top: 0; font-size: 18px;">⚡ Task Ad Verification ⚡</h3>
+        <p style="color: #a1a1aa; font-size: 13px; line-height: 1.5; margin: 15px 0;">
+            Aapka ad naye tab mein khul chuka hai. Rewards paane ke liye 5 second tak ad page check karein aur fir wapas aayein!
+        </p>
+        <button class="close-ad-btn" id="skipAdActionBtn" disabled onclick="dismissAdWindow()">Wait 5s...</button>
+    </div>
 </div>
 
     <div style="width: 100%; text-align: center; padding: 24px 16px; margin-top: 40px; margin-bottom: 90px; box-sizing: border-box; border-top: 1px solid rgba(255,255,255,0.05); clear: both; position: relative;">
@@ -474,6 +528,9 @@
 </div>
 
 <script>
+ 
+        
+
     const GOOGLE_SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzIM3oI-PsxkXBT7H-3-_CTmbmcPCg1CIvnB5CEz8Q_saqAc6EzRumeE3W3cC-OcDgy/exec"; 
 
     let appState = {
