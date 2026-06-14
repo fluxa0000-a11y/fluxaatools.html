@@ -825,7 +825,7 @@
     if (!verifyLoginState()) return;
     const coins = parseInt(document.getElementById('withdrawInputCoins').value);
 
-    if (isNaN(coins) || coins <200) {
+    if (isNaN(coins) || coins <5000) {
         alert("Limit error: Minimum withdrawal constraint is 5000 FC.");
         return;
     }
