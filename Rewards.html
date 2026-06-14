@@ -276,7 +276,7 @@
         }
     </style>
 </head>
-    <body>
+<body>
 
 <div class="app-container">
     
@@ -300,8 +300,8 @@
             <div class="cooldown-overlay" id="coolAttendance">TIMER OVERLAY</div>
         </div>
 
-        <!-- AD 1 AFTER DAILY ATTENDANCE: 320x50 Banner -->
-        <div class="ad-spacer" style="margin: 15px auto; text-align: center; min-height: 50px; overflow: hidden;">
+        <!-- AD 1: Standard Mobile Banner (320x50) -->
+        <div class="ad-spacer" style="margin: 12px auto; text-align: center; min-height: 50px; max-width: 100%; display: flex; justify-content: center;">
             <script>
               atOptions = {
                 'key' : '7a7e16091a4e42ccfbd909e66c89b4ce',
@@ -327,8 +327,8 @@
             <div class="cooldown-overlay" id="coolVideo">TIMER OVERLAY</div>
         </div>
 
-        <!-- AD 2 AFTER VIDEO ADS: 300x250 Medium Rectangle -->
-        <div class="ad-spacer" style="margin: 20px auto; text-align: center; min-height: 250px; overflow: hidden;">
+        <!-- AD 2: Medium Box Banner (300x250) - Fits standard mobile widths -->
+        <div class="ad-spacer" style="margin: 15px auto; text-align: center; min-height: 250px; max-width: 100%; display: flex; justify-content: center;">
             <script>
               atOptions = {
                 'key' : 'f17313e4aacb960fbcabe27fe278aaf3',
@@ -354,18 +354,18 @@
             <div class="cooldown-overlay" id="coolQuiz">TIMER OVERLAY</div>
         </div>
 
-        <!-- AD 3 AFTER QUIZ ENGINE: 468x60 (Fluid handling for mobile) -->
-        <div class="ad-spacer" style="margin: 15px auto; text-align: center; min-height: 60px; max-width: 100%; overflow-x: auto;">
+        <!-- AD 3: Standard Mobile Banner (320x50) - To keep small card balance -->
+        <div class="ad-spacer" style="margin: 12px auto; text-align: center; min-height: 50px; max-width: 100%; display: flex; justify-content: center;">
             <script>
               atOptions = {
-                'key' : '08e7dd12cc44998ffd9c3bbde8112734',
+                'key' : '7a7e16091a4e42ccfbd909e66c89b4ce',
                 'format' : 'iframe',
-                'height' : 60,
-                'width' : 468,
+                'height' : 50,
+                'width' : 320,
                 'params' : {}
               };
             </script>
-            <script src="https://www.highperformanceformat.com/08e7dd12cc44998ffd9c3bbde8112734/invoke.js"></script>
+            <script src="https://www.highperformanceformat.com/7a7e16091a4e42ccfbd909e66c89b4ce/invoke.js"></script>
         </div>
 
         <!-- CARD 4: PROBABILITY LUCKY WHEEL -->
@@ -381,18 +381,18 @@
             <div class="cooldown-overlay" id="coolSpin">TIMER OVERLAY</div>
         </div>
 
-        <!-- AD 4 AFTER SPIN ARENA: 728x90 (Responsive scroll wrapper for mobile views) -->
-        <div class="ad-spacer" style="margin: 20px auto; text-align: center; min-height: 90px; max-width: 100%; overflow-x: auto;">
+        <!-- AD 4: Bottom Medium Box (300x250) -->
+        <div class="ad-spacer" style="margin: 15px auto; text-align: center; min-height: 250px; max-width: 100%; display: flex; justify-content: center;">
             <script>
               atOptions = {
-                'key' : '6c31426ddfa8bb147bd473b708a117ed',
+                'key' : 'f17313e4aacb960fbcabe27fe278aaf3',
                 'format' : 'iframe',
-                'height' : 90,
-                'width' : 728,
+                'height' : 250,
+                'width' : 300,
                 'params' : {}
               };
             </script>
-            <script src="https://www.highperformanceformat.com/6c31426ddfa8bb147bd473b708a117ed/invoke.js"></script>
+            <script src="https://www.highperformanceformat.com/f17313e4aacb960fbcabe27fe278aaf3/invoke.js"></script>
         </div>
     </div>
 
@@ -528,9 +528,6 @@
 </div>
 
 <script>
- 
-        
-
     const GOOGLE_SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzIM3oI-PsxkXBT7H-3-_CTmbmcPCg1CIvnB5CEz8Q_saqAc6EzRumeE3W3cC-OcDgy/exec"; 
 
     let appState = {
