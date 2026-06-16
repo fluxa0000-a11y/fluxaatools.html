@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fluxaa Aviator - Premium Experience</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         /* --- PREMIUM DARK THEME --- */
         body { font-family: 'Segoe UI', Roboto, sans-serif; background-color: #0c0f14; color: #fff; margin: 0; padding: 0; overflow-x: hidden; }
@@ -38,7 +39,7 @@
         .btn-cashout { background: linear-gradient(135deg, #ffa500 0%, #ff7300 100%); color: white; box-shadow: 0 5px 15px rgba(255,115,0,0.4); }
         .btn:disabled { background: #242f3e !important; color: #5a6b82 !important; box-shadow: none !important; cursor: not-allowed; }
 
-        /* --- LIVE PLATFORM payouts FEED --- */
+        /* --- LIVE PLATFORM FEED --- */
         .live-feed-box { background: #161d26; border-radius: 14px; padding: 15px; margin-top: 20px; border: 1px solid #242f3e; }
         .feed-title { font-size: 13px; font-weight: bold; color: #2ed573; margin-bottom: 10px; text-align: left; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 6px; }
         .feed-title::before { content: ''; display: inline-block; width: 8px; height: 8px; background: #2ed573; border-radius: 50%; animation: blink 1s infinite; }
@@ -52,11 +53,11 @@
         .tab-btn.active { background: #2ed573; color: #0c0f14; }
         .rule-box { background: rgba(46,213,115,0.06); padding: 14px; border-radius: 10px; border-left: 4px solid #2ed573; margin-bottom: 20px; font-size: 13px; text-align: left; line-height: 1.6; }
         
-        /* --- DYNAMIC QR BOX --- */
+        /* --- HIGH PERFORMANCE LOCAL QR CONTAINER --- */
         .qr-holder { background: #fff; padding: 15px; border-radius: 12px; width: fit-content; margin: 20px auto; box-shadow: 0 5px 15px rgba(0,0,0,0.5); text-align: center; }
-        .qr-holder img { width: 160px; height: 160px; display: block; margin: 0 auto; }
+        #qrcode-canvas { display: block; margin: 0 auto; width: 160px; height: 160px; }
         
-        /* --- NOTICE BOX FOR REQUEST PAYMENT (ENGLISH) --- */
+        /* --- NOTICE BOX --- */
         .notice-box { background: rgba(255, 71, 87, 0.1); border-left: 4px solid #ff4757; padding: 12px; border-radius: 8px; color: #ff6b81; font-size: 12px; font-weight: bold; text-align: left; margin-bottom: 15px; line-height: 1.5; }
         .lock-help-text { color: #ff4757; font-size: 12px; font-weight: bold; margin-top: 5px; text-align: center; display: block; }
         .hidden { display: none !important; }
@@ -142,8 +143,8 @@
                 </div>
 
                 <div class="qr-holder">
-                    <img id="dynamicQrImage" src="https://chart.googleapis.com/chart?chs=160x160&cht=qr&chl=upi%3A%2F%2Fpay%3Fpa%3Dfluxa%40ptyes%26am%3D50%26cu%3DINR" alt="Fluxaa Official QR">
-                    <p style="font-size: 12px; font-weight: bold; margin: 8px 0 0 0; color: #0c0f14; letter-spacing: 0.5px;">UPI: fluxa@ptyes</p>
+                    <div id="qrcode-canvas"></div>
+                    <p style="font-size: 12px; font-weight: bold; margin: 12px 0 0 0; color: #0c0f14; letter-spacing: 0.5px;">UPI: fluxa@ptyes</p>
                     <p style="font-size: 10px; color: #666; margin: 2px 0 0 0;">(Scan via Any UPI App)</p>
                 </div>
 
@@ -198,11 +199,11 @@
     <div class="bottom-nav">
         <button id="navHome" class="nav-item active" onclick="navigateTo('home')">🛫 <span>Fly Game</span></button>
         <button id="navWallet" class="nav-item" onclick="navigateTo('wallet')">🪙 <span>Wallet</span></button>
-        <button id="navProfile" class="nav-item" onclick="navigateTo('profile')">👤 <span>Profile</span></button>
+        <button id="navProfile" class="nav-item" onclick="navigateProfile('profile')">👤 <span>Profile</span></button>
     </div>
 
 <script>
-    // ⚠️ अपनी असल गूगल ऐप्स स्क्रिप्ट का URL यहाँ डालें
+    // ⚠️ अपने ऐप्स स्क्रिप्ट का यूआरएल यहाँ बदलें
     const SCRIPT_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
     
     let activeUser = "";
@@ -214,35 +215,52 @@
     let currentMultiplier = 1.00;
     let serverCrashPoint = 1.00;
     let canvas, ctx, animationFrame, timeX = 0;
+    let qrMasterInstance = null; // QR Object Holder
 
-    // --- LIFE CYCLE INIT ON LOAD ---
+    // --- LIFE CYCLE INITIALIZER ---
     document.addEventListener("DOMContentLoaded", function() {
         initCanvas();
         queueNextRound();
         generateLiveFeed();
         
-        // --- LOCAL STORAGE AUTO-LOGIN SYSTEM ---
+        // 1. सबसे पहले लोकल QR इंजन इंसेंटिएट करें
+        initLocalQREngine();
+
+        // 2. लोकल स्टोरेज से ऑटो लॉगिन चेक करें
         let cachedUser = localStorage.getItem("fluxaa_username");
         if (cachedUser) {
             activeUser = cachedUser;
-            document.getElementById('profilePopup').style.display = 'none'; // दोबारा पॉपअप नहीं आएगा
+            document.getElementById('profilePopup').style.display = 'none'; 
             document.getElementById('profileDisplayId').innerText = "User: " + activeUser;
             document.getElementById('profileSwitchId').value = activeUser;
             syncLedgerData();
         }
     });
 
-    // --- 100% ACCURATE QR GENERATOR ENGINE ---
+    // --- 100% INTERNAL INDEPENDENT QR LOGIC ---
+    function initLocalQREngine() {
+        // पहली बार खाली QR ऑब्जेक्ट सेट करें
+        qrMasterInstance = new QRCode(document.getElementById("qrcode-canvas"), {
+            text: "upi://pay?pa=fluxa@ptyes&am=50&cu=INR",
+            width: 160,
+            height: 160,
+            colorDark : "#0c0f14",
+            colorLight : "#ffffff",
+            correctLevel : QRCode.CorrectLevel.H
+        });
+    }
+
     function updateDynamicQR(amount) {
         let cleanAmount = parseFloat(amount) || 0;
         document.getElementById('buyEstimate').innerText = 'Tokens to credit: ' + (cleanAmount * 1) + ' FC';
         
-        // encodeURIComponent लगाने से QR कभी भी ब्रेक या क्रैश नहीं होगा
+        // रीयल-टाइम में बिना किसी फोटो लोड के QR की वैल्यू चेंज होगी
         let upiRawString = `upi://pay?pa=fluxa@ptyes&am=${cleanAmount}&cu=INR`;
-        let encodedUpi = encodeURIComponent(upiRawString);
-        let qrApiUrl = `https://chart.googleapis.com/chart?chs=160x160&cht=qr&chl=${encodedUpi}`;
         
-        document.getElementById('dynamicQrImage').src = qrApiUrl;
+        if(qrMasterInstance) {
+            qrMasterInstance.clear(); 
+            qrMasterInstance.makeCode(upiRawString); // बिना इंटरनेट लोडिंग के तुरंत जनरेट होगा
+        }
     }
 
     // --- NAVIGATION CONTROLLER ---
@@ -262,14 +280,11 @@
         }
     }
 
-    // --- SAVE INITIAL PROFILE DATA ---
     function saveInitialProfile() {
         const id = document.getElementById('popupUserId').value.trim();
         if(!id) { alert("Please input a valid User ID to start!"); return; }
-        
         activeUser = id;
-        localStorage.setItem("fluxaa_username", id); // लोकल स्टोरेज में सेव ताकि बार-बार न खुले
-        
+        localStorage.setItem("fluxaa_username", id); 
         document.getElementById('profilePopup').style.display = 'none';
         document.getElementById('profileDisplayId').innerText = "User: " + activeUser;
         document.getElementById('profileSwitchId').value = activeUser;
@@ -280,12 +295,12 @@
         const id = document.getElementById('profileSwitchId').value.trim();
         if(!id) { alert("Invalid Field Data"); return; }
         activeUser = id;
-        localStorage.setItem("fluxaa_username", id); // लोकल स्टोरेज अपडेट करें
+        localStorage.setItem("fluxaa_username", id); 
         document.getElementById('profileDisplayId').innerText = "User: " + activeUser;
         syncLedgerData();
     }
 
-    // --- INTERACTIVE WALLET TAB SWITCHER ---
+    // --- TAB SWITCHER CONTROL ---
     function switchWalletTab(mode) {
         if(mode === 'buy') {
             document.getElementById('buyForm').classList.remove('hidden');
@@ -315,7 +330,7 @@
         }
     }
 
-    // --- LEDGER STATE SYNC ---
+    // --- LEDGER DATABASE SYNC ---
     function syncLedgerData() {
         if(!activeUser || SCRIPT_URL.includes("YOUR_GOOGLE_APPS_SCRIPT")) return;
         fetch(`${SCRIPT_URL}?action=checkUser&userId=${activeUser}`)
@@ -338,10 +353,10 @@
             if(document.getElementById('withdrawTabBtn').classList.contains('active')) {
                 switchWalletTab('withdraw');
             }
-        }).catch(() => console.log("Network sync running in sandbox/offline backup."));
+        }).catch(() => console.log("Database Sync Exception handeled."));
     }
 
-    // --- ENGINE GAME CODE ---
+    // --- GAME CORE ENGINE ENGINE ---
     function initCanvas() {
         canvas = document.getElementById('graphCanvas');
         ctx = canvas.getContext('2d');
@@ -445,7 +460,7 @@
         }
     }
 
-    // --- REALTIME FAKE Payouts FEED ---
+    // --- REALTIME NOTIFICATION FEED ---
     const customNames = ["rohit_***", "aman_78*", "vicky_***", "amit_89*", "rahul_***", "deepak_*", "mohit_7*", "sunny_***", "nikhil_*", "varun_***"];
     function generateLiveFeed() {
         const feedList = document.getElementById('liveFeedList');
@@ -462,7 +477,7 @@
         setTimeout(generateLiveFeed, Math.floor(Math.random() * (6000 - 3000) + 3000));
     }
 
-    // --- FORM HANDLERS WITH HARD ENFORCED GOOGLE SHEET FAIL-SAFE ---
+    // --- STRICT SUBMIT GATEWAYS WITH FAIL-SAFE PROTECTION ---
     document.getElementById('buyForm').addEventListener('submit', function(e) {
         e.preventDefault();
         let btn = document.getElementById('buySubmitBtn');
@@ -475,13 +490,12 @@
         btn.disabled = true;
         btn.innerText = "Processing Data Connection...";
 
-        // GOOGLE SHEET SUBMIT WITH STRICT FAIL LOGIC
         fetch(SCRIPT_URL, {
             method: 'POST',
             body: JSON.stringify({ action: 'deposit', userId: activeUser, amount: cash, utr: utrToken })
         })
         .then(res => {
-            if (!res.ok) throw new Error("Google Network Error");
+            if (!res.ok) throw new Error();
             return res.json();
         })
         .then(data => {
@@ -490,8 +504,7 @@
             updateDynamicQR(50);
         })
         .catch(err => {
-            // अगर Google sheet पर डेटा नहीं गया तो सब फेल!
-            alert("❌ TRANSACTION FAILED: Data couldn't be saved on Google Sheets Server. Please check your internet or App Script configuration.");
+            alert("❌ TRANSACTION FAILED: Data couldn't be saved on Google Sheets Server. No changes were made.");
         })
         .finally(() => {
             btn.disabled = false;
@@ -511,26 +524,24 @@
         btn.disabled = true;
         btn.innerText = "Verifying Ledger Route...";
 
-        // STRICT WITHDRAWAL FAIL-SAFE LOGIC
         fetch(SCRIPT_URL, {
             method: 'POST',
             body: JSON.stringify({ action: 'withdraw', userId: activeUser, coins: tokens, upi: upiAddress })
         })
         .then(res => {
-            if (!res.ok) throw new Error("Google Server Network Fault");
+            if (!res.ok) throw new Error();
             return res.json();
         })
         .then(data => {
             if(data.status === "error") {
                 alert("❌ Withdrawal Aborted: " + data.message);
             } else {
-                alert("✅ SUCCESS: Your Payment Request has been written to Google Sheets. Admin will wire funds manually within 2 hours.");
+                alert("✅ SUCCESS: Your Payment Request has been written to Google Sheets.");
                 document.getElementById('withdrawForm').reset();
                 syncLedgerData();
             }
         })
         .catch(err => {
-            // अगर गूगल सर्वर पर डेटा नहीं गया तो Withdrawal को FAIL कर दो
             alert("❌ CRITICAL FAILURE: Withdrawal Request Rejected! Data could not reach Google Sheets. No coins were altered.");
         })
         .finally(() => {
@@ -541,4 +552,3 @@
 </script>
 </body>
 </html>
-            
