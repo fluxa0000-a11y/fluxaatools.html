@@ -1,10 +1,11 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>FLUXAA Premium Matrix | Cloud Ledger Verified</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
     
     <style>
         :root {
@@ -335,6 +336,7 @@
             border: 1px solid var(--border-color);
             border-radius: 16px;
             padding: 24px;
+            margin-bottom: 15px;
         }
 
         .bottom-nav {
@@ -362,7 +364,7 @@
             font-size: 11px;
             font-weight: 700;
             cursor: pointer;
-            width: 25%;
+            width: 35%;
             height: 100%;
         }
 
@@ -376,7 +378,7 @@
     <div class="top-navbar">
         <div class="logo" onclick="handleNavigationWithLock('home')">FLUXAA 🛫</div>
         <div class="wallet-badge" onclick="handleNavigationWithLock('wallet')">
-            🪙 Wallet: <span id="topBalance" style="color: var(--accent-green);">0.00 FC</span>
+            🪙 Balance: <span id="topBalance" style="color: var(--accent-green);">0.00 FC</span>
         </div>
     </div>
 
@@ -413,26 +415,26 @@
                 <div class="rule-box" style="line-height: 1.6; margin-bottom: 15px;">
                     <strong>🟩 Deposit Rules:</strong><br>
                     • Exchange Ratio: 1 INR = 1 Fluxaa Coin (FC)<br>
-                    • Minimum Remittance Capital Required: ₹50
+                    • Minimum Deposit Capital Required: ₹50
                 </div>
                 
                 <div class="input-box" style="margin-bottom: 15px;">
                     <label for="buyAmount">Amount to Load (₹):</label>
-                    <input type="number" id="buyAmount" min="50" value="50" oninput="updateDynamicQR(this.value)">
+                    <input type="number" id="buyAmount" min="50" value="50" oninput="generateDynamicUPIQR(this.value)">
                     <p id="buyEstimate" style="font-size: 12px; color: var(--accent-green); margin-top: 6px; font-weight: 700;">Tokens to credit: 50 FC</p>
                 </div>
 
                 <div style="text-align: center; width: 100%;">
                     <div class="qr-holder">
-                        <canvas id="qrCanvasElement" width="180" height="180" style="display: inline-block; background: #fff; padding: 5px; border-radius: 4px;"></canvas>
-                        <p style="font-size: 14px; font-weight: bold; margin: 12px 0 0 0; color: #06090e; letter-spacing: 0.5px;">UPI: fluxa@ptyes</p>
-                        <p style="font-size: 11px; color: #555555; margin: 2px 0 0 0; font-weight: 600;">(Scan via Any UPI App)</p>
+                        <canvas id="qrCanvasElement"></canvas>
+                        <p style="font-size: 14px; font-weight: bold; margin: 12px 0 0 0; color: #06090e; letter-spacing: 0.5px;">UPI ID: fluxa@ptyes</p>
+                        <p style="font-size: 11px; color: #555555; margin: 2px 0 0 0; font-weight: 600;">(Scan via PhonePe, GPay, Paytm)</p>
                     </div>
                 </div>
 
                 <div class="input-box" style="margin-top: 18px;">
                     <label for="buyUtr">12-Digit Banking Reference UTR:</label>
-                    <input type="text" id="buyUtr" maxlength="12" placeholder="Enter 12-Digit UTR" required>
+                    <input type="text" id="buyUtr" maxlength="12" placeholder="Enter 12-Digit UTR Number" required>
                 </div>
                 <button id="buySubmitBtn" type="submit" class="submit-btn" style="margin-top: 22px; width: 100%; padding: 14px;">Verify Deposit Data</button>
             </form>
@@ -444,8 +446,8 @@
                 
                 <div class="rule-box" style="border-left-color: var(--accent-red); background: rgba(255,61,0,0.02); line-height: 1.6; margin-bottom: 15px;">
                     <strong>🟥 Settlement Rules:</strong><br>
-                    • Liquidation Ratio: 2 Fluxaa Coins (FC) = 1 INR<br>
-                    • Minimum Payout Threshold: 200 FC (₹100)
+                    • Liquidation Ratio: 1 Fluxaa Coin (FC) = 1 INR<br>
+                    • Minimum Payout Threshold: 200 FC
                 </div>
                 
                 <div class="input-box" style="margin-bottom: 15px;">
@@ -453,30 +455,37 @@
                     <input type="number" id="withdrawCoins" min="200" placeholder="Minimum 200 FC" oninput="processWithdrawalEstimate(this.value)">
                     <p id="withdrawEstimate" style="font-size: 11px; color: var(--accent-red); margin-top: 6px; font-weight: 700;">Bank Remittance Value: ₹0</p>
                 </div>
-                
-                <div class="input-box" style="margin-top: 18px;">
-                    <label for="withdrawUpi">Target Destination UPI ID:</label>
-                    <input type="text" id="withdrawUpi" placeholder="example@upi">
-                </div>
                 <button id="withdrawSubmitBtn" type="submit" class="submit-btn" style="background: linear-gradient(135deg, #ff9100 0%, #ff3d00 100%); color: white; margin-top: 22px; width: 100%; padding: 14px;">Submit Payout Request</button>
             </form>
         </div>
 
         <div id="profilePage" class="page">
-            <div class="card" style="text-align: center;">
-                <div style="width: 80px; height: 80px; background: #1a2336; border-radius: 50%; margin: 0 auto 16px auto; display: flex; align-items: center; justify-content: center; font-size: 36px; color: var(--accent-green); border: 2px solid var(--accent-green);">👤</div>
+            <div class="card">
+                <h2>Identity & Ledger Link</h2>
+                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">अपनी डिटेल्स भरकर एक बार Sync करें ताकि आपका डेटा गूगल शीट से लिंक हो जाए।</p>
                 
-                <div id="profileDisplayId" style="font-size: 24px; font-weight: 900; color: var(--accent-green); margin-bottom: 6px;">Unregistered Client</div>
-                <p id="profileLockStatus" style="color: var(--accent-red); font-size: 13px; font-weight: 700; margin: 10px 0;">🔒 Withdrawal Gateway Blocked (ID Sync Missing)</p>
-                
-                <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 24px 0;">
-                
-                <p style="font-size: 13px; color: var(--text-muted); text-align: left; line-height: 1.6;">Enter or recover your unique Ledger User ID below to establish immediate sync with Google Database:</p>
-                
-                <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 15px;">
-                    <input type="text" id="profileSwitchId" placeholder="Enter Unique ID (e.g., varun_7910)" style="background: var(--bg-input); border: 1px solid var(--border-color); border-radius: 8px; padding: 14px; color: white; font-weight: 700; outline: none;">
-                    <button onclick="syncProfileId()" class="submit-btn" style="padding: 14px; width: 100%;">Sync Profile Ledger</button>
+                <div class="input-box">
+                    <label>Unique User ID (क्रिएट करें/लॉगिन करें)</label>
+                    <input type="text" id="pId" placeholder="e.g., varun_7910" required>
                 </div>
+                <div class="input-box">
+                    <label>Full Username</label>
+                    <input type="text" id="pName" placeholder="अपना पूरा नाम लिखें" required>
+                </div>
+                <div class="input-box">
+                    <label>Email Address</label>
+                    <input type="email" id="pEmail" placeholder="अपना ईमेल लिखें" required>
+                </div>
+                <div class="input-box">
+                    <label>Settlement UPI ID (विथड्रॉल के लिए)</label>
+                    <input type="text" id="pUpi" placeholder="example@upi" required>
+                </div>
+                
+                <button onclick="syncProfileId()" class="submit-btn" style="padding: 14px; width: 100%; margin-top: 10px;">SYNC PROFILE LEDGER</button>
+            </div>
+            
+            <div class="card" style="text-align: center;">
+                <p style="font-size: 14px;">Account Status: <b id="pStatus" style="color: var(--accent-red);">Unregistered</b></p>
             </div>
         </div>
 
@@ -495,24 +504,23 @@
     </div>
 
     <script>
-        // ─── GOOGLE APPS SCRIPT DATABASE LIVE LINK ───
+        // ─── GOOGLE APPS SCRIPT WEB APP LINK ───
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyw3fjXGQp8-DW5tsgQpNHRiDgZXfso7LNdhCpjRyNgcB1LGcEIWYqXd98bmbQ6MVuWGg/exec";
 
-        /* SYSTEM DATA STORAGE MODELS */
+        /* CLIENT SIDE MODELS */
         let userProfile = {
-            userId: "",
+            userId: localStorage.getItem('f_id') || "",
+            username: "",
+            email: "",
+            upi: "",
             balance: 0.00,
             isLocked: true
         };
 
         let gameState = {
-            status: "WAITING",
-            multiplier: 1.00,
-            currentBet: 0,
-            hasBetInCurrentRound: false,
-            hasCasherOutCurrentRound: false,
-            crashPoint: 0,
-            startTime: 0
+            status: "WAITING", multiplier: 1.00, currentBet: 0,
+            hasBetInCurrentRound: false, hasCasherOutCurrentRound: false,
+            crashPoint: 0, startTime: 0
         };
 
         let canvas, ctx, animationFrameId, graphPoints = [];
@@ -523,10 +531,14 @@
             resizeCanvas();
             window.addEventListener('resize', resizeCanvas);
 
-            loadLocalProfileData();
             initializeSystemGameEngine();
             generateMockLiveFeed();
-            updateDynamicQR(50);
+            generateDynamicUPIQR(50);
+            
+            if(userProfile.userId) {
+                document.getElementById('pId').value = userProfile.userId;
+                fetchBalanceFromSheet();
+            }
         });
 
         function resizeCanvas() {
@@ -536,133 +548,187 @@
             }
         }
 
-        /* ─── GOOGLE SHEET CLOUD DATA INTERFACING (MANUAL REFRESH SHIFT) ─── */
-        function fetchBalanceFromSheet() {
-            if (!userProfile.userId || userProfile.userId === "" || userProfile.userId === "Unregistered") return;
+        /* ─── WALLET DYNAMIC REALTIME QR GENERATOR ─── */
+        function generateDynamicUPIQR(amt) {
+            let numVal = parseFloat(amt);
+            if(isNaN(numVal) || numVal < 50) numVal = 50;
+            document.getElementById('buyEstimate').innerText = `Tokens to credit: ${numVal} FC`;
 
-            fetch(SCRIPT_URL, {
-                method: "POST",
-                headers: { "Content-Type": "text/plain" },
-                body: JSON.stringify({
-                    action: "FETCH_BALANCE",
-                    userId: userProfile.userId
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if(data.status === "success") {
-                    userProfile.balance = parseFloat(data.balance) || 0;
-                    updateBalanceDOM();
-                }
-            })
-            .catch(err => console.error("Balance cloud fetch sync error:", err));
+            const upiString = `upi://pay?pa=fluxa@ptyes&am=${numVal}&cu=INR&tn=Fluxaa_Deposit_Ledger`;
+            const canvasQR = document.getElementById('qrCanvasElement');
+            
+            QRCode.toCanvas(canvasQR, upiString, { width: 170, margin: 1 }, function (error) {
+                if (error) console.error("QR Generation Error:", error);
+            });
         }
 
-        // हर 10 सेकंड में क्लाउड शीट के डेटा से ऑटो-बैलेंस चेक होता रहेगा
-        setInterval(fetchBalanceFromSheet, 10000);
+        /* ─── GOOGLE SHEETS SYNC SYSTEM (AUTOMATED DEPLOY) ─── */
+        async function syncProfileId() {
+            const id = document.getElementById('pId').value.trim();
+            const name = document.getElementById('pName').value.trim();
+            const email = document.getElementById('pEmail').value.trim();
+            const upi = document.getElementById('pUpi').value.trim();
 
-        function loadLocalProfileData() {
-            const savedId = localStorage.getItem('fluxaa_user_id');
-            if(savedId) {
-                userProfile.userId = savedId;
-                userProfile.isLocked = false;
-                document.getElementById('profileDisplayId').innerText = savedId;
-                document.getElementById('profileLockStatus').innerHTML = "🔓 System Synced & Verified (Gateways Open)";
-                document.getElementById('profileLockStatus').style.color = "var(--accent-green)";
-                document.getElementById('profileSwitchId').value = savedId;
-                fetchBalanceFromSheet(); // प्रारंभिक डेटा को लोड करना
-            }
-        }
-
-        function updateBalanceDOM() {
-            document.getElementById('topBalance').innerText = userProfile.balance.toFixed(2) + " FC";
-        }
-
-        /* NAVIGATION INTERLOCK ROUTINES */
-        function handleNavigationWithLock(targetPage) {
-            if(targetPage === 'wallet' && userProfile.isLocked) {
-                alert("🔴 Access Restricted: Please verify your Ledger User ID inside the Profile tab first.");
-                switchPage('profile');
+            if(!id || !name || !email || !upi) {
+                alert("🔴 Please fill all profile fields completely.");
                 return;
             }
-            switchPage(targetPage);
-        }
 
-        function switchPage(pageId) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            userProfile.userId = id;
+            userProfile.username = name;
+            userProfile.email = email;
+            userProfile.upi = upi;
+            localStorage.setItem('f_id', id);
 
-            const selectedPage = document.getElementById(pageId + 'Page');
-            if(selectedPage) selectedPage.classList.add('active');
+            const payload = {
+                action: "SYNC_PROFILE",
+                userId: id,
+                username: name,
+                email: email,
+                upi: upi,
+                update: true
+            };
 
-            if(pageId === 'home') document.getElementById('navHome').classList.add('active');
-            if(pageId === 'wallet') document.getElementById('navWallet').classList.add('active');
-            if(pageId === 'profile') document.getElementById('navProfile').classList.add('active');
-        }
-
-        function switchWalletTab(tabType) {
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            if(tabType === 'buy') {
-                document.getElementById('buyTabBtn').classList.add('active');
-                document.getElementById('buyForm').classList.remove('hidden');
-                document.getElementById('withdrawForm').classList.add('hidden');
-            } else {
-                document.getElementById('withdrawTabBtn').classList.add('active');
-                document.getElementById('buyForm').classList.add('hidden');
-                document.getElementById('withdrawForm').classList.remove('hidden');
+            try {
+                const res = await fetch(SCRIPT_URL, { method: "POST", headers: { "Content-Type": "text/plain" }, body: JSON.stringify(payload) });
+                const data = await res.json();
+                if(data.status === "success") {
+                    userProfile.balance = parseFloat(data.balance) || 0;
+                    userProfile.isLocked = false;
+                    updateUIState(data);
+                    alert("🟩 Profile successfully synced with Google Sheet Ledger!");
+                }
+            } catch (err) {
+                console.error(err);
+                alert("🔴 Profile Link Network Error.");
             }
         }
 
-        /* ─── REALTIME FLIGHT GRAPH MATH ENGINE ─── */
-        function initializeSystemGameEngine() {
-            prepareNextFlightRound();
+        async function fetchBalanceFromSheet() {
+            if (!userProfile.userId) return;
+
+            try {
+                const res = await fetch(SCRIPT_URL, { 
+                    method: "POST", 
+                    headers: { "Content-Type": "text/plain" }, 
+                    body: JSON.stringify({ action: "SYNC_PROFILE", userId: userProfile.userId }) 
+                });
+                const data = await res.json();
+                if(data.status === "success") {
+                    userProfile.balance = parseFloat(data.balance) || 0;
+                    userProfile.isLocked = false;
+                    updateUIState(data);
+                }
+            } catch(e) {
+                console.error("Cloud Balance Sync Error:", e);
+            }
+        }
+        setInterval(fetchBalanceFromSheet, 10000); // 10s auto-refresh loop
+
+        function updateUIState(data) {
+            document.getElementById('topBalance').innerText = userProfile.balance.toFixed(2) + " FC";
+            document.getElementById('pStatus').innerText = data.userStatus || "Active Verified";
+            document.getElementById('pStatus').style.color = "var(--accent-green)";
         }
 
-        function prepareNextFlightRound() {
-            gameState.status = "WAITING";
-            gameState.multiplier = 1.00;
-            gameState.hasCasherOutCurrentRound = false;
-            graphPoints = [];
+        /* ─── DEPOSIT & WITHDRAWAL OPERATIONS ─── */
+        async function executeDepositHandling(e) {
+            e.preventDefault();
+            if(!userProfile.userId || userProfile.isLocked) { alert("🔴 First Sync your profile inside Profile Tab."); return; }
             
+            const utr = document.getElementById('buyUtr').value.trim();
+            const amt = document.getElementById('buyAmount').value;
+            if(utr.length !== 12 || isNaN(utr)) { alert("🔴 Valid 12-Digit Banking UTR Required."); return; }
+
+            document.getElementById('buySubmitBtn').innerText = "Submitting Req...";
+            document.getElementById('buySubmitBtn').disabled = true;
+
+            try {
+                await fetch(SCRIPT_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain" },
+                    body: JSON.stringify({ action: "DEPOSIT", userId: userProfile.userId, amount: amt, utr: utr })
+                });
+                alert("🟩 Request Dispatched! एडमिन जब शीट देखकर अप्रूव करेगा तब कॉइन्स ऐड होंगे।");
+                document.getElementById('buyUtr').value = "";
+                fetchBalanceFromSheet();
+            } catch(e) {
+                alert("🔴 Submission Error.");
+            } finally {
+                document.getElementById('buySubmitBtn').innerText = "Verify Deposit Data";
+                document.getElementById('buySubmitBtn').disabled = false;
+            }
+        }
+
+        function processWithdrawalEstimate(coins) {
+            let val = parseFloat(coins) || 0;
+            document.getElementById('withdrawEstimate').innerText = `Bank Remittance Value: ₹${val}`;
+        }
+
+        async function executeWithdrawalHandling(e) {
+            e.preventDefault();
+            if(!userProfile.userId || userProfile.isLocked) { alert("🔴 Sync Profile First."); return; }
+            
+            const coins = parseFloat(document.getElementById('withdrawCoins').value);
+            if(isNaN(coins) || coins < 200) { alert("🔴 Minimum withdrawal threshold is 200 FC."); return; }
+            if(userProfile.balance < coins) { alert("🔴 Insufficient Balance inside Application Account."); return; }
+
+            document.getElementById('withdrawSubmitBtn').innerText = "Logging Pipeline...";
+            document.getElementById('withdrawSubmitBtn').disabled = true;
+
+            try {
+                await fetch(SCRIPT_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain" },
+                    body: JSON.stringify({ 
+                        action: "WITHDRAWAL", userId: userProfile.userId, amount: coins, 
+                        currentBalance: userProfile.balance, userUpi: userProfile.upi || document.getElementById('pUpi').value 
+                    })
+                });
+                alert("🟩 Withdrawal request logged inside new row for Admin review.");
+                document.getElementById('withdrawCoins').value = "";
+                fetchBalanceFromSheet();
+            } catch(e) {
+                alert("🔴 Payout network failure.");
+            } finally {
+                document.getElementById('withdrawSubmitBtn').innerText = "Submit Payout Request";
+                document.getElementById('withdrawSubmitBtn').disabled = false;
+            }
+        }
+
+        /* ─── FLY CRASH LOGIC ENGINE ─── */
+        function initializeSystemGameEngine() { prepareNextFlightRound(); }
+
+        function prepareNextFlightRound() {
+            gameState.status = "WAITING"; gameState.multiplier = 1.00; gameState.hasCasherOutCurrentRound = false; graphPoints = [];
             let rand = Math.random();
             if(rand < 0.12) gameState.crashPoint = 1.00 + (Math.random() * 0.12);
-            else if (rand < 0.80) gameState.crashPoint = 1.12 + (Math.random() * 2.2);
-            else gameState.crashPoint = 3.30 + (Math.random() * 12);
+            else if (rand < 0.82) gameState.crashPoint = 1.12 + (Math.random() * 2.5);
+            else gameState.crashPoint = 3.62 + (Math.random() * 15);
 
             document.getElementById('statusMessage').innerText = "WAITING FOR NEXT FLIGHT...";
             document.getElementById('statusMessage').style.color = "var(--text-muted)";
-            
-            const multDisplay = document.getElementById('liveMultiplier');
-            multDisplay.innerText = "1.00x";
-            multDisplay.classList.remove('crashed');
-
+            document.getElementById('liveMultiplier').innerText = "1.00x";
+            document.getElementById('liveMultiplier').classList.remove('crashed');
             updateActionBtnUI();
 
-            let count = 6;
-            let interval = setInterval(() => {
-                count--;
-                if(count > 0) {
-                    document.getElementById('statusMessage').innerText = `NEXT FLIGHT IN ${count}s...`;
-                } else {
-                    clearInterval(interval);
-                    triggerFlightTakeoff();
-                }
+            let timer = 6;
+            let cd = setInterval(() => {
+                timer--;
+                if(timer > 0) document.getElementById('statusMessage').innerText = `NEXT FLIGHT IN ${timer}s...`;
+                else { clearInterval(cd); triggerFlightTakeoff(); }
             }, 1000);
         }
 
         function triggerFlightTakeoff() {
-            gameState.status = "FLYING";
-            gameState.startTime = performance.now();
-            document.getElementById('statusMessage').innerText = "AIRCRAFT IS AIRBORNE!";
-            document.getElementById('statusMessage').style.color = "#00e676";
-            
-            updateActionBtnUI();
-            executeFlightRenderLoop();
+            gameState.status = "FLYING"; gameState.startTime = performance.now();
+            document.getElementById('statusMessage').innerText = "AIRCRAFT AIRBORNE!";
+            document.getElementById('statusMessage').style.color = "var(--accent-green)";
+            updateActionBtnUI(); executeFlightRenderLoop();
         }
 
         function executeFlightRenderLoop() {
             if(gameState.status !== "FLYING") return;
-
             let elapsed = (performance.now() - gameState.startTime) / 1000;
             gameState.multiplier = Math.min(10000, Math.pow(1.18, elapsed * 1.6));
             document.getElementById('liveMultiplier').innerText = gameState.multiplier.toFixed(2) + "x";
@@ -670,259 +736,106 @@
             renderGraphCanvasFrame(elapsed);
 
             if(gameState.multiplier >= gameState.crashPoint) {
-                executeFlightCrashSequence();
+                gameState.status = "CRASHED";
+                document.getElementById('liveMultiplier').innerText = "FLEW AWAY @ " + gameState.multiplier.toFixed(2) + "x";
+                document.getElementById('liveMultiplier').classList.add('crashed');
+                document.getElementById('statusMessage').innerText = "FLEW AWAY!";
+                document.getElementById('statusMessage').style.color = "var(--accent-red)";
+                
+                if(gameState.hasBetInCurrentRound && !gameState.hasCasherOutCurrentRound) {
+                    gameState.currentBet = 0; gameState.hasBetInCurrentRound = false;
+                }
+                updateActionBtnUI(); setTimeout(prepareNextFlightRound, 4000);
             } else {
                 animationFrameId = requestAnimationFrame(executeFlightRenderLoop);
             }
         }
 
-        function executeFlightCrashSequence() {
-            gameState.status = "CRASHED";
-            cancelAnimationFrame(animationFrameId);
-
-            const multDisplay = document.getElementById('liveMultiplier');
-            multDisplay.innerText = "FLEW AWAY @ " + gameState.multiplier.toFixed(2) + "x";
-            multDisplay.classList.add('crashed');
-
-            document.getElementById('statusMessage').innerText = "FLEW AWAY!";
-            document.getElementById('statusMessage').style.color = "#ff3d00";
-
-            if(gameState.hasBetInCurrentRound && !gameState.hasCasherOutCurrentRound) {
-                gameState.currentBet = 0;
-                gameState.hasBetInCurrentRound = false;
-            }
-
-            updateActionBtnUI();
-            setTimeout(prepareNextFlightRound, 4000);
-        }
-
         function renderGraphCanvasFrame(elapsed) {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            let paddingLeft = 40; let paddingBottom = 40;
-            let graphWidth = canvas.width - paddingLeft; let graphHeight = canvas.height - paddingBottom;
-
-            let currentX = paddingLeft + Math.min(graphWidth * 0.85, (elapsed * 25));
-            let currentY = (canvas.height - paddingBottom) - Math.min(graphHeight * 0.85, (Math.pow(gameState.multiplier, 1.4) * 5));
-
-            graphPoints.push({ x: currentX, y: currentY });
+            let pL = 40; let pB = 40; let gW = canvas.width - pL; let gH = canvas.height - pB;
+            let cx = pL + Math.min(gW * 0.85, (elapsed * 25));
+            let cy = (canvas.height - pB) - Math.min(gH * 0.85, (Math.pow(gameState.multiplier, 1.4) * 5));
+            graphPoints.push({ x: cx, y: cy });
 
             if(graphPoints.length > 1) {
-                ctx.beginPath();
-                ctx.moveTo(graphPoints[0].x, graphPoints[0].y);
-                for(let i = 1; i < graphPoints.length; i++) {
-                    ctx.lineTo(graphPoints[i].x, graphPoints[i].y);
-                }
+                ctx.beginPath(); ctx.moveTo(graphPoints[0].x, graphPoints[0].y);
+                for(let i=1; i<graphPoints.length; i++) ctx.lineTo(graphPoints[i].x, graphPoints[i].y);
                 ctx.strokeStyle = '#00e676'; ctx.lineWidth = 4; ctx.stroke();
             }
-            ctx.beginPath(); ctx.arc(currentX, currentY, 6, 0, 2 * Math.PI); ctx.fillStyle = '#ffffff'; ctx.fill();
         }
 
-        /* ─── LOCAL BALANCES TRANSACTIONS (LOCAL BOUNDARY VERIFIED) ─── */
         function handleGameAction() {
             const btn = document.getElementById('actionBtn');
             let betVal = parseFloat(document.getElementById('betAmount').value);
 
-            if(gameState.status === "WAITING") {
-                if(!gameState.hasBetInCurrentRound) {
-                    if(isNaN(betVal) || betVal < 10) { alert("🔴 Minimum bet threshold: 10 FC."); return; }
-                    if(userProfile.balance < betVal) { alert("🔴 Insufficient Wallet Balance."); return; }
-
-                    userProfile.balance -= betVal;
-                    updateBalanceDOM();
-
-                    gameState.currentBet = betVal;
-                    gameState.hasBetInCurrentRound = true;
-                    gameState.hasCasherOutCurrentRound = false;
-
-                    btn.innerText = "CANCEL BET";
-                    btn.style.background = "#37474f"; btn.style.color = "#ffffff";
-                } else {
-                    userProfile.balance += gameState.currentBet;
-                    updateBalanceDOM();
-                    gameState.currentBet = 0;
-                    gameState.hasBetInCurrentRound = false;
-
-                    btn.innerText = "PLACE BET";
-                    btn.style.background = ""; btn.style.color = "";
-                }
-            } 
-            else if (gameState.status === "FLYING" && gameState.hasBetInCurrentRound && !gameState.hasCasherOutCurrentRound) {
-                let cashoutYield = gameState.currentBet * gameState.multiplier;
-                userProfile.balance += cashoutYield;
-                updateBalanceDOM();
-
+            if(gameState.status === "WAITING" && !gameState.hasBetInCurrentRound) {
+                if(isNaN(betVal) || betVal < 10) return alert("Min bet 10 FC.");
+                if(userProfile.balance < betVal) return alert("Insufficient balance.");
+                userProfile.balance -= betVal; updateBalanceDOM();
+                gameState.currentBet = betVal; gameState.hasBetInCurrentRound = true;
+                btn.innerText = "CANCEL BET"; btn.style.background = "#37474f";
+            } else if (gameState.status === "WAITING" && gameState.hasBetInCurrentRound) {
+                userProfile.balance += gameState.currentBet; updateBalanceDOM();
+                gameState.currentBet = 0; gameState.hasBetInCurrentRound = false;
+                updateActionBtnUI();
+            } else if (gameState.status === "FLYING" && gameState.hasBetInCurrentRound && !gameState.hasCasherOutCurrentRound) {
+                let winAmt = gameState.currentBet * gameState.multiplier;
+                userProfile.balance += winAmt; updateBalanceDOM();
                 gameState.hasCasherOutCurrentRound = true;
-                alert(`🟩 Flight Cashed Out! Credited: +${cashoutYield.toFixed(2)} FC`);
-                
-                btn.innerText = "CASHED OUT ✅";
-                btn.className = "btn btn-waiting"; btn.disabled = true;
-
-                injectLiveFeedRecord("You (Cashed Out)", gameState.multiplier.toFixed(2) + "x", "+" + cashoutYield.toFixed(0) + " FC", true);
+                alert(`🟩 Cashout Successful: +${winAmt.toFixed(2)} FC`);
+                updateActionBtnUI();
             }
         }
 
         function updateActionBtnUI() {
-            const btn = document.getElementById('actionBtn');
-            btn.disabled = false;
-
+            const btn = document.getElementById('actionBtn'); btn.disabled = false;
             if(gameState.status === "WAITING") {
-                if(gameState.hasBetInCurrentRound) {
-                    btn.innerText = "CANCEL BET"; btn.className = "btn";
-                    btn.style.background = "#37474f"; btn.style.color = "#ffffff";
-                } else {
-                    btn.innerText = "PLACE BET"; btn.className = "btn btn-bet";
-                    btn.style.background = ""; btn.style.color = "";
-                }
-            } 
-            else if(gameState.status === "FLYING") {
+                btn.innerText = gameState.hasBetInCurrentRound ? "CANCEL BET" : "PLACE BET";
+                btn.className = "btn btn-bet"; btn.style.background = gameState.hasBetInCurrentRound ? "#37474f" : "";
+            } else if(gameState.status === "FLYING") {
                 if(gameState.hasBetInCurrentRound && !gameState.hasCasherOutCurrentRound) {
                     btn.innerText = `CASH OUT (${(gameState.currentBet * gameState.multiplier).toFixed(1)} FC)`;
-                    btn.className = "btn btn-cashout"; btn.style.background = ""; btn.style.color = "";
-                } else {
-                    btn.innerText = "FLIGHT IN PROGRESS"; btn.className = "btn btn-waiting"; btn.disabled = true;
-                }
-            } 
-            else if(gameState.status === "CRASHED") {
-                btn.innerText = "EXPLODED TERMINATION"; btn.className = "btn btn-waiting"; btn.disabled = true;
-            }
+                    btn.className = "btn btn-cashout";
+                } else { btn.innerText = "FLYINGROUND RUNNING"; btn.className = "btn btn-waiting"; btn.disabled = true; }
+            } else { btn.innerText = "CRASHED"; btn.className = "btn btn-waiting"; btn.disabled = true; }
         }
 
+        function updateBalanceDOM() { document.getElementById('topBalance').innerText = userProfile.balance.toFixed(2) + " FC"; }
         function generateMockLiveFeed() {
-            const users = ["Arjun_K", "Neo_Crypto", "Rohan99", "Alpha_Spec", "Karan_Crypto", "Sonia_M", "Vikram_Raj"];
             setInterval(() => {
                 if(gameState.status === "FLYING" && Math.random() > 0.4) {
-                    let user = users[Math.floor(Math.random() * users.length)];
-                    let mult = (1.05 + (Math.random() * (gameState.multiplier - 1.01))).toFixed(2);
-                    let fakeBet = Math.floor(20 + Math.random() * 400);
-                    injectLiveFeedRecord(user, mult + "x", "+" + Math.floor(fakeBet * mult) + " FC", true);
+                    const fl = document.getElementById('liveFeedList');
+                    const fi = document.createElement('div'); fi.className = "feed-item win";
+                    fi.innerHTML = `<span>👤 User_${Math.floor(Math.random()*900)} @ ${(1.1+Math.random()*2).toFixed(2)}x</span><span>+${Math.floor(50+Math.random()*300)} FC</span>`;
+                    fl.insertBefore(fi, fl.firstChild); if(fl.children.length > 6) fl.removeChild(fl.lastChild);
                 }
-            }, 2500);
+            }, 3000);
         }
 
-        function injectLiveFeedRecord(user, mult, amount, isWin) {
-            const list = document.getElementById('liveFeedList');
-            const item = document.createElement('div');
-            item.className = `feed-item ${isWin ? 'win' : ''}`;
-            item.innerHTML = `<span>👤 ${user} <strong>@ ${mult}</strong></span><span>${amount}</span>`;
-            list.insertBefore(item, list.firstChild);
-            if(list.children.length > 20) list.removeChild(list.lastChild);
+        function handleNavigationWithLock(page) {
+            if(page === 'wallet' && userProfile.isLocked) { alert("🔴 First Sync profile inside Profile tab."); switchPage('profile'); return; }
+            switchPage(page);
         }
 
-        function syncProfileId() {
-            const inputVal = document.getElementById('profileSwitchId').value.trim();
-            if(inputVal.length < 4) { alert("🔴 Entry Error: Unique ID must be 4+ alphanumeric chars."); return; }
-
-            userProfile.userId = inputVal;
-            userProfile.isLocked = false;
-            localStorage.setItem('fluxaa_user_id', inputVal);
-
-            document.getElementById('profileDisplayId').innerText = inputVal;
-            document.getElementById('profileLockStatus').innerHTML = "🔓 System Synced & Verified (Gateways Open)";
-            document.getElementById('profileLockStatus').style.color = "var(--accent-green)";
-
-            alert(`🟩 ID Link Dispatched: Initializing Ledger data retrieval for '${inputVal}'...`);
-            fetchBalanceFromSheet(); // आईडी लिंक होते ही क्लाउड से बैलेंस लोड करना
+        function switchPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(pageId + 'Page').classList.add('active');
+            if(pageId === 'home') document.getElementById('navHome').classList.add('active');
+            if(pageId === 'wallet') document.getElementById('navWallet').classList.add('active');
+            if(pageId === 'profile') document.getElementById('navProfile').classList.add('active');
         }
 
-        function updateDynamicQR(value) {
-            let numVal = parseFloat(value); if(isNaN(numVal) || numVal < 50) numVal = 50;
-            document.getElementById('buyEstimate').innerText = `Tokens to credit: ${numVal} FC`;
-
-            const canvasQR = document.getElementById('qrCanvasElement'); const qctx = canvasQR.getContext('2d');
-            qctx.fillStyle = "#ffffff"; qctx.fillRect(0, 0, canvasQR.width, canvasQR.height);
-            qctx.fillStyle = "#0a0f1d";
-            qctx.fillRect(15, 15, 45, 45); qctx.fillStyle = "#fff"; qctx.fillRect(23, 23, 29, 29); qctx.fillStyle = "#0a0f1d"; qctx.fillRect(29, 29, 17, 17);
-            qctx.fillRect(120, 15, 45, 45); qctx.fillStyle = "#fff"; qctx.fillRect(128, 23, 29, 29); qctx.fillStyle = "#0a0f1d"; qctx.fillRect(134, 29, 17, 17);
-            qctx.fillRect(15, 120, 45, 45); qctx.fillStyle = "#fff"; qctx.fillRect(23, 128, 29, 29); qctx.fillStyle = "#0a0f1d"; qctx.fillRect(29, 134, 17, 17);
-            for (let i = 0; i < 45; i++) {
-                let rx = 20 + Math.floor(Math.random() * 140); let ry = 20 + Math.floor(Math.random() * 140);
-                if(!((rx < 65 && ry < 65) || (rx > 115 && ry < 65) || (rx < 65 && ry > 115))) qctx.fillRect(rx, ry, 6, 6);
+        function switchWalletTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            if(tab === 'buy') {
+                document.getElementById('buyTabBtn').classList.add('active');
+                document.getElementById('buyForm').classList.remove('hidden'); document.getElementById('withdrawForm').classList.add('hidden');
+            } else {
+                document.getElementById('withdrawTabBtn').classList.add('active');
+                document.getElementById('buyForm').classList.add('hidden'); document.getElementById('withdrawForm').classList.remove('hidden');
             }
-        }
-
-        /* ─── DISPATCH PIPELINES FOR LIVE GOOGLE SHEET CORES ─── */
-        function executeDepositHandling(e) {
-            e.preventDefault();
-            const utr = document.getElementById('buyUtr').value.trim();
-            const amt = parseFloat(document.getElementById('buyAmount').value);
-            const currentUserId = userProfile.userId || "Unregistered";
-
-            if(utr.length !== 12 || isNaN(utr)) {
-                alert("🔴 Validation Error: Reference UTR must consist of exactly 12 digits.");
-                return;
-            }
-
-            document.getElementById('buySubmitBtn').innerText = "Submitting to Cloud Ledger...";
-            document.getElementById('buySubmitBtn').disabled = true;
-
-            fetch(SCRIPT_URL, {
-                method: "POST",
-                headers: { "Content-Type": "text/plain" },
-                body: JSON.stringify({
-                    type: "DEPOSIT",
-                    userId: currentUserId,
-                    amount: amt,
-                    utr: utr
-                })
-            })
-            .then(() => {
-                alert(`🟩 Request Dispatched! UTR: ${utr} भेजा गया। एडमिन जब शीट में पैसे चेक करके बैलेंस बढ़ाएगा, तब यहाँ अपडेट होगा।`);
-                document.getElementById('buyUtr').value = "";
-                fetchBalanceFromSheet();
-            })
-            .catch(err => {
-                console.error(err);
-                alert("🔴 Cloud Sync Refused.");
-            })
-            .finally(() => {
-                document.getElementById('buySubmitBtn').innerText = "Verify Deposit Data";
-                document.getElementById('buySubmitBtn').disabled = false;
-            });
-        }
-
-        function processWithdrawalEstimate(coins) {
-            let coinVal = parseFloat(coins); if(isNaN(coinVal)) coinVal = 0;
-            document.getElementById('withdrawEstimate').innerText = 'Bank Remittance Value: ₹' + (coinVal / 2);
-        }
-
-        function executeWithdrawalHandling(e) {
-            e.preventDefault();
-            const coins = parseFloat(document.getElementById('withdrawCoins').value);
-            const upi = document.getElementById('withdrawUpi').value.trim();
-            const currentUserId = userProfile.userId || "Unregistered";
-
-            if(isNaN(coins) || coins < 200) { alert("🔴 Minimum validation target: 200 FC."); return; }
-            if(userProfile.balance < coins) { alert("🔴 Account Deficit inside cloud profiles."); return; }
-            if(!upi.includes('@')) { alert("🔴 Route Missing: Enter a valid UPI route string."); return; }
-
-            document.getElementById('withdrawSubmitBtn').innerText = "Logging Payout Pipeline...";
-            document.getElementById('withdrawSubmitBtn').disabled = true;
-
-            fetch(SCRIPT_URL, {
-                method: "POST",
-                headers: { "Content-Type": "text/plain" },
-                body: JSON.stringify({
-                    type: "WITHDRAWAL",
-                    userId: currentUserId,
-                    amount: coins,
-                    upi: upi
-                })
-            })
-            .then(() => {
-                alert(`🟩 Clearance Dispatched! विथड्रॉल डेटा शीट में भेज दिया गया है। वेरिफिकेशन पूरा होने के बाद ही बैलेंस घटेगा।`);
-                document.getElementById('withdrawCoins').value = "";
-                document.getElementById('withdrawUpi').value = "";
-                document.getElementById('withdrawEstimate').innerText = "Bank Remittance Value: ₹0";
-                fetchBalanceFromSheet();
-            })
-            .catch(err => {
-                console.error(err);
-                alert("🔴 Payout Connection Timeout.");
-            })
-            .finally(() => {
-                document.getElementById('withdrawSubmitBtn').innerText = "Submit Payout Request";
-                document.getElementById('withdrawSubmitBtn').disabled = false;
-            });
         }
     </script>
 </body>
