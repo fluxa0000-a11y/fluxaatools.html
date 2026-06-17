@@ -297,7 +297,7 @@
             background: rgba(0,230,118,0.03);
         }
 
-        /* ─── SECTION 2: WALLET CONFIG ARCHITECTURE ─── */
+        /* ─── WALLET ARCHITECTURE ─── */
         .tab-container {
             display: flex;
             background: var(--bg-card);
@@ -354,10 +354,6 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        .qr-holder p {
-            font-family: inherit;
-        }
-
         .submit-btn {
             background: linear-gradient(135deg, #2979ff 0%, #1565c0 100%);
             color: white;
@@ -377,7 +373,7 @@
             display: none !important;
         }
 
-        /* ─── SECTION 3: USER ACCOUNT GATEWAY ─── */
+        /* ─── USER ACCOUNT CARD ─── */
         .card {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
@@ -385,7 +381,7 @@
             box-shadow: 0 10px 40px rgba(0,0,0,0.4);
         }
 
-        /* ─── SYSTEM BOTTOM TAB BAR BAR ─── */
+        /* ─── SYSTEM BOTTOM BAR ─── */
         .bottom-nav {
             height: 70px;
             background: #0d1527;
@@ -428,7 +424,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* ─── UTILITY RESPONSIVE ALIGNMENTS ─── */
         ::-webkit-scrollbar {
             width: 4px;
         }
@@ -466,8 +461,7 @@
 
             <div class="live-feed-box">
                 <div class="feed-title">Live Platform Payouts</div>
-                <div class="feed-list" id="liveFeedList">
-                    </div>
+                <div class="feed-list" id="liveFeedList"></div>
             </div>
         </div>
 
@@ -563,7 +557,11 @@
     </div>
 
     <script>
-        /* ─── MODULE STATE ARCHIVE ─── */
+        // ─── GOOGLE SHEETS WEB APP CONFIGURATION GATEWAY ───
+        // यहाँ अपनी Apps Script का Deploy किया हुआ 'Web App URL' डालें:
+        const GOOGLE_SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbyw3fjXGQp8-DW5tsgQpNHRiDgZXfso7LNdhCpjRyNgcB1LGcEIWYqXd98bmbQ6MVuWGg/exec";
+
+        /* ─── SYSTEM STATE STORAGE ─── */
         let userProfile = {
             userId: "",
             balance: 100,
@@ -571,7 +569,7 @@
         };
 
         let gameState = {
-            status: "WAITING", // WAITING, FLYING, CRASHED
+            status: "WAITING",
             multiplier: 1.00,
             currentBet: 0,
             hasBetInCurrentRound: false,
@@ -580,19 +578,15 @@
             startTime: 0
         };
 
-        // UI Canvas Render Properties
-        let canvas, ctx;
-        let animationFrameId;
-        let graphPoints = [];
+        let canvas, ctx, animationFrameId, graphPoints = [];
 
-        /* ─── LIFE SYSTEM INTERACTION LAYER ─── */
+        /* ─── APP SETUP EVENTS ─── */
         window.addEventListener('DOMContentLoaded', () => {
             canvas = document.getElementById('graphCanvas');
             ctx = canvas.getContext('2d');
             resizeCanvas();
             window.addEventListener('resize', resizeCanvas);
 
-            // Fetch Cached Identity Layer
             loadLocalProfileData();
             initializeSystemGameEngine();
             generateMockLiveFeed();
@@ -606,7 +600,7 @@
             }
         }
 
-        /* ─── DATA CACHE PERSISTENCE FUNCTIONS ─── */
+        /* ─── LOCALSTORAGE PERSISTENT RETRIEVALS ─── */
         function loadLocalProfileData() {
             const savedId = localStorage.getItem('fluxaa_user_id');
             const savedBal = localStorage.getItem('fluxaa_balance');
@@ -633,9 +627,8 @@
             localStorage.setItem('fluxaa_balance', userProfile.balance);
         }
 
-        /* ─── SECURITY NAV PANEL VIEW MANAGEMENT ─── */
+        /* ─── NAVIGATION HANDLERS ─── */
         function handleNavigationWithLock(targetPage) {
-            // Enforce Profile Check strictly when entering Wallet via security routing rules
             if(targetPage === 'wallet' && userProfile.isLocked) {
                 alert("🔴 Access Restricted: Please verify your Ledger User ID inside the Profile tab first to unblock your financial gateway.");
                 switchPage('profile');
@@ -645,14 +638,12 @@
         }
 
         function switchPage(pageId) {
-            // Toggle Pages Functional Mapping Layout
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
 
             const selectedPage = document.getElementById(pageId + 'Page');
             if(selectedPage) selectedPage.classList.add('active');
 
-            // Set Button Active Mapping Frame Highlight
             if(pageId === 'home') document.getElementById('navHome').classList.add('active');
             if(pageId === 'wallet') document.getElementById('navWallet').classList.add('active');
             if(pageId === 'profile') document.getElementById('navProfile').classList.add('active');
@@ -671,7 +662,7 @@
             }
         }
 
-        /* ─── INTERACTIVE AVIATOR CRASH MATRIX ENGINE ─── */
+        /* ─── AVIATOR REALTIME CRASH SYSTEM ─── */
         function initializeSystemGameEngine() {
             prepareNextFlightRound();
         }
@@ -682,14 +673,13 @@
             gameState.hasCasherOutCurrentRound = false;
             graphPoints = [];
             
-            // Random distribution for realistic multipliers
             let rand = Math.random();
             if(rand < 0.10) {
-                gameState.crashPoint = 1.00 + (Math.random() * 0.15); // Instant Loss Line
+                gameState.crashPoint = 1.00 + (Math.random() * 0.15);
             } else if (rand < 0.75) {
-                gameState.crashPoint = 1.15 + (Math.random() * 2.5);  // Average standard curves
+                gameState.crashPoint = 1.15 + (Math.random() * 2.5);
             } else {
-                gameState.crashPoint = 3.65 + (Math.random() * 15);  // Moonshot parameters
+                gameState.crashPoint = 3.65 + (Math.random() * 15);
             }
 
             document.getElementById('statusMessage').innerText = "WAITING FOR NEXT FLIGHT...";
@@ -702,7 +692,6 @@
 
             updateActionBtnUI();
 
-            // 6 Seconds Bet Loading Window Counter
             let count = 6;
             let interval = setInterval(() => {
                 count--;
@@ -729,16 +718,11 @@
             if(gameState.status !== "FLYING") return;
 
             let elapsed = (performance.now() - gameState.startTime) / 1000;
-            
-            // Mathematical growth simulation algorithm modeling speed vector coefficients
             gameState.multiplier = Math.min(10000, Math.pow(1.18, elapsed * 1.6));
-
             document.getElementById('liveMultiplier').innerText = gameState.multiplier.toFixed(2) + "x";
 
-            // Draw Real-time Interactive vector pathing inside canvas context frame
             renderGraphCanvasFrame(elapsed);
 
-            // Crash validation gate checking metrics
             if(gameState.multiplier >= gameState.crashPoint) {
                 executeFlightCrashSequence();
             } else {
@@ -757,7 +741,6 @@
             document.getElementById('statusMessage').innerText = "FLEW AWAY!";
             document.getElementById('statusMessage').style.color = varToHexColor('--accent-red');
 
-            // If user did not cashout in active run, handle cleanup
             if(gameState.hasBetInCurrentRound && !gameState.hasCasherOutCurrentRound) {
                 gameState.currentBet = 0;
                 gameState.hasBetInCurrentRound = false;
@@ -765,28 +748,23 @@
 
             updateActionBtnUI();
 
-            // 4 Second Cooldown before establishing pipeline reset
             setTimeout(() => {
                 prepareNextFlightRound();
             }, 4000);
         }
 
-        /* ─── REALTIME CANVAS GRAPH VECTOR DRAWING RENDERS ─── */
         function renderGraphCanvasFrame(elapsed) {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-
             let paddingLeft = 40;
             let paddingBottom = 40;
             let graphWidth = canvas.width - paddingLeft;
             let graphHeight = canvas.height - paddingBottom;
 
-            // Chart Dynamic Point Intercept calculations matching physics grid curves
             let currentX = paddingLeft + Math.min(graphWidth * 0.85, (elapsed * 25));
             let currentY = (canvas.height - paddingBottom) - Math.min(graphHeight * 0.85, (Math.pow(gameState.multiplier, 1.4) * 5));
 
             graphPoints.push({ x: currentX, y: currentY });
 
-            // Render neon gradient base vector field
             if(graphPoints.length > 1) {
                 ctx.beginPath();
                 ctx.moveTo(graphPoints[0].x, graphPoints[0].y);
@@ -798,17 +776,16 @@
                 ctx.shadowBlur = 15;
                 ctx.shadowColor = '#00e676';
                 ctx.stroke();
-                ctx.shadowBlur = 0; // reset shadow parameter logic inside contextual bounds
+                ctx.shadowBlur = 0;
             }
 
-            // Draw aircraft locator tracking matrix dot
             ctx.beginPath();
             ctx.arc(currentX, currentY, 6, 0, 2 * Math.PI);
             ctx.fillStyle = '#ffffff';
             ctx.fill();
         }
 
-        /* ─── CORE GAME BETTING ACTION DECISION MATRIX ─── */
+        /* ─── TRANSACTIONAL BET OPERATIONS ─── */
         function handleGameAction() {
             const btn = document.getElementById('actionBtn');
             const amtInput = document.getElementById('betAmount');
@@ -816,7 +793,6 @@
 
             if(gameState.status === "WAITING") {
                 if(!gameState.hasBetInCurrentRound) {
-                    // Validations
                     if(isNaN(betVal) || betVal < 10) {
                         alert("🔴 Minimum bet configuration metric verified at 10 FC.");
                         return;
@@ -826,7 +802,6 @@
                         return;
                     }
 
-                    // Deduct Assets & Lock Ledger Allocation Pool
                     userProfile.balance -= betVal;
                     updateBalanceDOM();
 
@@ -839,7 +814,6 @@
                     btn.style.color = "#ffffff";
                     btn.style.boxShadow = "none";
                 } else {
-                    // Refunding Actions
                     userProfile.balance += gameState.currentBet;
                     updateBalanceDOM();
 
@@ -852,20 +826,17 @@
                 }
             } 
             else if (gameState.status === "FLYING" && gameState.hasBetInCurrentRound && !gameState.hasCasherOutCurrentRound) {
-                // Execute Liquidation Returns (Cashout Calculation Loop Matrix)
                 let cashoutYield = gameState.currentBet * gameState.multiplier;
                 userProfile.balance += cashoutYield;
                 updateBalanceDOM();
 
                 gameState.hasCasherOutCurrentRound = true;
-                
                 alert(`🟩 Flight Cashed Out successfully! Credited: +${cashoutYield.toFixed(2)} FC`);
                 
                 btn.innerText = "CASHED OUT ✅";
                 btn.className = "btn btn-waiting";
                 btn.disabled = true;
 
-                // Push item to transaction log block natively
                 injectLiveFeedRecord("You (Cashed Out)", gameState.multiplier.toFixed(2) + "x", "+" + cashoutYield.toFixed(0) + " FC", true);
             }
         }
@@ -904,7 +875,6 @@
             }
         }
 
-        /* ─── LIVE FEED REALTIME PLATFORM GENERATOR FEED ─── */
         function generateMockLiveFeed() {
             const users = ["Arjun_K", "Neo_Crypto", "Rohan99", "Alpha_Spec", "Karan_Crypto", "Sonia_M", "Vikram_Raj", "Riya_Capital"];
             setInterval(() => {
@@ -931,7 +901,7 @@
             }
         }
 
-        /* ─── PROFILE MECHANICS SHEET DB ROUTINES ─── */
+        /* ─── LOCAL STORAGE LOCAL IDENTITY LINKING ─── */
         function syncProfileId() {
             const inputVal = document.getElementById('profileSwitchId').value.trim();
             if(inputVal.length < 4) {
@@ -941,32 +911,28 @@
 
             userProfile.userId = inputVal;
             userProfile.isLocked = false;
-
-            // Committing identities setup blocks to disk storage
             localStorage.setItem('fluxaa_user_id', inputVal);
 
             document.getElementById('profileDisplayId').innerText = inputVal;
             document.getElementById('profileLockStatus').innerHTML = "🔓 System Synced & Verified (Gateways Open)";
             document.getElementById('profileLockStatus').style.color = "var(--accent-green)";
 
-            alert(`🟩 Identity: '${inputVal}' successfully linked into Google Ledger Core! All payment routes initialized.`);
+            alert(`🟩 Identity: '${inputVal}' successfully linked! All financial pipelines activated.`);
         }
 
-        /* ─── QR RENDERING AND ASYNC CLIENT TRANSACTION ACTIONS ─── */
+        /* ─── DYNAMIC QR DESIGN CODE ─── */
         function updateDynamicQR(value) {
             let numVal = parseFloat(value);
             if(isNaN(numVal) || numVal < 50) numVal = 50;
 
             document.getElementById('buyEstimate').innerText = `Tokens to credit: ${numVal} FC`;
 
-            // Draw programmatic static fallback custom visual grid inside standard system 
             const canvasQR = document.getElementById('qrCanvasElement');
             const qctx = canvasQR.getContext('2d');
             
             qctx.fillStyle = "#ffffff";
             qctx.fillRect(0, 0, canvasQR.width, canvasQR.height);
             
-            // Generate matrix grids representing encoded structure tracking markers
             qctx.fillStyle = "#0a0f1d";
             qctx.fillRect(15, 15, 45, 45); qctx.fillStyle = "#fff"; qctx.fillRect(23, 23, 29, 29); qctx.fillStyle = "#0a0f1d"; qctx.fillRect(29, 29, 17, 17);
             qctx.fillStyle = "#0a0f1d";
@@ -974,7 +940,6 @@
             qctx.fillStyle = "#0a0f1d";
             qctx.fillRect(15, 120, 45, 45); qctx.fillStyle = "#fff"; qctx.fillRect(23, 128, 29, 29); qctx.fillStyle = "#0a0f1d"; qctx.fillRect(29, 134, 17, 17);
 
-            // Populate localized block items mimicking specific dynamic value encoding
             qctx.fillStyle = "#0a0f1d";
             for (let i = 0; i < 40; i++) {
                 let rx = 20 + Math.floor(Math.random() * 140);
@@ -985,30 +950,54 @@
             }
         }
 
+        /* =========================================================================
+         🚀 6️⃣ GOOGLE SHEETS LIVE DATA INTERFACING (REAL STORAGE UPDATES)
+         ========================================================================= */
         function executeDepositHandling(e) {
             e.preventDefault();
             const utr = document.getElementById('buyUtr').value.trim();
             const amt = parseFloat(document.getElementById('buyAmount').value);
+            const currentUserId = userProfile.userId || "Unregistered_Client";
 
             if(utr.length !== 12 || isNaN(utr)) {
                 alert("🔴 Validation Error: Banking Reference UTR must consist of exactly 12 numeric digits.");
                 return;
             }
 
-            // Simulate background Google Database Server Validation Check
-            document.getElementById('buySubmitBtn').innerText = "Verifying Transaction Hash...";
+            if(GOOGLE_SHEET_WEBAPP_URL === "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL") {
+                alert("⚠️ System Warning: Web App URL configuration missing inside HTML script logic.");
+                return;
+            }
+
+            document.getElementById('buySubmitBtn').innerText = "Sending Data to Ledger Database...";
             document.getElementById('buySubmitBtn').disabled = true;
 
-            setTimeout(() => {
+            // TEXT/PLAIN pipeline formulation to eliminate CORS handshake bottlenecks
+            fetch(GOOGLE_SHEET_WEBAPP_URL, {
+                method: "POST",
+                headers: { "Content-Type": "text/plain" },
+                body: JSON.stringify({
+                    type: "DEPOSIT",
+                    userId: currentUserId,
+                    amount: amt,
+                    utr: utr,
+                    timestamp: new Date().toLocaleString()
+                })
+            })
+            .then(() => {
                 userProfile.balance += amt;
                 updateBalanceDOM();
-                
-                alert(`🟩 Deposit Verified! Transaction Ref: ${utr} processed successfully. +${amt} FC added to your wallet.`);
-                
+                alert(`🟩 Deposit Request Logged! Ref Hash: ${utr}. Data saved onto cloud sheets pipeline.`);
                 document.getElementById('buyUtr').value = "";
+            })
+            .catch(err => {
+                console.error("Ledger Core Error:", err);
+                alert("🔴 Sync Refused. Re-check deployment access definitions.");
+            })
+            .finally(() => {
                 document.getElementById('buySubmitBtn').innerText = "Verify Deposit Data";
                 document.getElementById('buySubmitBtn').disabled = false;
-            }, 2500);
+            });
         }
 
         function processWithdrawalEstimate(coins) {
@@ -1021,6 +1010,7 @@
             e.preventDefault();
             const coins = parseFloat(document.getElementById('withdrawCoins').value);
             const upi = document.getElementById('withdrawUpi').value.trim();
+            const currentUserId = userProfile.userId || "Unregistered_Client";
 
             if(isNaN(coins) || coins < 200) {
                 alert("🔴 Settlement Boundary Violation: Minimum processing unit threshold targeted at 200 FC.");
@@ -1035,18 +1025,43 @@
                 return;
             }
 
-            // Deduct assets pending audit pipeline confirmation
-            userProfile.balance -= coins;
-            updateBalanceDOM();
+            if(GOOGLE_SHEET_WEBAPP_URL === "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL") {
+                alert("⚠️ System Warning: Web App URL configuration missing inside HTML script logic.");
+                return;
+            }
 
-            alert(`🟩 Request Dispatched! Ledger deduction of ${coins} FC (₹${coins/2}) initialized. Audit pipeline target completion window: 30-120 minutes.`);
-            
-            document.getElementById('withdrawCoins').value = "";
-            document.getElementById('withdrawUpi').value = "";
-            document.getElementById('withdrawEstimate').innerText = "Bank Remittance Value: ₹0";
+            document.getElementById('withdrawSubmitBtn').innerText = "Pushing Clearance Tokens...";
+            document.getElementById('withdrawSubmitBtn').disabled = true;
+
+            fetch(GOOGLE_SHEET_WEBAPP_URL, {
+                method: "POST",
+                headers: { "Content-Type": "text/plain" },
+                body: JSON.stringify({
+                    type: "WITHDRAWAL",
+                    userId: currentUserId,
+                    amount: coins,
+                    upi: upi,
+                    timestamp: new Date().toLocaleString()
+                })
+            })
+            .then(() => {
+                userProfile.balance -= coins;
+                updateBalanceDOM();
+                alert(`🟩 Clearance Pipeline Dispatched! Withdrawal request for ${coins} FC logged securely into Sheets Database.`);
+                document.getElementById('withdrawCoins').value = "";
+                document.getElementById('withdrawUpi').value = "";
+                document.getElementById('withdrawEstimate').innerText = "Bank Remittance Value: ₹0";
+            })
+            .catch(err => {
+                console.error("Ledger Core Error:", err);
+                alert("🔴 Outward routing system failed connection checkpoints.");
+            })
+            .finally(() => {
+                document.getElementById('withdrawSubmitBtn').innerText = "Submit Payout Request";
+                document.getElementById('withdrawSubmitBtn').disabled = false;
+            });
         }
 
-        /* ─── HEX UTILITY COLORS CONVERTERS ─── */
         function varToHexColor(varName) {
             return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
         }
