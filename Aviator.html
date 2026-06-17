@@ -375,12 +375,17 @@
 </head>
 <body>
 
-    <div class="top-navbar">
-        <div class="logo" onclick="handleNavigationWithLock('home')">Fluxaa JetStream🛫</div>
-        <div class="wallet-badge" onclick="handleNavigationWithLock('wallet')">
-            🪙 Balance: <span id="topBalance" style="color: var(--accent-green);">0.00 FC</span>
-        </div>
+     <div class="top-navbar">
+    <div class="logo" onclick="handleNavigationWithLock('home')" style="line-height: 1.2;">
+        <div style="font-size: 18px; font-weight: 900; letter-spacing: 0.5px;">JETSTREAM 🛫</div>
+        <div style="font-size: 8px; color: #7e8b9b; letter-spacing: 1.5px; text-transform: uppercase;">Powered By Fluxaa</div>
     </div>
+    
+    <div class="wallet-badge" onclick="handleNavigationWithLock('wallet')">
+        <span style="font-size: 10px; margin-right: 4px;">🪙</span>
+        <span id="topBalance" style="color: var(--accent-green); font-weight: 800;">0.00 FC</span>
+    </div>
+     </div>
 
     <div class="main-wrapper">
 
