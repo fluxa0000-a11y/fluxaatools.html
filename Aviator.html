@@ -394,27 +394,6 @@
     let currentMultiplier = 1.00;
     let serverCrashPoint = 1.85;
     let canvas, ctx, animationFrame, timeX = 0;
-
-    // --- MINI VANILLA QR GENERATOR ALGORITHM (100% WORKING SCAN CODE) ---
-    const QRGenerator = {
-        generateMatrix: function(text) {
-            let size = 25; // QR Version 2
-            let matrix = Array(size).fill().map(() => Array(size).fill(0));
-            
-            // Finder Patterns drawing
-            autoDrawFinder(matrix, 0, 0);
-            autoDrawFinder(matrix, size - 7, 0);
-            autoDrawFinder(matrix, 0, size - 7);
-            
-            function autoDrawFinder(m, r, c) {
-                for (let i = 0; i < 7; i++) {
-                    for (let j = 0; j < 7; j++) {
-                        let isEdge = (i === 0 || i === 6 || j === 0 || j === 6);
-                        let isCenter = (i >= 2 && i <= 4 && j >= 2 && j <= 4);
-                        if (isEdge || isCenter) m[r + i][c + j] = 1;
-                    }
-                }
-            }
             
             // Pseudo-randomizing contents deterministically based on string characters
             let charSum = 0;
