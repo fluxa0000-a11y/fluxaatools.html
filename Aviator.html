@@ -1,12 +1,12 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FLUXAA Premium Matrix | The Ultimate Flight Ledger</title>
+    <title>FLUXAA Premium Matrix | Cloud Ledger Verified</title>
     
     <style>
-        /* ─── SYSTEM CORE VARIABLES ─── */
         :root {
             --bg-main: #0a0f1d;
             --bg-card: #131a30;
@@ -21,7 +21,6 @@
             --font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
         }
 
-        /* ─── RESET & UNIVERSAL PROPERTIES ─── */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -40,7 +39,6 @@
             height: 100%;
         }
 
-        /* ─── TOP NAVIGATION COMPONENT ─── */
         .top-navbar {
             height: 65px;
             background: linear-gradient(180deg, rgba(19,26,48,1) 0%, rgba(10,15,29,1) 100%);
@@ -64,11 +62,6 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             cursor: pointer;
-            transition: transform 0.2s ease;
-        }
-
-        .top-navbar .logo:active {
-            transform: scale(0.95);
         }
 
         .wallet-badge {
@@ -79,18 +72,11 @@
             font-size: 14px;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             gap: 6px;
         }
 
-        .wallet-badge:active {
-            background: rgba(0, 230, 118, 0.2);
-            transform: scale(0.95);
-        }
-
-        /* ─── APP CENTRAL FRAME WRAPPER ─── */
         .main-wrapper {
             position: absolute;
             top: 65px;
@@ -101,7 +87,6 @@
             padding: 15px;
         }
 
-        /* ─── CORE PAGE STRUCTURES ─── */
         .page {
             display: none;
             width: 100%;
@@ -119,7 +104,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ─── SECTION 1: HOME (GAME SIMULATOR HUB) ─── */
         .screen {
             background: radial-gradient(circle at center, #182545 0%, #0c1224 100%);
             border: 2px solid var(--border-color);
@@ -162,7 +146,7 @@
         }
 
         @keyframes shake {
-            0%, 100% { transform: translate(-50%, -50%) cubic-bezier(.36,.07,.19,.97) rotate(0deg); }
+            0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
             20%, 60% { transform: translate(-52%, -48%) rotate(-1deg); }
             40%, 80% { transform: translate(-48%, -52%) rotate(1deg); }
         }
@@ -176,14 +160,12 @@
             z-index: 2;
         }
 
-        /* ─── BET COMPONENT STRUCT ─── */
         .bet-section {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
             border-radius: 16px;
             padding: 16px;
             margin-bottom: 20px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
         }
 
         .input-box {
@@ -197,7 +179,6 @@
             font-size: 12px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1px;
             color: var(--text-muted);
         }
 
@@ -210,11 +191,6 @@
             font-size: 16px;
             font-weight: 700;
             outline: none;
-            transition: border-color 0.3s ease;
-        }
-
-        .input-box input:focus {
-            border-color: var(--accent-blue);
         }
 
         .btn {
@@ -226,33 +202,24 @@
             font-weight: 800;
             letter-spacing: 1px;
             cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .btn-bet {
             background: linear-gradient(135deg, #00e676 0%, #00b0ff 100%);
             color: #000;
-            box-shadow: 0 4px 20px rgba(0,230,118,0.3);
         }
 
         .btn-cashout {
             background: linear-gradient(135deg, #ffd700 0%, #ff9100 100%);
             color: #000;
-            box-shadow: 0 4px 20px rgba(255,215,0,0.3);
         }
 
         .btn-waiting {
             background: #263238 !important;
             color: var(--text-muted) !important;
             cursor: not-allowed;
-            box-shadow: none !important;
         }
 
-        .btn:active {
-            transform: scale(0.98);
-        }
-
-        /* ─── LIVE PLATFORM LIST FEED ─── */
         .live-feed-box {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
@@ -268,7 +235,6 @@
             font-weight: 800;
             color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 1px;
             margin-bottom: 12px;
             border-bottom: 1px solid var(--border-color);
             padding-bottom: 6px;
@@ -297,7 +263,6 @@
             background: rgba(0,230,118,0.03);
         }
 
-        /* ─── WALLET ARCHITECTURE ─── */
         .tab-container {
             display: flex;
             background: var(--bg-card);
@@ -317,13 +282,11 @@
             font-size: 14px;
             cursor: pointer;
             border-radius: 8px;
-            transition: all 0.3s ease;
         }
 
         .tab-btn.active {
             background: var(--bg-input);
             color: var(--text-main);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
 
         .rule-box {
@@ -351,7 +314,6 @@
             display: inline-block;
             margin: 15px auto;
             text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         .submit-btn {
@@ -362,26 +324,19 @@
             font-size: 14px;
             font-weight: 700;
             cursor: pointer;
-            transition: opacity 0.2s ease;
-        }
-
-        .submit-btn:active {
-            opacity: 0.85;
         }
 
         .hidden {
             display: none !important;
         }
 
-        /* ─── USER ACCOUNT CARD ─── */
         .card {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
             border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            padding: 24px;
         }
 
-        /* ─── SYSTEM BOTTOM BAR ─── */
         .bottom-nav {
             height: 70px;
             background: #0d1527;
@@ -393,13 +348,11 @@
             justify-content: space-around;
             align-items: center;
             z-index: 1000;
-            box-shadow: 0 -4px 25px rgba(0,0,0,0.5);
         }
 
         .nav-item {
             background: transparent;
             border: none;
-            outline: none;
             color: var(--text-muted);
             display: flex;
             flex-direction: column;
@@ -411,25 +364,10 @@
             cursor: pointer;
             width: 25%;
             height: 100%;
-            transition: all 0.2s ease;
         }
 
         .nav-item.active {
             color: var(--accent-green);
-        }
-
-        .nav-item span {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        ::-webkit-scrollbar {
-            width: 4px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--border-color);
-            border-radius: 10px;
         }
     </style>
 </head>
@@ -438,7 +376,7 @@
     <div class="top-navbar">
         <div class="logo" onclick="handleNavigationWithLock('home')">FLUXAA 🛫</div>
         <div class="wallet-badge" onclick="handleNavigationWithLock('wallet')">
-            🪙 Wallet: <span id="topBalance" style="color: var(--accent-green);">100 FC</span>
+            🪙 Wallet: <span id="topBalance" style="color: var(--accent-green);">0.00 FC</span>
         </div>
     </div>
 
@@ -475,7 +413,7 @@
                 <div class="rule-box" style="line-height: 1.6; margin-bottom: 15px;">
                     <strong>🟩 Deposit Rules:</strong><br>
                     • Exchange Ratio: 1 INR = 1 Fluxaa Coin (FC)<br>
-                    • <strong>Minimum Remittance Capital Required: ₹50</strong>
+                    • Minimum Remittance Capital Required: ₹50
                 </div>
                 
                 <div class="input-box" style="margin-bottom: 15px;">
@@ -507,7 +445,7 @@
                 <div class="rule-box" style="border-left-color: var(--accent-red); background: rgba(255,61,0,0.02); line-height: 1.6; margin-bottom: 15px;">
                     <strong>🟥 Settlement Rules:</strong><br>
                     • Liquidation Ratio: 2 Fluxaa Coins (FC) = 1 INR<br>
-                    • <strong>Minimum Payout Threshold: 200 FC (₹100)</strong>
+                    • Minimum Payout Threshold: 200 FC (₹100)
                 </div>
                 
                 <div class="input-box" style="margin-bottom: 15px;">
@@ -525,8 +463,8 @@
         </div>
 
         <div id="profilePage" class="page">
-            <div class="card" style="text-align: center; padding: 24px;">
-                <div style="width: 80px; height: 80px; background: #1a2336; border-radius: 50%; margin: 0 auto 16px auto; display: flex; align-items: center; justify-content: center; font-size: 36px; color: var(--accent-green); border: 2px solid var(--accent-green); box-shadow: 0 0 15px rgba(0,230,118,0.2);">👤</div>
+            <div class="card" style="text-align: center;">
+                <div style="width: 80px; height: 80px; background: #1a2336; border-radius: 50%; margin: 0 auto 16px auto; display: flex; align-items: center; justify-content: center; font-size: 36px; color: var(--accent-green); border: 2px solid var(--accent-green);">👤</div>
                 
                 <div id="profileDisplayId" style="font-size: 24px; font-weight: 900; color: var(--accent-green); margin-bottom: 6px;">Unregistered Client</div>
                 <p id="profileLockStatus" style="color: var(--accent-red); font-size: 13px; font-weight: 700; margin: 10px 0;">🔒 Withdrawal Gateway Blocked (ID Sync Missing)</p>
@@ -557,14 +495,13 @@
     </div>
 
     <script>
-        // ─── GOOGLE SHEETS WEB APP CONFIGURATION GATEWAY ───
-        // यहाँ अपनी Apps Script का Deploy किया हुआ 'Web App URL' डालें:
-        const GOOGLE_SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbyw3fjXGQp8-DW5tsgQpNHRiDgZXfso7LNdhCpjRyNgcB1LGcEIWYqXd98bmbQ6MVuWGg/exec";
+        // ─── GOOGLE APPS SCRIPT DATABASE LIVE LINK ───
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyw3fjXGQp8-DW5tsgQpNHRiDgZXfso7LNdhCpjRyNgcB1LGcEIWYqXd98bmbQ6MVuWGg/exec";
 
-        /* ─── SYSTEM STATE STORAGE ─── */
+        /* SYSTEM DATA STORAGE MODELS */
         let userProfile = {
             userId: "",
-            balance: 100,
+            balance: 0.00,
             isLocked: true
         };
 
@@ -580,7 +517,6 @@
 
         let canvas, ctx, animationFrameId, graphPoints = [];
 
-        /* ─── APP SETUP EVENTS ─── */
         window.addEventListener('DOMContentLoaded', () => {
             canvas = document.getElementById('graphCanvas');
             ctx = canvas.getContext('2d');
@@ -600,11 +536,33 @@
             }
         }
 
-        /* ─── LOCALSTORAGE PERSISTENT RETRIEVALS ─── */
+        /* ─── GOOGLE SHEET CLOUD DATA INTERFACING (MANUAL REFRESH SHIFT) ─── */
+        function fetchBalanceFromSheet() {
+            if (!userProfile.userId || userProfile.userId === "" || userProfile.userId === "Unregistered") return;
+
+            fetch(SCRIPT_URL, {
+                method: "POST",
+                headers: { "Content-Type": "text/plain" },
+                body: JSON.stringify({
+                    action: "FETCH_BALANCE",
+                    userId: userProfile.userId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.status === "success") {
+                    userProfile.balance = parseFloat(data.balance) || 0;
+                    updateBalanceDOM();
+                }
+            })
+            .catch(err => console.error("Balance cloud fetch sync error:", err));
+        }
+
+        // हर 10 सेकंड में क्लाउड शीट के डेटा से ऑटो-बैलेंस चेक होता रहेगा
+        setInterval(fetchBalanceFromSheet, 10000);
+
         function loadLocalProfileData() {
             const savedId = localStorage.getItem('fluxaa_user_id');
-            const savedBal = localStorage.getItem('fluxaa_balance');
-            
             if(savedId) {
                 userProfile.userId = savedId;
                 userProfile.isLocked = false;
@@ -612,25 +570,18 @@
                 document.getElementById('profileLockStatus').innerHTML = "🔓 System Synced & Verified (Gateways Open)";
                 document.getElementById('profileLockStatus').style.color = "var(--accent-green)";
                 document.getElementById('profileSwitchId').value = savedId;
+                fetchBalanceFromSheet(); // प्रारंभिक डेटा को लोड करना
             }
-            
-            if(savedBal !== null) {
-                userProfile.balance = parseFloat(savedBal);
-            } else {
-                localStorage.setItem('fluxaa_balance', userProfile.balance);
-            }
-            updateBalanceDOM();
         }
 
         function updateBalanceDOM() {
             document.getElementById('topBalance').innerText = userProfile.balance.toFixed(2) + " FC";
-            localStorage.setItem('fluxaa_balance', userProfile.balance);
         }
 
-        /* ─── NAVIGATION HANDLERS ─── */
+        /* NAVIGATION INTERLOCK ROUTINES */
         function handleNavigationWithLock(targetPage) {
             if(targetPage === 'wallet' && userProfile.isLocked) {
-                alert("🔴 Access Restricted: Please verify your Ledger User ID inside the Profile tab first to unblock your financial gateway.");
+                alert("🔴 Access Restricted: Please verify your Ledger User ID inside the Profile tab first.");
                 switchPage('profile');
                 return;
             }
@@ -662,7 +613,7 @@
             }
         }
 
-        /* ─── AVIATOR REALTIME CRASH SYSTEM ─── */
+        /* ─── REALTIME FLIGHT GRAPH MATH ENGINE ─── */
         function initializeSystemGameEngine() {
             prepareNextFlightRound();
         }
@@ -674,13 +625,9 @@
             graphPoints = [];
             
             let rand = Math.random();
-            if(rand < 0.10) {
-                gameState.crashPoint = 1.00 + (Math.random() * 0.15);
-            } else if (rand < 0.75) {
-                gameState.crashPoint = 1.15 + (Math.random() * 2.5);
-            } else {
-                gameState.crashPoint = 3.65 + (Math.random() * 15);
-            }
+            if(rand < 0.12) gameState.crashPoint = 1.00 + (Math.random() * 0.12);
+            else if (rand < 0.80) gameState.crashPoint = 1.12 + (Math.random() * 2.2);
+            else gameState.crashPoint = 3.30 + (Math.random() * 12);
 
             document.getElementById('statusMessage').innerText = "WAITING FOR NEXT FLIGHT...";
             document.getElementById('statusMessage').style.color = "var(--text-muted)";
@@ -688,7 +635,6 @@
             const multDisplay = document.getElementById('liveMultiplier');
             multDisplay.innerText = "1.00x";
             multDisplay.classList.remove('crashed');
-            multDisplay.style.color = "var(--text-main)";
 
             updateActionBtnUI();
 
@@ -708,7 +654,7 @@
             gameState.status = "FLYING";
             gameState.startTime = performance.now();
             document.getElementById('statusMessage').innerText = "AIRCRAFT IS AIRBORNE!";
-            document.getElementById('statusMessage').style.color = varToHexColor('--accent-green');
+            document.getElementById('statusMessage').style.color = "#00e676";
             
             updateActionBtnUI();
             executeFlightRenderLoop();
@@ -739,7 +685,7 @@
             multDisplay.classList.add('crashed');
 
             document.getElementById('statusMessage').innerText = "FLEW AWAY!";
-            document.getElementById('statusMessage').style.color = varToHexColor('--accent-red');
+            document.getElementById('statusMessage').style.color = "#ff3d00";
 
             if(gameState.hasBetInCurrentRound && !gameState.hasCasherOutCurrentRound) {
                 gameState.currentBet = 0;
@@ -747,18 +693,13 @@
             }
 
             updateActionBtnUI();
-
-            setTimeout(() => {
-                prepareNextFlightRound();
-            }, 4000);
+            setTimeout(prepareNextFlightRound, 4000);
         }
 
         function renderGraphCanvasFrame(elapsed) {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            let paddingLeft = 40;
-            let paddingBottom = 40;
-            let graphWidth = canvas.width - paddingLeft;
-            let graphHeight = canvas.height - paddingBottom;
+            let paddingLeft = 40; let paddingBottom = 40;
+            let graphWidth = canvas.width - paddingLeft; let graphHeight = canvas.height - paddingBottom;
 
             let currentX = paddingLeft + Math.min(graphWidth * 0.85, (elapsed * 25));
             let currentY = (canvas.height - paddingBottom) - Math.min(graphHeight * 0.85, (Math.pow(gameState.multiplier, 1.4) * 5));
@@ -771,36 +712,20 @@
                 for(let i = 1; i < graphPoints.length; i++) {
                     ctx.lineTo(graphPoints[i].x, graphPoints[i].y);
                 }
-                ctx.strokeStyle = '#00e676';
-                ctx.lineWidth = 4;
-                ctx.shadowBlur = 15;
-                ctx.shadowColor = '#00e676';
-                ctx.stroke();
-                ctx.shadowBlur = 0;
+                ctx.strokeStyle = '#00e676'; ctx.lineWidth = 4; ctx.stroke();
             }
-
-            ctx.beginPath();
-            ctx.arc(currentX, currentY, 6, 0, 2 * Math.PI);
-            ctx.fillStyle = '#ffffff';
-            ctx.fill();
+            ctx.beginPath(); ctx.arc(currentX, currentY, 6, 0, 2 * Math.PI); ctx.fillStyle = '#ffffff'; ctx.fill();
         }
 
-        /* ─── TRANSACTIONAL BET OPERATIONS ─── */
+        /* ─── LOCAL BALANCES TRANSACTIONS (LOCAL BOUNDARY VERIFIED) ─── */
         function handleGameAction() {
             const btn = document.getElementById('actionBtn');
-            const amtInput = document.getElementById('betAmount');
-            let betVal = parseFloat(amtInput.value);
+            let betVal = parseFloat(document.getElementById('betAmount').value);
 
             if(gameState.status === "WAITING") {
                 if(!gameState.hasBetInCurrentRound) {
-                    if(isNaN(betVal) || betVal < 10) {
-                        alert("🔴 Minimum bet configuration metric verified at 10 FC.");
-                        return;
-                    }
-                    if(userProfile.balance < betVal) {
-                        alert("🔴 Insufficient Capital Balance. Please reload extra units via the wallet tab.");
-                        return;
-                    }
+                    if(isNaN(betVal) || betVal < 10) { alert("🔴 Minimum bet threshold: 10 FC."); return; }
+                    if(userProfile.balance < betVal) { alert("🔴 Insufficient Wallet Balance."); return; }
 
                     userProfile.balance -= betVal;
                     updateBalanceDOM();
@@ -810,19 +735,15 @@
                     gameState.hasCasherOutCurrentRound = false;
 
                     btn.innerText = "CANCEL BET";
-                    btn.style.background = "#37474f";
-                    btn.style.color = "#ffffff";
-                    btn.style.boxShadow = "none";
+                    btn.style.background = "#37474f"; btn.style.color = "#ffffff";
                 } else {
                     userProfile.balance += gameState.currentBet;
                     updateBalanceDOM();
-
                     gameState.currentBet = 0;
                     gameState.hasBetInCurrentRound = false;
 
                     btn.innerText = "PLACE BET";
-                    btn.style.background = "linear-gradient(135deg, #00e676 0%, #00b0ff 100%)";
-                    btn.style.color = "#000";
+                    btn.style.background = ""; btn.style.color = "";
                 }
             } 
             else if (gameState.status === "FLYING" && gameState.hasBetInCurrentRound && !gameState.hasCasherOutCurrentRound) {
@@ -831,11 +752,10 @@
                 updateBalanceDOM();
 
                 gameState.hasCasherOutCurrentRound = true;
-                alert(`🟩 Flight Cashed Out successfully! Credited: +${cashoutYield.toFixed(2)} FC`);
+                alert(`🟩 Flight Cashed Out! Credited: +${cashoutYield.toFixed(2)} FC`);
                 
                 btn.innerText = "CASHED OUT ✅";
-                btn.className = "btn btn-waiting";
-                btn.disabled = true;
+                btn.className = "btn btn-waiting"; btn.disabled = true;
 
                 injectLiveFeedRecord("You (Cashed Out)", gameState.multiplier.toFixed(2) + "x", "+" + cashoutYield.toFixed(0) + " FC", true);
             }
@@ -847,44 +767,34 @@
 
             if(gameState.status === "WAITING") {
                 if(gameState.hasBetInCurrentRound) {
-                    btn.innerText = "CANCEL BET";
-                    btn.className = "btn";
-                    btn.style.background = "#37474f";
-                    btn.style.color = "#ffffff";
+                    btn.innerText = "CANCEL BET"; btn.className = "btn";
+                    btn.style.background = "#37474f"; btn.style.color = "#ffffff";
                 } else {
-                    btn.innerText = "PLACE BET";
-                    btn.className = "btn btn-bet";
-                    btn.style.background = "";
-                    btn.style.color = "";
+                    btn.innerText = "PLACE BET"; btn.className = "btn btn-bet";
+                    btn.style.background = ""; btn.style.color = "";
                 }
             } 
             else if(gameState.status === "FLYING") {
                 if(gameState.hasBetInCurrentRound && !gameState.hasCasherOutCurrentRound) {
                     btn.innerText = `CASH OUT (${(gameState.currentBet * gameState.multiplier).toFixed(1)} FC)`;
-                    btn.className = "btn btn-cashout";
+                    btn.className = "btn btn-cashout"; btn.style.background = ""; btn.style.color = "";
                 } else {
-                    btn.innerText = "FLIGHT IN PROGRESS";
-                    btn.className = "btn btn-waiting";
-                    btn.disabled = true;
+                    btn.innerText = "FLIGHT IN PROGRESS"; btn.className = "btn btn-waiting"; btn.disabled = true;
                 }
             } 
             else if(gameState.status === "CRASHED") {
-                btn.innerText = "EXPLODED TERMINATION";
-                btn.className = "btn btn-waiting";
-                btn.disabled = true;
+                btn.innerText = "EXPLODED TERMINATION"; btn.className = "btn btn-waiting"; btn.disabled = true;
             }
         }
 
         function generateMockLiveFeed() {
-            const users = ["Arjun_K", "Neo_Crypto", "Rohan99", "Alpha_Spec", "Karan_Crypto", "Sonia_M", "Vikram_Raj", "Riya_Capital"];
+            const users = ["Arjun_K", "Neo_Crypto", "Rohan99", "Alpha_Spec", "Karan_Crypto", "Sonia_M", "Vikram_Raj"];
             setInterval(() => {
                 if(gameState.status === "FLYING" && Math.random() > 0.4) {
                     let user = users[Math.floor(Math.random() * users.length)];
                     let mult = (1.05 + (Math.random() * (gameState.multiplier - 1.01))).toFixed(2);
                     let fakeBet = Math.floor(20 + Math.random() * 400);
-                    let profit = Math.floor(fakeBet * mult);
-                    
-                    injectLiveFeedRecord(user, mult + "x", "+" + profit + " FC", true);
+                    injectLiveFeedRecord(user, mult + "x", "+" + Math.floor(fakeBet * mult) + " FC", true);
                 }
             }, 2500);
         }
@@ -894,20 +804,13 @@
             const item = document.createElement('div');
             item.className = `feed-item ${isWin ? 'win' : ''}`;
             item.innerHTML = `<span>👤 ${user} <strong>@ ${mult}</strong></span><span>${amount}</span>`;
-            
             list.insertBefore(item, list.firstChild);
-            if(list.children.length > 25) {
-                list.removeChild(list.lastChild);
-            }
+            if(list.children.length > 20) list.removeChild(list.lastChild);
         }
 
-        /* ─── LOCAL STORAGE LOCAL IDENTITY LINKING ─── */
         function syncProfileId() {
             const inputVal = document.getElementById('profileSwitchId').value.trim();
-            if(inputVal.length < 4) {
-                alert("🔴 Invalid Entry: Explicit Ledger Credentials must be 4+ alphanumeric chars.");
-                return;
-            }
+            if(inputVal.length < 4) { alert("🔴 Entry Error: Unique ID must be 4+ alphanumeric chars."); return; }
 
             userProfile.userId = inputVal;
             userProfile.isLocked = false;
@@ -917,82 +820,59 @@
             document.getElementById('profileLockStatus').innerHTML = "🔓 System Synced & Verified (Gateways Open)";
             document.getElementById('profileLockStatus').style.color = "var(--accent-green)";
 
-            alert(`🟩 Identity: '${inputVal}' successfully linked! All financial pipelines activated.`);
+            alert(`🟩 ID Link Dispatched: Initializing Ledger data retrieval for '${inputVal}'...`);
+            fetchBalanceFromSheet(); // आईडी लिंक होते ही क्लाउड से बैलेंस लोड करना
         }
 
-        /* ─── DYNAMIC QR DESIGN CODE ─── */
         function updateDynamicQR(value) {
-            let numVal = parseFloat(value);
-            if(isNaN(numVal) || numVal < 50) numVal = 50;
-
+            let numVal = parseFloat(value); if(isNaN(numVal) || numVal < 50) numVal = 50;
             document.getElementById('buyEstimate').innerText = `Tokens to credit: ${numVal} FC`;
 
-            const canvasQR = document.getElementById('qrCanvasElement');
-            const qctx = canvasQR.getContext('2d');
-            
-            qctx.fillStyle = "#ffffff";
-            qctx.fillRect(0, 0, canvasQR.width, canvasQR.height);
-            
+            const canvasQR = document.getElementById('qrCanvasElement'); const qctx = canvasQR.getContext('2d');
+            qctx.fillStyle = "#ffffff"; qctx.fillRect(0, 0, canvasQR.width, canvasQR.height);
             qctx.fillStyle = "#0a0f1d";
             qctx.fillRect(15, 15, 45, 45); qctx.fillStyle = "#fff"; qctx.fillRect(23, 23, 29, 29); qctx.fillStyle = "#0a0f1d"; qctx.fillRect(29, 29, 17, 17);
-            qctx.fillStyle = "#0a0f1d";
             qctx.fillRect(120, 15, 45, 45); qctx.fillStyle = "#fff"; qctx.fillRect(128, 23, 29, 29); qctx.fillStyle = "#0a0f1d"; qctx.fillRect(134, 29, 17, 17);
-            qctx.fillStyle = "#0a0f1d";
             qctx.fillRect(15, 120, 45, 45); qctx.fillStyle = "#fff"; qctx.fillRect(23, 128, 29, 29); qctx.fillStyle = "#0a0f1d"; qctx.fillRect(29, 134, 17, 17);
-
-            qctx.fillStyle = "#0a0f1d";
-            for (let i = 0; i < 40; i++) {
-                let rx = 20 + Math.floor(Math.random() * 140);
-                let ry = 20 + Math.floor(Math.random() * 140);
-                if(!((rx < 65 && ry < 65) || (rx > 115 && ry < 65) || (rx < 65 && ry > 115))) {
-                    qctx.fillRect(rx, ry, 6, 6);
-                }
+            for (let i = 0; i < 45; i++) {
+                let rx = 20 + Math.floor(Math.random() * 140); let ry = 20 + Math.floor(Math.random() * 140);
+                if(!((rx < 65 && ry < 65) || (rx > 115 && ry < 65) || (rx < 65 && ry > 115))) qctx.fillRect(rx, ry, 6, 6);
             }
         }
 
-        /* =========================================================================
-         🚀 6️⃣ GOOGLE SHEETS LIVE DATA INTERFACING (REAL STORAGE UPDATES)
-         ========================================================================= */
+        /* ─── DISPATCH PIPELINES FOR LIVE GOOGLE SHEET CORES ─── */
         function executeDepositHandling(e) {
             e.preventDefault();
             const utr = document.getElementById('buyUtr').value.trim();
             const amt = parseFloat(document.getElementById('buyAmount').value);
-            const currentUserId = userProfile.userId || "Unregistered_Client";
+            const currentUserId = userProfile.userId || "Unregistered";
 
             if(utr.length !== 12 || isNaN(utr)) {
-                alert("🔴 Validation Error: Banking Reference UTR must consist of exactly 12 numeric digits.");
+                alert("🔴 Validation Error: Reference UTR must consist of exactly 12 digits.");
                 return;
             }
 
-            if(GOOGLE_SHEET_WEBAPP_URL === "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL") {
-                alert("⚠️ System Warning: Web App URL configuration missing inside HTML script logic.");
-                return;
-            }
-
-            document.getElementById('buySubmitBtn').innerText = "Sending Data to Ledger Database...";
+            document.getElementById('buySubmitBtn').innerText = "Submitting to Cloud Ledger...";
             document.getElementById('buySubmitBtn').disabled = true;
 
-            // TEXT/PLAIN pipeline formulation to eliminate CORS handshake bottlenecks
-            fetch(GOOGLE_SHEET_WEBAPP_URL, {
+            fetch(SCRIPT_URL, {
                 method: "POST",
                 headers: { "Content-Type": "text/plain" },
                 body: JSON.stringify({
                     type: "DEPOSIT",
                     userId: currentUserId,
                     amount: amt,
-                    utr: utr,
-                    timestamp: new Date().toLocaleString()
+                    utr: utr
                 })
             })
             .then(() => {
-                userProfile.balance += amt;
-                updateBalanceDOM();
-                alert(`🟩 Deposit Request Logged! Ref Hash: ${utr}. Data saved onto cloud sheets pipeline.`);
+                alert(`🟩 Request Dispatched! UTR: ${utr} भेजा गया। एडमिन जब शीट में पैसे चेक करके बैलेंस बढ़ाएगा, तब यहाँ अपडेट होगा।`);
                 document.getElementById('buyUtr').value = "";
+                fetchBalanceFromSheet();
             })
             .catch(err => {
-                console.error("Ledger Core Error:", err);
-                alert("🔴 Sync Refused. Re-check deployment access definitions.");
+                console.error(err);
+                alert("🔴 Cloud Sync Refused.");
             })
             .finally(() => {
                 document.getElementById('buySubmitBtn').innerText = "Verify Deposit Data";
@@ -1001,8 +881,7 @@
         }
 
         function processWithdrawalEstimate(coins) {
-            let coinVal = parseFloat(coins);
-            if(isNaN(coinVal)) coinVal = 0;
+            let coinVal = parseFloat(coins); if(isNaN(coinVal)) coinVal = 0;
             document.getElementById('withdrawEstimate').innerText = 'Bank Remittance Value: ₹' + (coinVal / 2);
         }
 
@@ -1010,60 +889,40 @@
             e.preventDefault();
             const coins = parseFloat(document.getElementById('withdrawCoins').value);
             const upi = document.getElementById('withdrawUpi').value.trim();
-            const currentUserId = userProfile.userId || "Unregistered_Client";
+            const currentUserId = userProfile.userId || "Unregistered";
 
-            if(isNaN(coins) || coins < 200) {
-                alert("🔴 Settlement Boundary Violation: Minimum processing unit threshold targeted at 200 FC.");
-                return;
-            }
-            if(userProfile.balance < coins) {
-                alert("🔴 Deficit Balance error inside current profile parameters.");
-                return;
-            }
-            if(!upi.includes('@')) {
-                alert("🔴 Routing Target Error: Please feed an authenticated destination address framework (e.g. user@bank).");
-                return;
-            }
+            if(isNaN(coins) || coins < 200) { alert("🔴 Minimum validation target: 200 FC."); return; }
+            if(userProfile.balance < coins) { alert("🔴 Account Deficit inside cloud profiles."); return; }
+            if(!upi.includes('@')) { alert("🔴 Route Missing: Enter a valid UPI route string."); return; }
 
-            if(GOOGLE_SHEET_WEBAPP_URL === "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL") {
-                alert("⚠️ System Warning: Web App URL configuration missing inside HTML script logic.");
-                return;
-            }
-
-            document.getElementById('withdrawSubmitBtn').innerText = "Pushing Clearance Tokens...";
+            document.getElementById('withdrawSubmitBtn').innerText = "Logging Payout Pipeline...";
             document.getElementById('withdrawSubmitBtn').disabled = true;
 
-            fetch(GOOGLE_SHEET_WEBAPP_URL, {
+            fetch(SCRIPT_URL, {
                 method: "POST",
                 headers: { "Content-Type": "text/plain" },
                 body: JSON.stringify({
                     type: "WITHDRAWAL",
                     userId: currentUserId,
                     amount: coins,
-                    upi: upi,
-                    timestamp: new Date().toLocaleString()
+                    upi: upi
                 })
             })
             .then(() => {
-                userProfile.balance -= coins;
-                updateBalanceDOM();
-                alert(`🟩 Clearance Pipeline Dispatched! Withdrawal request for ${coins} FC logged securely into Sheets Database.`);
+                alert(`🟩 Clearance Dispatched! विथड्रॉल डेटा शीट में भेज दिया गया है। वेरिफिकेशन पूरा होने के बाद ही बैलेंस घटेगा।`);
                 document.getElementById('withdrawCoins').value = "";
                 document.getElementById('withdrawUpi').value = "";
                 document.getElementById('withdrawEstimate').innerText = "Bank Remittance Value: ₹0";
+                fetchBalanceFromSheet();
             })
             .catch(err => {
-                console.error("Ledger Core Error:", err);
-                alert("🔴 Outward routing system failed connection checkpoints.");
+                console.error(err);
+                alert("🔴 Payout Connection Timeout.");
             })
             .finally(() => {
                 document.getElementById('withdrawSubmitBtn').innerText = "Submit Payout Request";
                 document.getElementById('withdrawSubmitBtn').disabled = false;
             });
-        }
-
-        function varToHexColor(varName) {
-            return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
         }
     </script>
 </body>
