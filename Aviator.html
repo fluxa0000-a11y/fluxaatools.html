@@ -2,796 +2,1054 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fluxaa Aviator - Premium Experience</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FLUXAA Premium Matrix | The Ultimate Flight Ledger</title>
+    
     <style>
-        /* --- ULTRA PREMIUM GLASS-MORPHISM THEME --- */
+        /* ─── SYSTEM CORE VARIABLES ─── */
         :root {
-            --bg-main: #06090e;
-            --bg-card: #111622;
-            --bg-input: #0b0e14;
+            --bg-main: #0a0f1d;
+            --bg-card: #131a30;
+            --bg-input: #1c2646;
             --accent-green: #00e676;
             --accent-red: #ff3d00;
-            --accent-gold: #ffea00;
-            --text-pure: #ffffff;
+            --accent-gold: #ffd700;
+            --accent-blue: #2979ff;
+            --text-main: #ffffff;
             --text-muted: #7e8b9b;
-            --border-color: #1e2640;
+            --border-color: #24325c;
+            --font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
         }
 
-        body { 
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; 
-            background-color: var(--bg-main); 
-            color: var(--text-pure); 
-            margin: 0; 
-            padding: 0; 
-            overflow-x: hidden;
+        /* ─── RESET & UNIVERSAL PROPERTIES ─── */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-family);
             -webkit-tap-highlight-color: transparent;
-        }
-        
-        /* --- TOP VIP NAVIGATION BAR --- */
-        .top-navbar { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            background: linear-gradient(to bottom, #161f30, #0d1522); 
-            padding: 14px 20px; 
-            box-shadow: 0 4px 30px rgba(0,0,0,0.7); 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            right: 0; 
-            z-index: 1000; 
-            border-bottom: 2px solid var(--border-color); 
-        }
-        .logo { 
-            font-size: 24px; 
-            font-weight: 900; 
-            color: var(--accent-green); 
-            letter-spacing: 2.5px; 
-            cursor: pointer; 
-            text-shadow: 0 0 15px rgba(0,230,118,0.4); 
-        }
-        .wallet-badge { 
-            background: rgba(0, 230, 118, 0.07); 
-            border: 1.5px solid var(--accent-green); 
-            padding: 8px 18px; 
-            border-radius: 30px; 
-            cursor: pointer; 
-            font-weight: 800; 
-            font-size: 14px; 
-            box-shadow: 0 0 15px rgba(0,230,118,0.1); 
-            transition: all 0.3s ease; 
-        }
-        .wallet-badge:hover { 
-            background: var(--accent-green); 
-            color: var(--bg-main);
-            box-shadow: 0 0 20px rgba(0,230,118,0.4);
+            user-select: none;
         }
 
-        /* --- DISPLAY WRAPPER SYSTEM --- */
-        .main-wrapper { 
-            margin-top: 90px; 
-            padding: 15px; 
-            max-width: 480px; 
-            margin-left: auto; 
-            margin-right: auto; 
-            padding-bottom: 100px; 
-        }
-        .page { display: none; }
-        .page.active { display: block; animation: smoothFadeUp 0.4s cubic-bezier(0.1, 0.8, 0.25, 1); }
-        @keyframes smoothFadeUp { 
-            from { opacity: 0; transform: translateY(20px); } 
-            to { opacity: 1; transform: translateY(0); } 
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+            height: 100%;
         }
 
-        /* --- HIGH PERFORMANCE AVIATOR SCREEN --- */
-        .screen { 
-            position: relative; 
-            background: radial-gradient(circle at center, #151d30 0%, #06090e 100%); 
-            border: 2px solid var(--border-color); 
-            height: 280px; 
-            border-radius: 20px; 
-            overflow: hidden; 
-            margin-bottom: 18px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
-        }
-        canvas { width: 100%; height: 100%; display: block; }
-        .multiplier { 
-            position: absolute; 
-            top: 45%; 
-            left: 50%; 
-            transform: translate(-50%, -50%); 
-            font-size: 58px; 
-            font-weight: 900; 
-            color: var(--text-pure); 
-            text-shadow: 0 0 25px rgba(255,255,255,0.3); 
-            font-family: 'Courier New', Courier, monospace; 
-        }
-        .status-text { 
-            position: absolute; 
-            top: 15px; 
-            left: 15px; 
-            font-size: 11px; 
-            color: var(--accent-green); 
-            font-weight: 800; 
-            text-transform: uppercase; 
-            letter-spacing: 2px; 
-            background: rgba(0,0,0,0.5); 
-            padding: 6px 12px; 
-            border-radius: 6px; 
-            border: 1px solid rgba(255,255,255,0.05);
+        /* ─── TOP NAVIGATION COMPONENT ─── */
+        .top-navbar {
+            height: 65px;
+            background: linear-gradient(180deg, rgba(19,26,48,1) 0%, rgba(10,15,29,1) 100%);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
         }
 
-        /* --- COCKPIT CONTROLS --- */
-        .bet-section { 
-            background: var(--bg-card); 
-            padding: 20px; 
-            border-radius: 18px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            border: 1px solid var(--border-color); 
-            box-shadow: 0 8px 24px rgba(0,0,0,0.3); 
+        .top-navbar .logo {
+            font-size: 22px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            background: linear-gradient(45deg, #00e676, #2979ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            cursor: pointer;
+            transition: transform 0.2s ease;
         }
-        .input-box { width: 46%; }
-        label { display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-        input { 
-            width: 100%; 
-            padding: 14px; 
-            background: var(--bg-input); 
-            border: 1.5px solid var(--border-color); 
-            color: white; 
-            border-radius: 10px; 
-            box-sizing: border-box; 
-            font-size: 16px; 
+
+        .top-navbar .logo:active {
+            transform: scale(0.95);
+        }
+
+        .wallet-badge {
+            background: rgba(0, 230, 118, 0.1);
+            border: 1px solid rgba(0, 230, 118, 0.3);
+            padding: 8px 14px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .wallet-badge:active {
+            background: rgba(0, 230, 118, 0.2);
+            transform: scale(0.95);
+        }
+
+        /* ─── APP CENTRAL FRAME WRAPPER ─── */
+        .main-wrapper {
+            position: absolute;
+            top: 65px;
+            bottom: 70px;
+            width: 100%;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 15px;
+        }
+
+        /* ─── CORE PAGE STRUCTURES ─── */
+        .page {
+            display: none;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ─── SECTION 1: HOME (GAME SIMULATOR HUB) ─── */
+        .screen {
+            background: radial-gradient(circle at center, #182545 0%, #0c1224 100%);
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            height: 240px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.8);
+            margin-bottom: 15px;
+        }
+
+        .status-text {
+            position: absolute;
+            top: 20px;
+            width: 100%;
+            text-align: center;
+            font-size: 14px;
             font-weight: 800;
-            transition: 0.25s;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            z-index: 10;
         }
-        input:focus { outline: none; border-color: var(--accent-green); box-shadow: 0 0 12px rgba(0,230,118,0.25); }
-        
-        .btn { 
-            width: 50%; 
-            padding: 16px; 
-            font-size: 16px; 
-            font-weight: 900; 
-            border-radius: 12px; 
-            border: none; 
-            cursor: pointer; 
-            transition: all 0.2s ease; 
-            letter-spacing: 1.5px; 
-            text-transform: uppercase;
-        }
-        .btn-bet { background: linear-gradient(135deg, #00e676 0%, #00b0ff 100%); color: var(--bg-main); box-shadow: 0 6px 20px rgba(0,230,118,0.3); }
-        .btn-cashout { background: linear-gradient(135deg, #ff9100 0%, #ff3d00 100%); color: white; box-shadow: 0 6px 20px rgba(255,61,0,0.4); }
-        .btn:disabled { background: #1e2533 !important; color: #525f73 !important; box-shadow: none !important; cursor: not-allowed; }
 
-        /* --- WALLET & CARDS DESIGN --- */
-        .card { 
-            background: var(--bg-card); 
-            padding: 24px; 
-            border-radius: 20px; 
-            border: 1px solid var(--border-color); 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        .multiplier {
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 52px;
+            font-weight: 900;
+            color: var(--text-main);
+            text-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
+            z-index: 10;
         }
-        .tab-container { 
-            display: flex; 
-            justify-content: space-between; 
-            margin-bottom: 22px; 
-            background: var(--bg-input); 
-            padding: 6px; 
-            border-radius: 12px; 
-            border: 1px solid var(--border-color); 
-        }
-        .tab-btn { 
-            width: 49%; 
-            padding: 14px; 
-            background: transparent; 
-            border: none; 
-            color: var(--text-muted); 
-            cursor: pointer; 
-            border-radius: 10px; 
-            font-weight: 700; 
-            font-size: 14px; 
-            transition: 0.2s;
-        }
-        .tab-btn.active { background: var(--accent-green); color: var(--bg-main); font-weight: 800; }
-        .rule-box { 
-            background: rgba(0, 230, 118, 0.04); 
-            padding: 15px; 
-            border-radius: 12px; 
-            border-left: 4px solid var(--accent-green); 
-            margin-bottom: 22px; 
-            font-size: 13px; 
-            line-height: 1.6;
-            color: #d1dbe5;
-        }
-        
-        /* --- REAL WORKING QR CONSOLE (FIXED) --- */
-        .qr-holder { 
-            background: #ffffff; 
-            padding: 18px; 
-            border-radius: 16px; 
-            width: fit-content; 
-            margin: 22px auto; 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6); 
-            text-align: center; 
-        }
-        #qrCanvasElement { 
-            display: block; 
-            margin: 0 auto; 
-            border-radius: 4px;
-        }
-        
-        .notice-box { background: rgba(255, 61, 0, 0.06); border-left: 4px solid var(--accent-red); padding: 14px; border-radius: 10px; color: #ff6e40; font-size: 12px; line-height: 1.6; margin-bottom: 20px; }
-        .hidden { display: none !important; }
 
-        .submit-btn { 
-            width: 100%; 
-            padding: 16px; 
-            background: linear-gradient(135deg, #00e676 0%, #00b0ff 100%); 
-            border: none; 
-            color: var(--bg-main); 
-            font-size: 16px; 
-            font-weight: 800; 
-            border-radius: 12px; 
-            cursor: pointer; 
-            box-shadow: 0 5px 15px rgba(0,230,118,0.25);
+        .multiplier.crashed {
+            color: var(--accent-red) !important;
+            text-shadow: 0 0 25px rgba(255, 61, 0, 0.5) !important;
+            animation: shake 0.3s ease-in-out infinite;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translate(-50%, -50%) cubic-bezier(.36,.07,.19,.97) rotate(0deg); }
+            20%, 60% { transform: translate(-52%, -48%) rotate(-1deg); }
+            40%, 80% { transform: translate(-48%, -52%) rotate(1deg); }
+        }
+
+        #graphCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+
+        /* ─── BET COMPONENT STRUCT ─── */
+        .bet-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+
+        .input-box {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .input-box label {
+            font-size: 12px;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1px;
+            color: var(--text-muted);
         }
-        .submit-btn:disabled { background: #1e2533 !important; color: #525f73 !important; cursor: not-allowed; box-shadow: none !important; }
 
-        /* --- LIVE PLATFORM NOTIFICATIONS FEED --- */
-        .live-feed-box { background: var(--bg-card); border-radius: 18px; padding: 18px; margin-top: 20px; border: 1px solid var(--border-color); }
-        .feed-title { font-size: 13px; font-weight: 800; color: var(--accent-green); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1.5px; display: flex; align-items: center; gap: 8px; }
-        .feed-title::before { content: ''; display: inline-block; width: 8px; height: 8px; background: var(--accent-green); border-radius: 50%; animation: blink 1s infinite; }
-        .feed-list { height: 110px; overflow: hidden; font-size: 13px; color: #cbd5e1; line-height: 1.8; }
-        .feed-item { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.04); padding: 6px 0; animation: slideIn 0.3s ease-out; }
-        @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
-
-        /* --- BOTTOM NAVIGATION BAR --- */
-        .bottom-nav { 
-            position: fixed; 
-            bottom: 0; 
-            left: 0; 
-            right: 0; 
-            background: linear-gradient(to top, #141b27, #0b1019); 
-            display: flex; 
-            justify-content: space-around; 
-            padding: 16px 0; 
-            border-top: 1.5px solid var(--border-color); 
-            z-index: 1000; 
-            box-shadow: 0 -5px 25px rgba(0,0,0,0.6);
+        .input-box input {
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 14px;
+            color: var(--text-main);
+            font-size: 16px;
+            font-weight: 700;
+            outline: none;
+            transition: border-color 0.3s ease;
         }
-        .nav-item { color: var(--text-muted); background: none; border: none; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; transition: 0.2s; text-transform: uppercase; letter-spacing: 0.5px; }
-        .nav-item.active { color: var(--accent-green); text-shadow: 0 0 10px rgba(0,230,118,0.2); }
-        
-        @keyframes blink { 50% { opacity: 0.2; } }
+
+        .input-box input:focus {
+            border-color: var(--accent-blue);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border-radius: 10px;
+            border: none;
+            font-size: 16px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .btn-bet {
+            background: linear-gradient(135deg, #00e676 0%, #00b0ff 100%);
+            color: #000;
+            box-shadow: 0 4px 20px rgba(0,230,118,0.3);
+        }
+
+        .btn-cashout {
+            background: linear-gradient(135deg, #ffd700 0%, #ff9100 100%);
+            color: #000;
+            box-shadow: 0 4px 20px rgba(255,215,0,0.3);
+        }
+
+        .btn-waiting {
+            background: #263238 !important;
+            color: var(--text-muted) !important;
+            cursor: not-allowed;
+            box-shadow: none !important;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        /* ─── LIVE PLATFORM LIST FEED ─── */
+        .live-feed-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 16px;
+            height: 180px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .feed-title {
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 6px;
+        }
+
+        .feed-list {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .feed-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            background: rgba(255,255,255,0.02);
+            padding: 8px 12px;
+            border-radius: 6px;
+            border-left: 3px solid var(--accent-blue);
+        }
+
+        .feed-item.win {
+            border-left-color: var(--accent-green);
+            background: rgba(0,230,118,0.03);
+        }
+
+        /* ─── SECTION 2: WALLET CONFIG ARCHITECTURE ─── */
+        .tab-container {
+            display: flex;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 6px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            background: var(--bg-input);
+            color: var(--text-main);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .rule-box {
+            background: rgba(41, 121, 255, 0.05);
+            border-left: 4px solid var(--accent-blue);
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #d1d8e0;
+        }
+
+        .notice-box {
+            background: rgba(255, 215, 0, 0.05);
+            border-left: 4px solid var(--accent-gold);
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #ffd700;
+        }
+
+        .qr-holder {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            display: inline-block;
+            margin: 15px auto;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .qr-holder p {
+            font-family: inherit;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #2979ff 0%, #1565c0 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+
+        .submit-btn:active {
+            opacity: 0.85;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* ─── SECTION 3: USER ACCOUNT GATEWAY ─── */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+        }
+
+        /* ─── SYSTEM BOTTOM TAB BAR BAR ─── */
+        .bottom-nav {
+            height: 70px;
+            background: #0d1527;
+            border-top: 1px solid var(--border-color);
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 -4px 25px rgba(0,0,0,0.5);
+        }
+
+        .nav-item {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 25%;
+            height: 100%;
+            transition: all 0.2s ease;
+        }
+
+        .nav-item.active {
+            color: var(--accent-green);
+        }
+
+        .nav-item span {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* ─── UTILITY RESPONSIVE ALIGNMENTS ─── */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 10px;
+        }
     </style>
 </head>
-<body>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+<body>
+
     <div class="top-navbar">
-    <div class="logo" onclick="handleNavigationWithLock('home')">FLUXAA 🛫</div>
-    <div class="wallet-badge" onclick="handleNavigationWithLock('wallet')">
-        🪙 Wallet: <span id="topBalance" style="color: var(--accent-green);">0 FC</span>
-    </div>
-</div>
-
-<div class="main-wrapper">
-
-    <div id="homePage" class="page active">
-        <div class="screen">
-            <div id="statusMessage" class="status-text">WAITING FOR NEXT FLIGHT...</div>
-            <div id="liveMultiplier" class="multiplier">1.00x</div>
-            <canvas id="graphCanvas"></canvas>
-        </div>
-
-        <div class="bet-section">
-            <div class="input-box">
-                <label for="betAmount">Bet Amount (Min 10 FC):</label>
-                <input type="number" id="betAmount" value="10" min="10">
-            </div>
-            <button id="actionBtn" class="btn btn-bet" onclick="handleGameAction()">PLACE BET</button>
-        </div>
-
-        <div class="live-feed-box">
-            <div class="feed-title">Live Platform Payouts</div>
-            <div class="feed-list" id="liveFeedList"></div>
+        <div class="logo" onclick="handleNavigationWithLock('home')">FLUXAA 🛫</div>
+        <div class="wallet-badge" onclick="handleNavigationWithLock('wallet')">
+            🪙 Wallet: <span id="topBalance" style="color: var(--accent-green);">100 FC</span>
         </div>
     </div>
 
-    <div id="walletPage" class="page">
-        <div class="tab-container">
-            <button class="tab-btn active" id="buyTabBtn" onclick="switchWalletTab('buy')">🪙 Add Funds</button>
-            <button class="tab-btn" id="withdrawTabBtn" onclick="switchWalletTab('withdraw')">🔒 Request Payout</button>
-        </div>
+    <div class="main-wrapper">
 
-        <form id="buyForm" style="margin-top: 15px;">
-            <div class="rule-box" style="line-height: 1.6; margin-bottom: 15px;">
-                <strong>🟩 Deposit Rules:</strong><br>
-                • Exchange Ratio: 1 INR = 1 Fluxaa Coin (FC)<br>
-                • <strong>Minimum Remittance Capital Required: ₹50</strong>
-            </div>
-            
-            <div class="input-box" style="margin-bottom: 15px;">
-                <label for="buyAmount">Amount to Load (₹):</label>
-                <input type="number" id="buyAmount" min="50" value="50" oninput="updateDynamicQR(this.value)">
-                <p id="buyEstimate" style="font-size: 12px; color: var(--accent-green); margin-top: 6px; font-weight: 700;">Tokens to credit: 50 FC</p>
+        <div id="homePage" class="page active">
+            <div class="screen">
+                <div id="statusMessage" class="status-text">WAITING FOR NEXT FLIGHT...</div>
+                <div id="liveMultiplier" class="multiplier">1.00x</div>
+                <canvas id="graphCanvas"></canvas>
             </div>
 
-            <div class="qr-holder" style="text-align: center; margin: 20px 0;">
-                <canvas id="qrCanvasElement" width="180" height="180" style="display: inline-block; background: #fff; padding: 5px; border-radius: 4px;"></canvas>
-                <p style="font-size: 13px; font-weight: bold; margin: 12px 0 0 0; color: #ffffff; letter-spacing: 0.5px;">UPI: fluxa@ptyes</p>
-                <p style="font-size: 11px; color: var(--text-muted); margin: 2px 0 0 0;">(Scan via Any UPI App)</p>
+            <div class="bet-section">
+                <div class="input-box">
+                    <label for="betAmount">Bet Amount (Min 10 FC):</label>
+                    <input type="number" id="betAmount" value="10" min="10">
+                </div>
+                <button id="actionBtn" class="btn btn-bet" onclick="handleGameAction()">PLACE BET</button>
             </div>
 
-            <div class="input-box" style="margin-top: 18px;">
-                <label for="buyUtr">12-Digit Banking Reference UTR:</label>
-                <input type="text" id="buyUtr" maxlength="12" placeholder="Enter 12-Digit UTR" required>
-            </div>
-            
-            <button id="buySubmitBtn" type="submit" class="submit-btn" style="margin-top: 22px; width: 100%;">Verify Deposit Data</button>
-        </form>
-
-        <form id="withdrawForm" class="hidden" style="margin-top: 15px;">
-            <div class="notice-box" style="margin-bottom: 15px; line-height: 1.5;">
-                ⚠️ <strong>NOTICE:</strong> All payment transfers are manually audited within 30-120 minutes. Ensure destination UPI route is authentic.
-            </div>
-            
-            <div class="rule-box" style="border-left-color: var(--accent-red); background: rgba(255,61,0,0.02); line-height: 1.6; margin-bottom: 15px;">
-                <strong>🟥 Settlement Rules:</strong><br>
-                • Liquidation Ratio: 2 Fluxaa Coins (FC) = 1 INR<br>
-                • <strong>Minimum Payout Threshold: 200 FC (₹100)</strong>
-            </div>
-            
-            <div class="input-box" style="margin-bottom: 15px;">
-                <label for="withdrawCoins">Redeem Quantity (FC):</label>
-                <input type="number" id="withdrawCoins" min="200" placeholder="Minimum 200 FC" oninput="document.getElementById('withdrawEstimate').innerText = 'Bank Remittance Value: ₹' + (this.value/2)">
-                <p id="withdrawEstimate" style="font-size: 11px; color: var(--accent-red); margin-top: 6px; font-weight: 700;">Bank Remittance Value: ₹0</p>
-            </div>
-            
-            <div class="input-box" style="margin-top: 18px;">
-                <label for="withdrawUpi">Target Destination UPI ID:</label>
-                <input type="text" id="withdrawUpi" placeholder="example@upi">
-            </div>
-            
-            <button id="withdrawSubmitBtn" type="submit" class="submit-btn" style="background: linear-gradient(135deg, #ff9100 0%, #ff3d00 100%); color: white; margin-top: 22px; width: 100%;">Submit Payout Request</button>
-        </form>
-    </div>
-
-    <div id="profilePage" class="page">
-        <div class="card" style="text-align: center; padding: 20px;">
-            <div style="width: 80px; height: 80px; background: #1a2336; border-radius: 50%; margin: 0 auto 16px auto; display: flex; align-items: center; justify-content: center; font-size: 36px; color: var(--accent-green); border: 2px solid var(--accent-green); box-shadow: 0 0 15px rgba(0,230,118,0.2);">👤</div>
-            
-            <div id="profileDisplayId" style="font-size: 26px; font-weight: 900; color: var(--accent-green); margin-bottom: 6px;">Unregistered Client</div>
-            <p id="profileLockStatus" style="color: var(--accent-red); font-size: 13px; font-weight: 700; margin: 10px 0;">🔒 Withdrawal Gateway Blocked (ID Sync Missing)</p>
-            
-            <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 24px 0;">
-            
-            <p style="font-size: 13px; color: var(--text-muted); text-align: left; line-height: 1.6;">Enter or recover your unique Ledger User ID below to establish immediate sync with Google Database:</p>
-            
-            <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 15px;">
-                <input type="text" id="profileSwitchId" placeholder="Enter Unique ID (e.g., varun_7910)">
-                <button onclick="syncProfileId()" class="submit-btn" style="padding: 14px; width: 100%;">Sync Profile Ledger</button>
+            <div class="live-feed-box">
+                <div class="feed-title">Live Platform Payouts</div>
+                <div class="feed-list" id="liveFeedList">
+                    </div>
             </div>
         </div>
+
+        <div id="walletPage" class="page">
+            <div class="tab-container">
+                <button class="tab-btn active" id="buyTabBtn" onclick="switchWalletTab('buy')">🪙 Add Funds</button>
+                <button class="tab-btn" id="withdrawTabBtn" onclick="switchWalletTab('withdraw')">🔒 Request Payout</button>
+            </div>
+
+            <form id="buyForm" onsubmit="executeDepositHandling(event)" style="margin-top: 15px;">
+                <div class="rule-box" style="line-height: 1.6; margin-bottom: 15px;">
+                    <strong>🟩 Deposit Rules:</strong><br>
+                    • Exchange Ratio: 1 INR = 1 Fluxaa Coin (FC)<br>
+                    • <strong>Minimum Remittance Capital Required: ₹50</strong>
+                </div>
+                
+                <div class="input-box" style="margin-bottom: 15px;">
+                    <label for="buyAmount">Amount to Load (₹):</label>
+                    <input type="number" id="buyAmount" min="50" value="50" oninput="updateDynamicQR(this.value)">
+                    <p id="buyEstimate" style="font-size: 12px; color: var(--accent-green); margin-top: 6px; font-weight: 700;">Tokens to credit: 50 FC</p>
+                </div>
+
+                <div style="text-align: center; width: 100%;">
+                    <div class="qr-holder">
+                        <canvas id="qrCanvasElement" width="180" height="180" style="display: inline-block; background: #fff; padding: 5px; border-radius: 4px;"></canvas>
+                        <p style="font-size: 14px; font-weight: bold; margin: 12px 0 0 0; color: #06090e; letter-spacing: 0.5px;">UPI: fluxa@ptyes</p>
+                        <p style="font-size: 11px; color: #555555; margin: 2px 0 0 0; font-weight: 600;">(Scan via Any UPI App)</p>
+                    </div>
+                </div>
+
+                <div class="input-box" style="margin-top: 18px;">
+                    <label for="buyUtr">12-Digit Banking Reference UTR:</label>
+                    <input type="text" id="buyUtr" maxlength="12" placeholder="Enter 12-Digit UTR" required>
+                </div>
+                <button id="buySubmitBtn" type="submit" class="submit-btn" style="margin-top: 22px; width: 100%; padding: 14px;">Verify Deposit Data</button>
+            </form>
+
+            <form id="withdrawForm" class="hidden" onsubmit="executeWithdrawalHandling(event)" style="margin-top: 15px;">
+                <div class="notice-box" style="margin-bottom: 15px; line-height: 1.5;">
+                    ⚠️ <strong>NOTICE:</strong> All payment transfers are manually audited within 30-120 minutes. Ensure destination UPI route is authentic.
+                </div>
+                
+                <div class="rule-box" style="border-left-color: var(--accent-red); background: rgba(255,61,0,0.02); line-height: 1.6; margin-bottom: 15px;">
+                    <strong>🟥 Settlement Rules:</strong><br>
+                    • Liquidation Ratio: 2 Fluxaa Coins (FC) = 1 INR<br>
+                    • <strong>Minimum Payout Threshold: 200 FC (₹100)</strong>
+                </div>
+                
+                <div class="input-box" style="margin-bottom: 15px;">
+                    <label for="withdrawCoins">Redeem Quantity (FC):</label>
+                    <input type="number" id="withdrawCoins" min="200" placeholder="Minimum 200 FC" oninput="processWithdrawalEstimate(this.value)">
+                    <p id="withdrawEstimate" style="font-size: 11px; color: var(--accent-red); margin-top: 6px; font-weight: 700;">Bank Remittance Value: ₹0</p>
+                </div>
+                
+                <div class="input-box" style="margin-top: 18px;">
+                    <label for="withdrawUpi">Target Destination UPI ID:</label>
+                    <input type="text" id="withdrawUpi" placeholder="example@upi">
+                </div>
+                <button id="withdrawSubmitBtn" type="submit" class="submit-btn" style="background: linear-gradient(135deg, #ff9100 0%, #ff3d00 100%); color: white; margin-top: 22px; width: 100%; padding: 14px;">Submit Payout Request</button>
+            </form>
+        </div>
+
+        <div id="profilePage" class="page">
+            <div class="card" style="text-align: center; padding: 24px;">
+                <div style="width: 80px; height: 80px; background: #1a2336; border-radius: 50%; margin: 0 auto 16px auto; display: flex; align-items: center; justify-content: center; font-size: 36px; color: var(--accent-green); border: 2px solid var(--accent-green); box-shadow: 0 0 15px rgba(0,230,118,0.2);">👤</div>
+                
+                <div id="profileDisplayId" style="font-size: 24px; font-weight: 900; color: var(--accent-green); margin-bottom: 6px;">Unregistered Client</div>
+                <p id="profileLockStatus" style="color: var(--accent-red); font-size: 13px; font-weight: 700; margin: 10px 0;">🔒 Withdrawal Gateway Blocked (ID Sync Missing)</p>
+                
+                <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 24px 0;">
+                
+                <p style="font-size: 13px; color: var(--text-muted); text-align: left; line-height: 1.6;">Enter or recover your unique Ledger User ID below to establish immediate sync with Google Database:</p>
+                
+                <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 15px;">
+                    <input type="text" id="profileSwitchId" placeholder="Enter Unique ID (e.g., varun_7910)" style="background: var(--bg-input); border: 1px solid var(--border-color); border-radius: 8px; padding: 14px; color: white; font-weight: 700; outline: none;">
+                    <button onclick="syncProfileId()" class="submit-btn" style="padding: 14px; width: 100%;">Sync Profile Ledger</button>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-</div>
+    <div class="bottom-nav">
+        <button id="navHome" class="nav-item active" onclick="handleNavigationWithLock('home')">
+            <span>🛫</span><span>Fly Game</span>
+        </button>
+        <button id="navWallet" class="nav-item" onclick="handleNavigationWithLock('wallet')">
+            <span>🪙</span><span>Wallet</span>
+        </button>
+        <button id="navProfile" class="nav-item" onclick="handleNavigationWithLock('profile')">
+            <span>👤</span><span>Profile</span>
+        </button>
+    </div>
 
-<div class="bottom-nav">
-    <button id="navHome" class="nav-item active" onclick="handleNavigationWithLock('home')">
-        🛫 <span>Fly Game</span>
-    </button>
-    <button id="navWallet" class="nav-item" onclick="handleNavigationWithLock('wallet')">
-        🪙 <span>Wallet</span>
-    </button>
-    <button id="navProfile" class="nav-item" onclick="handleNavigationWithLock('profile')">
-        👤 <span>Profile</span>
-    </button>
-</div>
-        <script>
-    // =========================================================================
-    // 1️⃣ HIGH-GRADE QRCODE GENERATOR ENGINE (FOR DYNAMIC & SCANNER-PROOF QR)
-    // =========================================================================
-    !function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this.parsedData=[];for(var b=[],d=0,e=a.length;d<e;d++){var f=a.charCodeAt(d);f>65536?(b[0]=240|(f&1835008)>>>18,b[1]=128|(f&258048)>>>12,b[2]=128|(f&4032)>>>6,b[3]=128|63&f):f>2048?(b[0]=224|(f&16384)>>>12,b[1]=128|(f&4032)>>>6,b[2]=128|63&f):f>128?(b[0]=192|(f&1984)>>>6,b[1]=128|63&f):b[0]=f,this.parsedData=this.parsedData.concat(b)}this.parsedData.length!=this.data.length&&(this.parsedData.push(0),this.parsedData.unshift(190),this.parsedData.unshift(239))}function b(a,b){this.typeNumber=a,this.errorCorrectLevel=b,this.modules=null,this.moduleCount=0,this.dataCache=null,this.dataList=[]}b.prototype={addData:function(b){var c=new a(b);this.dataList.push(c),this.dataCache=null},isDark:function(a,b){if(a<0||this.moduleCount<=a||b<0||this.moduleCount<=b)throw new Error(a+","+b);return this.modules[a][b]},getModuleCount:function(){return this.moduleCount},make:function(){this.makeImpl(!1,this.getBestPattern())},makeImpl:function(a,c){this.moduleCount=4*this.typeNumber+17,this.modules=new Array(this.moduleCount);for(var d=0;d<this.moduleCount;d++){this.modules[d]=new Array(this.moduleCount);for(var e=0;e<this.moduleCount;e++)this.modules[d][e]=null}this.setupPositionProbePattern(0,0),this.setupPositionProbePattern(this.moduleCount-7,0),this.setupPositionProbePattern(0,this.moduleCount-7),this.setupPositionAdjustPattern(),this.setupTimingPattern(),this.setupTypeInfo(a,c),this.typeNumber>=7&&this.setupTypeNumber(a),null==this.dataCache&&(this.dataCache=b.createData(this.typeNumber,this.errorCorrectLevel,this.dataList)),this.mapData(this.dataCache,c)},setupPositionProbePattern:function(a,b){for(var c=-1;c<=7;c++)if(!(a+c<=-1||this.moduleCount<=a+c))for(var d=-1;d<=7;d++)b+d<=-1||this.moduleCount<=b+d||(c>=0&&c<=6&&(0==d||6==d)||d>=0&&d<=6&&(0==c||6==c)||c>=2&&c<=4&&d>=2&&d<=4?this.modules[a+c][b+d]=!0:this.modules[a+c][b+d]=!1)},getBestPattern:function(){for(var a=0,b=0,c=0;c<8;c++){this.makeImpl(!0,c);var d=f.getLostPoint(this);(0==c||a>d)&&(a=d,b=c)}return b},setupTimingPattern:function(){for(var a=8;a<this.moduleCount-8;a++)null==this.modules[a][6]&&(this.modules[a][6]=a%2==0);for(var b=8;b<this.moduleCount-8;b++)null==this.modules[6][b]&&(this.modules[6][b]=b%2==0)},setupPositionAdjustPattern:function(){for(var a=f.getPatternPosition(this.typeNumber),b=0;b<a.length;b++)for(var c=0;c<a.length;c++){var d=a[b],e=a[c];if(null==this.modules[d][e])for(var g=-2;g<=2;g++)for(var h=-2;h<=2;h++)0==g||2==g||2==h||-2==h||0==g&&0==h?this.modules[d+g][e+h]=!0:this.modules[d+g][e+h]=!1}},setupTypeNumber:function(a){for(var b=f.getBCHTypeNumber(this.typeNumber),c=0;c<18;c++){var d=!a&&1==(b>>c&1);this.modules[Math.floor(c/3)][c%3+this.moduleCount-8-3]=d}for(var c=0;c<18;c++){var d=!a&&1==(b>>c&1);this.modules[c%3+this.moduleCount-8-3][Math.floor(c/3)]=d}},setupTypeInfo:function(a,b){for(var c=this.errorCorrectLevel<<3|b,d=f.getBCHTypeInfo(c),e=0;e<15;e++){var g=!a&&1==(d>>e&1);e<6?this.modules[e][8]=g:e<8?this.modules[e+1][8]=g:this.modules[this.moduleCount-15+e][8]=g}for(var e=0;e<15;e++){var g=!a&&1==(d>>e&1);e<8?this.modules[8][this.moduleCount-e-1]=g:e<9?this.modules[8][15-e-1+1]=g:this.modules[8][15-e-1]=g}this.modules[this.moduleCount-8][8]=!a},mapData:function(a,b){for(var c=-1,d=this.moduleCount-1,e=7,g=1,h=this.moduleCount-1;h>0;h-=2)for(6==h&&h--;;){for(var i=0;i<2;i++)if(null==this.modules[d][h-i]){var j=!1;e<a.length&&(j=1==(a[e]>>>g&1));var k=f.getMask(b,d,h-i);k&&(j=!j),this.modules[d][h-i]=j,g--,g<0&&(e++,g=7)}if(d+=c,d<0||this.moduleCount<=d){d-=c,c=-c;break}}}},b.PAD0=236,b.PAD1=17,b.createData=function(a,c,d){for(var e=g.getRSBlockTable(a,c),h=new o,i=0;i<d.length;i++){var j=d[i];h.put(j.mode,4),h.put(j.getLength(),f.getLengthInBits(j.mode,a)),j.write(h)}for(var k=0,i=0;i<e.length;i++)k+=e[i].dataCount;if(h.getLengthInBits()>8*k)throw new Error("code length overflow. ("+h.getLengthInBits()+">"+8*k+")");for(h.getLengthInBits()+4<=8*k&&h.put(0,4);h.getLengthInBits()%8!=0;)h.putBit(!1);for(;;){if(h.getLengthInBits()>=8*k)break;if(h.put(b.PAD0,8),h.getLengthInBits()>=8*k)break;h.put(b.PAD1,8)}return b.createBytes(h,e)},b.createBytes=function(a,b){for(var c=0,d=0,e=0,g=new Array(b.length),h=new Array(b.length),i=0;i<b.length;i++){var j=b[i].dataCount,k=b[i].totalCount-j;d=Math.max(d,j),e=Math.max(e,k),g[i]=new Array(j);for(var m=0;m<g[i].length;m++)g[i][m]=255&a.buffer[m+c];c+=j;var n=f.getErrorCorrectPolynomial(k),o=new q(g[i],n.getLength()-1),p=o.mod(n);h[i]=new Array(n.getLength()-1);for(var m=0;m<h[i].length;m++){var r=m+p.getLength()-h[i].length;h[i][m]=r>=0?p.get(r):0}}for(var s=0,m=0;m<b.length;m++)s+=b[m].totalCount;for(var t=new Array(s), u=0,m=0;m<d;m++)for(var i=0;i<b.length;i++)m<g[i].length&&(t[u++]=g[i][m]);for(var m=0;m<e;m++)for(var i=0;i<b.length;i++)m<h[i].length&&(t[u++]=h[i][m]);return t};for(var c={MODE_NUMBER:1,MODE_ALPHA_NUM:2,MODE_8BIT_BYTE:4,MODE_KANJI:8},d={L:1,M:0,Q:3,H:2},e={PATTERN000:0,PATTERN001:1,PATTERN010:2,PATTERN011:3,PATTERN100:4,PATTERN101:5,PATTERN110:6,PATTERN111:7},f={PATTERN_POSITION_TABLE:[[],[6,18],[6,22],[6,26],[6,30],[6,34],[6,22,38],[6,24,42],[6,26,46],[6,28,50],[6,30,54],[6,32,58],[6,34,62],[6,26,46,66],[6,26,48,70],[6,26,50,74],[6,30,54,78],[6,30,56,82],[6,30,58,86],[6,34,62,90],[6,28,50,72,94],[6,26,50,74,98],[6,30,54,78,102],[6,28,54,80,106],[6,32,58,84,110],[6,30,58,86,114],[6,34,62,90,118],[6,26,50,74,98,122],[6,30,54,78,102,126],[6,26,52,78,104,130],[6,30,56,82,108,134],[6,34,60,86,112,138],[6,30,58,86,114,142],[6,34,62,90,118,146],[6,30,54,78,102,126,150],[6,24,50,76,102,128,154],[6,28,54,80,106,132,158],[6,32,58,84,110,136,162],[6,26,54,82,110,138,166],[6,30,58,86,114,142,170]],G15:1335,G18:7973,G15_MASK:21522,getBCHTypeInfo:function(a){for(var b=a<<10;f.getBCHDigit(b)-f.getBCHDigit(f.G15)>=0;)b^=f.G15<<(f.getBCHDigit(b)-f.getBCHDigit(f.G15));return(a<<10|b)^f.G15_MASK},getBCHTypeNumber:function(a){for(var b=a<<12;f.getBCHDigit(b)-f.getBCHDigit(f.G18)>=0;)b^=f.G18<<(f.getBCHDigit(b)-f.getBCHDigit(f.G18));return a<<12|b},getBCHDigit:function(a){for(var b=0;0!=a;)b++,a>>>=1;return b},getPatternPosition:function(a){return f.PATTERN_POSITION_TABLE[a-1]},getMask:function(a,b,c){switch(a){case e.PATTERN000:return(b+c)%2==0;case e.PATTERN001:return b%2==0;case e.PATTERN010:return c%3==0;case e.PATTERN011:return(b+c)%3==0;case e.PATTERN100:return(Math.floor(b/2)+Math.floor(c/3))%2==0;case e.PATTERN101:return b*c%2+b*c%3==0;case e.PATTERN110:return(b*c%2+b*c%3)%2==0;case e.PATTERN111:return(b*c%3+(b+c)%2)%2==0;default:throw new Error("bad maskPattern:"+a)}},getErrorCorrectPolynomial:function(a){for(var b=new q([1],0),c=0;c<a;c++)b=b.multiply(new q([1,p.gexp(c)],0));return b},getLengthInBits:function(a,b){if(b>=1&&b<10)switch(a){case c.MODE_NUMBER:return 10;case c.MODE_ALPHA_NUM:return 9;case c.MODE_8BIT_BYTE:return 8;case c.MODE_KANJI:return 8;default:throw new Error("mode:"+a)}else if(b<27)switch(a){case c.MODE_NUMBER:return 12;case c.MODE_ALPHA_NUM:return 11;case c.MODE_8BIT_BYTE:return 16;case c.MODE_KANJI:return 10;default:throw new Error("mode:"+a)}else{if(!(b<41))throw new Error("type:"+b);switch(a){case c.MODE_NUMBER:return 14;case c.MODE_ALPHA_NUM:return 13;case c.MODE_8BIT_BYTE:return 16;case c.MODE_KANJI:return 12;default:throw new Error("mode:"+a)}}},getLostPoint:function(a){for(var b=a.getModuleCount(),c=0,d=0;d<b;d++)for(var e=0;e<b;e++){for(var f=0,g=a.isDark(d,e),h=-1;h<=1;h++)if(!(d+h<0||b<=d+h))for(var i=-1;i<=1;i++)e+i<0||b<=e+i||0==h&&0==i||g==a.isDark(d+h,e+i)&&f++;f>5&&(c+=3+f-5)}for(var d=0;d<b-1;d++)for(var e=0;e<b-1;e++){var j=0;a.isDark(d,e)&&j++,a.isDark(d+1,e)&&j++,a.isDark(d,e+1)&&j++,a.isDark(d+1,e+1)&&j++,(0==j||4==j)&&(c+=3)}for(var d=0;d<b;d++)for(var e=0;e<b-6;e++)a.isDark(d,e)&&!a.isDark(d,e+1)&&a.isDark(d,e+2)&&a.isDark(d,e+3)&&a.isDark(d,e+4)&&!a.isDark(d,e+5)&&a.isDark(d,e+6)&&(c+=40);for(var e=0;e<b;e++)for(var d=0;d<b-6;d+A)a.isDark(d,e)&&!a.isDark(d+1,e)&&a.isDark(d+2,e)&&a.isDark(d+3,e)&&a.isDark(d+4,e)&&!a.isDark(d+5,e)&&a.isDark(d+6,e)&&(c+=40);for(var k=0,e=0;e<b;e++)for(var d=0;d<b;d++)a.isDark(d,e)&&k++;var m=Math.abs(100*k/b/b-50)/5;return c+=10*m}},g={RS_BLOCK_TABLE:[[1,26,19],[1,26,16],[1,26,13],[1,26,9],[1,44,34],[1,44,28],[1,44,22],[1,44,16],[1,70,55],[1,70,44],[2,35,17],[2,35,13],[1,100,80],[2,50,32],[2,50,24],[4,25,9],[1,134,108],[2,67,43],[2,33,15,2,34,16],[2,33,11,4,34,12],[2,86,68],[4,43,27],[4,43,19],[4,43,15],[2,98,78],[4,49,38],[2,32,14,4,33,15],[4,39,13,4,40,14],[2,121,97],[2,60,36,2,61,37],[4,40,20,4,41,21],[4,40,12,6,41,13],[2,146,116],[3,58,36,2,59,37],[4,36,16,4,37,17],[4,36,12,4,37,13],[2,86,68,2,87,69],[4,43,27,1,44,28],[6,43,19,2,44,20],[6,43,15,2,44,21]],getRSBlocks:function(a,b){var c=g.getRsBlockTable(a,b);if(null==c)throw new Error("bad rs block @ typeNumber:"+a+"/errorCorrectLevel:"+b);for(var d=c.length,e=[],f=0;f<d;f++)for(var h=c[f],i=0;i<h.count;i++)e.push(new g(h.totalCount,h.dataCount));return e},getRsBlockTable:function(a,b){switch(b){case d.L:return g.RS_BLOCK_TABLE[4*(a-1)+0];case d.M:return g.RS_BLOCK_TABLE[4*(a-1)+1];case d.Q:return g.RS_BLOCK_TABLE[4*(a-1)+2];case d.H:return g.RS_BLOCK_TABLE[4*(a-1)+3];default:return null}}},h=function(a,b){this.totalCount=a,this.dataCount=b};g.prototype={},g.getRSBlocks=function(a,b){var c=g.getRsBlockTable(a,b);if(null==c)throw new Error("bad rs block @ typeNumber:"+a+"/errorCorrectLevel:"+b);for(var d=c.length,e=[],f=0;f<d;f++)for(var h=0;h<c[f][0];h++)e.push(new h(c[f][1],c[f][2]));return e},g.getRsBlockTable=function(a,b){switch(b){case d.L:return g.RS_BLOCK_TABLE[4*(a-1)+0];case d.M:return g.RS_BLOCK_TABLE[4*(a-1)+1];case d.Q:return g.RS_BLOCK_TABLE[4*(a-1)+2];case d.H:return g.RS_BLOCK_TABLE[4*(a-1)+3];default:return null}};var p={glog:function(a){if(a<1)throw new Error("glog("+a+")");return p.LOG_TABLE[a]},gexp:function(a){for(;a<0;)a+=255;for(;a>=255;)a-=255;return p.EXP_TABLE[a]},EXP_TABLE:new Array(256),LOG_TABLE:new Array(256)};for(var i=0;i<8;i++)p.EXP_TABLE[i]=1<<i;for(var i=8;i<256;i++)p.EXP_TABLE[i]=p.EXP_TABLE[i-4]^p.EXP_TABLE[i-5]^p.EXP_TABLE[i-6]^p.EXP_TABLE[i-7];for(var i=0;i<255;i++)p.LOG_TABLE[p.EXP_TABLE[i]]=i;var q=function(a,b){if(void 0==a.length)throw new Error(a.length+"/"+b);for(var c=0;c<a.length&&0==a[c];)c++;this.num=new Array(a.length-c+b);for(var d=0;d<a.length-c;d++)this.num[d]=a[c+d]};q.prototype={get:function(a){return this.num[a]},getLength:function(){return this.num.length},multiply:function(a){for(var b=new Array(this.getLength()+a.getLength()-1),c=0;c<this.getLength();c++)for(var d=0;d<a.getLength();d++)b[c+d]^=p.gexp(p.glog(this.get(c))+p.glog(a.get(d)));return new q(b,0)},mod:function(a){if(this.getLength()-a.getLength()<0)return this;for(var b=p.glog(this.get(0))-p.glog(a.get(0)),c=new Array(this.getLength()),d=0;d<this.getLength();d++)c[d]=this.get(d);for(var d=0;d<a.length();d++)c[d]^=p.gexp(p.glog(a.get(d))+b);return new q(c,0).mod(a)}},a.prototype={getLength:function(){return this.parsedData.length},write:function(a){for(var b=0,c=this.parsedData.length;b<c;b++)a.put(this.parsedData[b],8)}};var o=function(){this.buffer=[],this.length=0};o.prototype={get:function(a){var b=Math.floor(a/8);return 1==(this.buffer[b]>>>7-a%8&1)},put:function(a,b){for(var c=0;c<b;c++)this.putBit(1==(a>>>b-c-1&1))},getLengthInBits:function(){return this.length},putBit:function(a){var b=Math.floor(this.length/8);this.buffer.length<=b&&this.buffer.push(0),a&&(this.buffer[b]|=1<<7-this.length%8),this.length++}};var r=[[17,14,11,7],[32,26,20,14],[53,42,32,24],[78,62,46,34],[106,84,60,44],[134,106,74,58],[154,122,86,64],[192,152,108,84],[230,180,130,98],[271,213,151,119]],QRCode=function(a,b){var c=b||{};this.typeNumber=-1,this.errorCorrectLevel=d.H,this.modules=null,this.moduleCount=0,this.dataCache=null,this.dataList=[],this.make=function(a){if(this.typeNumber<1){var b=1,c=0,e=encodeURIComponent(a).replace(/%[0-9A-F]{2}/g,"").length;for(b=1;b<=10;b++){if(c=r[b-1][this.errorCorrectLevel],e<c)break}this.typeNumber=b}var f=new b(this.typeNumber,this.errorCorrectLevel);f.addData(a),f.make(),this.modules=f.modules,this.moduleCount=f.moduleCount},this.toSvg=function(a){var b=a||10,c=this.moduleCount*b,d='<svg xmlns="http://www.w3.org/2000/svg" width="'+c+'" height="'+c+'" viewBox="0 0 '+c+' '+c+'">';d+='<rect width="100%" height="100%" fill="#fff"/>';for(var e=0;e<this.moduleCount;e++)for(var f=0;f<this.moduleCount;f++)if(this.modules[e][f]){var g=f*b,h=e*b;d+='<rect x="'+g+'" y="'+h+'" width="'+b+'" height="'+b+'" fill="#000"/>'}return d+="</svg>"},this.toImageElement=function(a){var b=a||6,c=this.moduleCount*b,d=document.createElement("canvas");d.width=c,d.height=c;var e=d.getContext("2d");e.fillStyle="#ffffff",e.fillRect(0,0,c,c),e.fillStyle="#06090e";for(var f=0;f<this.moduleCount;f++)for(var g=0;g<this.moduleCount;g++)this.modules[f][g]&&e.fillRect(g*b,f*b,b,b);var h=document.createElement("img");return h.src=d.toDataURL("image/png"),h};this.make(a)},window.CustomQREngine=QRCode}();
+    <script>
+        /* ─── MODULE STATE ARCHIVE ─── */
+        let userProfile = {
+            userId: "",
+            balance: 100,
+            isLocked: true
+        };
 
-    // =========================================================================
-    // 2️⃣ CORE CONFIGURATION & APP INITIALIZATION
-    // =========================================================================
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyw3fjXGQp8-DW5tsgQpNHRiDgZXfso7LNdhCpjRyNgcB1LGcEIWYqXd98bmbQ6MVuWGg/exec";
-    
-    let activeUser = "";
-    let isWithdrawUnlocked = false;
-    let gameRunning = false;
-    let hasPlacedBet = false;
-    let isCashedOut = false;
-    
-    let currentMultiplier = 1.00;
-    let serverCrashPoint = 1.85;
-    let canvas, ctx, animationFrame, timeX = 0;
+        let gameState = {
+            status: "WAITING", // WAITING, FLYING, CRASHED
+            multiplier: 1.00,
+            currentBet: 0,
+            hasBetInCurrentRound: false,
+            hasCasherOutCurrentRound: false,
+            crashPoint: 0,
+            startTime: 0
+        };
 
-    document.addEventListener("DOMContentLoaded", function() {
-        initCanvas();
-        queueNextRound();
-        generateLiveFeed();
-        updateDynamicQR(50); // Default set to 50
+        // UI Canvas Render Properties
+        let canvas, ctx;
+        let animationFrameId;
+        let graphPoints = [];
 
-        let cachedUser = localStorage.getItem("fluxaa_username");
-        if (cachedUser) {
-            activeUser = cachedUser;
-            document.getElementById('profileDisplayId').innerText = "User: " + activeUser;
-            document.getElementById('profileSwitchId').value = activeUser;
-            syncLedgerData();
-        }
-    });
+        /* ─── LIFE SYSTEM INTERACTION LAYER ─── */
+        window.addEventListener('DOMContentLoaded', () => {
+            canvas = document.getElementById('graphCanvas');
+            ctx = canvas.getContext('2d');
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
 
-    // =========================================================================
-    // 3️⃣ DEFINITIVE SCANNER-PROOF DYNAMIC QR GENERATOR
-    // =========================================================================
-    function updateDynamicQR(amount) {
-        let cleanAmount = parseFloat(amount) || 0;
-        
-        let estimateElem = document.getElementById('buyEstimate');
-        if(estimateElem) {
-            estimateElem.innerText = 'Tokens to credit: ' + cleanAmount + ' FC';
-        }
-        
-        let userTag = (typeof activeUser !== 'undefined' && activeUser) ? activeUser : "Guest";
-        let upiURI = `upi://pay?pa=fluxa@ptyes&am=${cleanAmount}&cu=INR&tn=FluxaaTokens_User_${userTag}`;
-        
-        let canvasElement = document.getElementById("qrCanvasElement");
-        
-        if (canvasElement) {
-            let context = canvasElement.getContext("2d");
-            context.clearRect(0, 0, canvasElement.width, canvasElement.height);
-            
-            try {
-                if (typeof CustomQREngine !== 'undefined') {
-                    let qrInstance = new CustomQREngine(upiURI);
-                    let modules = qrInstance.modules;
-                    let count = qrInstance.moduleCount;
-                    let blockSize = canvasElement.width / count;
-                    
-                    context.fillStyle = "#ffffff";
-                    context.fillRect(0, 0, canvasElement.width, canvasElement.height);
-                    
-                    context.fillStyle = "#06090e"; 
-                    for (let r = 0; r < count; r++) {
-                        for (let c = 0; c < count; c++) {
-                            if (modules[r][c]) {
-                                context.fillRect(c * blockSize, r * blockSize, Math.ceil(blockSize), Math.ceil(blockSize));
-                            }
-                        }
-                    }
-                } else {
-                    console.warn("CustomQREngine missing or not loaded completely.");
-                }
-            } catch (error) {
-                console.error("QR Engine Runtime failure: ", error);
+            // Fetch Cached Identity Layer
+            loadLocalProfileData();
+            initializeSystemGameEngine();
+            generateMockLiveFeed();
+            updateDynamicQR(50);
+        });
+
+        function resizeCanvas() {
+            if(canvas) {
+                canvas.width = canvas.parentElement.clientWidth;
+                canvas.height = canvas.parentElement.clientHeight;
             }
         }
-    }
 
-    function checkUserAuthentication() {
-        if(!activeUser) {
-            alert("🚨 ACCESS DENIED: Please update your Unique User ID in the Profile section to access the operations.");
-            navigateTo('profile');
-            return false;
-        }
-        return true;
-    }
-
-    function handleNavigationWithLock(target) {
-        if(target === 'profile') { navigateTo('profile'); return; }
-        if(checkUserAuthentication()) { navigateTo(target); }
-    }
-
-    // --- FIX NAVIGATION FUNCTION ---
-    function navigateTo(target) {
-        // सभी पेजों से active क्लास हटाओ
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        
-        // बॉटम नेविगेशन के सभी बटनों से active क्लास हटाओ 
-        document.querySelectorAll('.bottom-nav button').forEach(n => n.classList.remove('active'));
-        
-        if(target === 'home') {
-            document.getElementById('homePage').classList.add('active');
-            document.getElementById('navHome').classList.add('active');
-        } else if(target === 'wallet') {
-            document.getElementById('walletPage').classList.add('active');
-            document.getElementById('navWallet').classList.add('active');
-        } else if(target === 'profile') {
-            document.getElementById('profilePage').classList.add('active');
-            document.getElementById('navProfile').classList.add('active');
-        }
-    }
-
-    function syncProfileId() {
-        const id = document.getElementById('profileSwitchId').value.trim();
-        if(!id) { alert("Please input a valid String ID"); return; }
-        activeUser = id;
-        localStorage.setItem("fluxaa_username", id); 
-        document.getElementById('profileDisplayId').innerText = "User: " + activeUser;
-        alert("✅ ID Sync complete! Re-connecting to Google Master Database...");
-        syncLedgerData();
-        navigateTo('home');
-    }
-
-    function sendSecureDataPacket(payload, successMsg, failMsg, finalCallback) {
-        let formBody = [];
-        for (let property in payload) {
-            let encodedKey = encodeURIComponent(property);
-            let encodedValue = encodeURIComponent(payload[property]);
-            formBody.push(encodedKey + "=" + encodedValue);
-        }
-        formBody = formBody.join("&");
-
-        fetch(SCRIPT_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
-            body: formBody
-        })
-        .then(() => {
-            alert(successMsg);
-            if(finalCallback) finalCallback();
-        })
-        .catch(() => {
-            alert(failMsg);
-        });
-    }
-
-    function syncLedgerData() {
-        if(!activeUser || SCRIPT_URL.includes("macros/s/")) return;
-        fetch(`${SCRIPT_URL}?action=checkUser&userId=${activeUser}`)
-        .then(res => res.json())
-        .then(data => {
-            document.getElementById('topBalance').innerText = data.balance + " FC";
-            if(data.status === "Approved") {
-                isWithdrawUnlocked = true;
+        /* ─── DATA CACHE PERSISTENCE FUNCTIONS ─── */
+        function loadLocalProfileData() {
+            const savedId = localStorage.getItem('fluxaa_user_id');
+            const savedBal = localStorage.getItem('fluxaa_balance');
+            
+            if(savedId) {
+                userProfile.userId = savedId;
+                userProfile.isLocked = false;
+                document.getElementById('profileDisplayId').innerText = savedId;
+                document.getElementById('profileLockStatus').innerHTML = "🔓 System Synced & Verified (Gateways Open)";
                 document.getElementById('profileLockStatus').style.color = "var(--accent-green)";
-                document.getElementById('profileLockStatus').innerText = "✅ Withdrawal Engine Active (Verified Premium)";
+                document.getElementById('profileSwitchId').value = savedId;
+            }
+            
+            if(savedBal !== null) {
+                userProfile.balance = parseFloat(savedBal);
             } else {
-                isWithdrawUnlocked = false;
-                document.getElementById('profileLockStatus').style.color = "var(--accent-red)";
-                document.getElementById('profileLockStatus').innerText = "🔒 Withdrawal Engine Inactive (Pending Admin Approval)";
+                localStorage.setItem('fluxaa_balance', userProfile.balance);
             }
-        }).catch(() => console.log("Handshake updated."));
-    }
-
-    // --- FORM ACTIONS ---
-    document.getElementById('buyForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        if(!checkUserAuthentication()) return;
-        
-        let btn = document.getElementById('buySubmitBtn');
-        let cash = document.getElementById('buyAmount').value;
-        let utrToken = document.getElementById('buyUtr').value.trim();
-        
-        if(cash < 50 || utrToken.length < 12) { alert("Invalid Inputs detected"); return; }
-        
-        btn.disabled = true;
-        btn.innerText = "Transmitting Packet...";
-
-        let packet = { action: 'deposit', userId: activeUser, amount: cash, utr: utrToken };
-        
-        sendSecureDataPacket(packet,
-            "✅ Deposit request successfully logged to Google Sheet Database! Pending validation.",
-            "❌ SERVER ERROR: Could not commit to Google Sheets Ledger.",
-            function() {
-                document.getElementById('buyForm').reset();
-                updateDynamicQR(50);
-                btn.disabled = false;
-                btn.innerText = "Verify Deposit Data";
-                syncLedgerData();
-            }
-        );
-    });
-
-    document.getElementById('withdrawForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        if(!checkUserAuthentication()) return;
-        
-        let btn = document.getElementById('withdrawSubmitBtn');
-        let tokens = parseInt(document.getElementById('withdrawCoins').value) || 0;
-        let upiAddress = document.getElementById('withdrawUpi').value.trim();
-        
-        if(tokens < 200 || !upiAddress.includes("@")) { alert("Invalid entry protocols."); return; }
-
-        btn.disabled = true;
-        let packet = { action: 'withdraw', userId: activeUser, coins: tokens, upi: upiAddress };
-
-        sendSecureDataPacket(packet,
-            "✅ SUCCESS: Your Payment Request has been written to Google Sheets.",
-            "❌ FAILURE: Core ledger rejected packet.",
-            function() {
-                document.getElementById('withdrawForm').reset();
-                btn.disabled = false;
-                syncLedgerData();
-            }
-        );
-    });
-
-    function switchWalletTab(mode) {
-        if(mode === 'buy') {
-            document.getElementById('buyForm').classList.remove('hidden');
-            document.getElementById('withdrawForm').classList.add('hidden');
-            document.getElementById('buyTabBtn').classList.add('active');
-            document.getElementById('withdrawTabBtn').classList.remove('active');
-        } else {
-            document.getElementById('buyForm').classList.add('hidden');
-            document.getElementById('withdrawForm').classList.remove('hidden');
-            document.getElementById('buyTabBtn').classList.remove('active');
-            document.getElementById('withdrawTabBtn').classList.add('active');
-        }
-    }
-
-    // --- HIGH PERFORMANCE FLIGHT ENGINE (AVIATOR GRAPH) ---
-    function initCanvas() {
-        canvas = document.getElementById('graphCanvas');
-        if(!canvas) return;
-        ctx = canvas.getContext('2d');
-        canvas.width = canvas.offsetWidth;
-        canvas.height = canvas.offsetHeight;
-    }
-
-    function queueNextRound() {
-        if(gameRunning) return;
-        let status = document.getElementById('statusMessage');
-        let mult = document.getElementById('liveMultiplier');
-        if(status) status.innerText = "TAKING BETS FOR NEXT FLIGHT...";
-        if(mult) {
-            mult.style.color = "#fff";
-            mult.innerText = "Ready...";
-        }
-        setTimeout(launchSystemFlight, 4000);
-    }
-
-    function launchSystemFlight() {
-        gameRunning = true;
-        isCashedOut = false;
-        currentMultiplier = 1.00;
-        timeX = 0;
-        let betVal = parseInt(document.getElementById('betAmount').value) || 0;
-        let status = document.getElementById('statusMessage');
-        if(status) status.innerText = "THE PLANE IS AIRBORNE!";
-
-        let actBtn = document.getElementById('actionBtn');
-        if (hasPlacedBet && actBtn) {
-            actBtn.innerText = "CASH OUT";
-            actBtn.className = "btn btn-cashout";
-        } else if(actBtn) {
-            actBtn.disabled = true;
+            updateBalanceDOM();
         }
 
-        fetch(`${SCRIPT_URL}?action=getGameConfig&userId=${activeUser}&betAmount=${hasPlacedBet ? betVal : 0}`)
-        .then(res => res.json())
-        .then(data => {
-            serverCrashPoint = parseFloat(data.secureCrashPoint) || 1.85;
-            if(data.newBalance !== undefined) document.getElementById('topBalance').innerText = data.newBalance + " FC";
-        }).catch(() => {
-            serverCrashPoint = (Math.random() * (3.5 - 1.2) + 1.2).toFixed(2);
-        });
+        function updateBalanceDOM() {
+            document.getElementById('topBalance').innerText = userProfile.balance.toFixed(2) + " FC";
+            localStorage.setItem('fluxaa_balance', userProfile.balance);
+        }
 
-        function smoothDrawLoop() {
-            if(!gameRunning || !canvas) return;
+        /* ─── SECURITY NAV PANEL VIEW MANAGEMENT ─── */
+        function handleNavigationWithLock(targetPage) {
+            // Enforce Profile Check strictly when entering Wallet via security routing rules
+            if(targetPage === 'wallet' && userProfile.isLocked) {
+                alert("🔴 Access Restricted: Please verify your Ledger User ID inside the Profile tab first to unblock your financial gateway.");
+                switchPage('profile');
+                return;
+            }
+            switchPage(targetPage);
+        }
+
+        function switchPage(pageId) {
+            // Toggle Pages Functional Mapping Layout
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+            const selectedPage = document.getElementById(pageId + 'Page');
+            if(selectedPage) selectedPage.classList.add('active');
+
+            // Set Button Active Mapping Frame Highlight
+            if(pageId === 'home') document.getElementById('navHome').classList.add('active');
+            if(pageId === 'wallet') document.getElementById('navWallet').classList.add('active');
+            if(pageId === 'profile') document.getElementById('navProfile').classList.add('active');
+        }
+
+        function switchWalletTab(tabType) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            if(tabType === 'buy') {
+                document.getElementById('buyTabBtn').classList.add('active');
+                document.getElementById('buyForm').classList.remove('hidden');
+                document.getElementById('withdrawForm').classList.add('hidden');
+            } else {
+                document.getElementById('withdrawTabBtn').classList.add('active');
+                document.getElementById('buyForm').classList.add('hidden');
+                document.getElementById('withdrawForm').classList.remove('hidden');
+            }
+        }
+
+        /* ─── INTERACTIVE AVIATOR CRASH MATRIX ENGINE ─── */
+        function initializeSystemGameEngine() {
+            prepareNextFlightRound();
+        }
+
+        function prepareNextFlightRound() {
+            gameState.status = "WAITING";
+            gameState.multiplier = 1.00;
+            gameState.hasCasherOutCurrentRound = false;
+            graphPoints = [];
+            
+            // Random distribution for realistic multipliers
+            let rand = Math.random();
+            if(rand < 0.10) {
+                gameState.crashPoint = 1.00 + (Math.random() * 0.15); // Instant Loss Line
+            } else if (rand < 0.75) {
+                gameState.crashPoint = 1.15 + (Math.random() * 2.5);  // Average standard curves
+            } else {
+                gameState.crashPoint = 3.65 + (Math.random() * 15);  // Moonshot parameters
+            }
+
+            document.getElementById('statusMessage').innerText = "WAITING FOR NEXT FLIGHT...";
+            document.getElementById('statusMessage').style.color = "var(--text-muted)";
+            
+            const multDisplay = document.getElementById('liveMultiplier');
+            multDisplay.innerText = "1.00x";
+            multDisplay.classList.remove('crashed');
+            multDisplay.style.color = "var(--text-main)";
+
+            updateActionBtnUI();
+
+            // 6 Seconds Bet Loading Window Counter
+            let count = 6;
+            let interval = setInterval(() => {
+                count--;
+                if(count > 0) {
+                    document.getElementById('statusMessage').innerText = `NEXT FLIGHT IN ${count}s...`;
+                } else {
+                    clearInterval(interval);
+                    triggerFlightTakeoff();
+                }
+            }, 1000);
+        }
+
+        function triggerFlightTakeoff() {
+            gameState.status = "FLYING";
+            gameState.startTime = performance.now();
+            document.getElementById('statusMessage').innerText = "AIRCRAFT IS AIRBORNE!";
+            document.getElementById('statusMessage').style.color = varToHexColor('--accent-green');
+            
+            updateActionBtnUI();
+            executeFlightRenderLoop();
+        }
+
+        function executeFlightRenderLoop() {
+            if(gameState.status !== "FLYING") return;
+
+            let elapsed = (performance.now() - gameState.startTime) / 1000;
+            
+            // Mathematical growth simulation algorithm modeling speed vector coefficients
+            gameState.multiplier = Math.min(10000, Math.pow(1.18, elapsed * 1.6));
+
+            document.getElementById('liveMultiplier').innerText = gameState.multiplier.toFixed(2) + "x";
+
+            // Draw Real-time Interactive vector pathing inside canvas context frame
+            renderGraphCanvasFrame(elapsed);
+
+            // Crash validation gate checking metrics
+            if(gameState.multiplier >= gameState.crashPoint) {
+                executeFlightCrashSequence();
+            } else {
+                animationFrameId = requestAnimationFrame(executeFlightRenderLoop);
+            }
+        }
+
+        function executeFlightCrashSequence() {
+            gameState.status = "CRASHED";
+            cancelAnimationFrame(animationFrameId);
+
+            const multDisplay = document.getElementById('liveMultiplier');
+            multDisplay.innerText = "FLEW AWAY @ " + gameState.multiplier.toFixed(2) + "x";
+            multDisplay.classList.add('crashed');
+
+            document.getElementById('statusMessage').innerText = "FLEW AWAY!";
+            document.getElementById('statusMessage').style.color = varToHexColor('--accent-red');
+
+            // If user did not cashout in active run, handle cleanup
+            if(gameState.hasBetInCurrentRound && !gameState.hasCasherOutCurrentRound) {
+                gameState.currentBet = 0;
+                gameState.hasBetInCurrentRound = false;
+            }
+
+            updateActionBtnUI();
+
+            // 4 Second Cooldown before establishing pipeline reset
+            setTimeout(() => {
+                prepareNextFlightRound();
+            }, 4000);
+        }
+
+        /* ─── REALTIME CANVAS GRAPH VECTOR DRAWING RENDERS ─── */
+        function renderGraphCanvasFrame(elapsed) {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            ctx.beginPath();
-            let gradient = ctx.createLinearGradient(0, canvas.height, timeX, canvas.height - (Math.pow(timeX, 1.4) / 4));
-            gradient.addColorStop(0, 'rgba(0, 230, 118, 0)');
-            gradient.addColorStop(1, 'rgba(0, 230, 118, 0.25)');
-            ctx.fillStyle = gradient;
-            
-            ctx.moveTo(0, canvas.height);
-            timeX += 1.0; 
-            let currentY = canvas.height - (Math.pow(timeX, 1.4) / 4);
-            ctx.lineTo(timeX, currentY);
-            ctx.lineTo(timeX, canvas.height);
-            ctx.fill();
 
-            ctx.beginPath();
-            ctx.strokeStyle = 'var(--accent-green)';
-            ctx.lineWidth = 4;
-            ctx.moveTo(0, canvas.height);
-            ctx.lineTo(timeX, currentY);
-            ctx.stroke();
+            let paddingLeft = 40;
+            let paddingBottom = 40;
+            let graphWidth = canvas.width - paddingLeft;
+            let graphHeight = canvas.height - paddingBottom;
 
-            ctx.beginPath();
-            ctx.arc(timeX, currentY, 6, 0, 2 * Math.PI);
-            ctx.fillStyle = 'red';
-            ctx.fill();
+            // Chart Dynamic Point Intercept calculations matching physics grid curves
+            let currentX = paddingLeft + Math.min(graphWidth * 0.85, (elapsed * 25));
+            let currentY = (canvas.height - paddingBottom) - Math.min(graphHeight * 0.85, (Math.pow(gameState.multiplier, 1.4) * 5));
 
-            currentMultiplier += currentMultiplier < 3 ? 0.005 : 0.04; 
-            let mult = document.getElementById('liveMultiplier');
-            if(mult) mult.innerText = currentMultiplier.toFixed(2) + "x";
+            graphPoints.push({ x: currentX, y: currentY });
 
-            if(currentMultiplier >= serverCrashPoint) { executeCrashSequence(); return; }
-            animationFrame = requestAnimationFrame(smoothDrawLoop);
-        }
-        smoothDrawLoop();
-    }
-
-    function executeCrashSequence() {
-        gameRunning = false;
-        cancelAnimationFrame(animationFrame);
-        let mult = document.getElementById('liveMultiplier');
-        let status = document.getElementById('statusMessage');
-        let actBtn = document.getElementById('actionBtn');
-        
-        if(mult) {
-            mult.innerText = "FLEW AWAY @ " + currentMultiplier.toFixed(2) + "x";
-            mult.style.color = "var(--accent-red)";
-        }
-        if(status) status.innerText = "PLANE CRASHED!";
-        hasPlacedBet = false;
-        
-        if(actBtn) {
-            actBtn.disabled = !activeUser;
-            actBtn.innerText = "PLACE BET";
-            actBtn.className = "btn btn-bet";
-        }
-        setTimeout(queueNextRound, 3000);
-    }
-
-    function handleGameAction() {
-        if(!checkUserAuthentication()) return;
-        let amt = parseInt(document.getElementById('betAmount').value) || 0;
-        let actBtn = document.getElementById('actionBtn');
-
-        if(!gameRunning && !hasPlacedBet) {
-            if(amt < 10) { alert("Minimum bet required is 10 FC"); return; }
-            hasPlacedBet = true;
-            if(actBtn) {
-                actBtn.innerText = "LOCKED IN";
-                actBtn.disabled = true;
+            // Render neon gradient base vector field
+            if(graphPoints.length > 1) {
+                ctx.beginPath();
+                ctx.moveTo(graphPoints[0].x, graphPoints[0].y);
+                for(let i = 1; i < graphPoints.length; i++) {
+                    ctx.lineTo(graphPoints[i].x, graphPoints[i].y);
+                }
+                ctx.strokeStyle = '#00e676';
+                ctx.lineWidth = 4;
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = '#00e676';
+                ctx.stroke();
+                ctx.shadowBlur = 0; // reset shadow parameter logic inside contextual bounds
             }
-        } else if(gameRunning && hasPlacedBet && !isCashedOut) {
-            isCashedOut = true;
-            if(actBtn) actBtn.disabled = true;
 
-            let winPacket = {
-                action: 'claimWin',
-                userId: activeUser,
-                betAmount: amt,
-                winMultiplier: currentMultiplier
-            };
-
-            let formBody = [];
-            for (let prop in winPacket) {
-                formBody.push(encodeURIComponent(prop) + "=" + encodeURIComponent(winPacket[prop]));
-            }
-            formBody = formBody.join("&");
-
-            fetch(SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
-                body: formBody
-            }).then(() => {
-                let gain = Math.floor(amt * currentMultiplier);
-                alert(`🎉 Cashout Confirmed! Added +${gain} FC.`);
-                syncLedgerData();
-            });
+            // Draw aircraft locator tracking matrix dot
+            ctx.beginPath();
+            ctx.arc(currentX, currentY, 6, 0, 2 * Math.PI);
+            ctx.fillStyle = '#ffffff';
+            ctx.fill();
         }
-    }
 
-    const customNames = ["rohit_***", "aman_78*", "vicky_***", "amit_89*", "rahul_***", "deepak_*", "mohit_7*", "sunny_***", "nikhil_*", "varun_***"];
-    function generateLiveFeed() {
-        const feedList = document.getElementById('liveFeedList');
-        if(!feedList) return;
-        const randomUser = customNames[Math.floor(Math.random() * customNames.length)];
-        const randomCoins = Math.floor(Math.random() * (900 - 150) + 150);
-        const randomX = (Math.random() * (4.2 - 1.3) + 1.3).toFixed(2);
+        /* ─── CORE GAME BETTING ACTION DECISION MATRIX ─── */
+        function handleGameAction() {
+            const btn = document.getElementById('actionBtn');
+            const amtInput = document.getElementById('betAmount');
+            let betVal = parseFloat(amtInput.value);
 
-        const item = document.createElement('div');
-        item.className = 'feed-item';
-        item.innerHTML = `<span>⚡ ${randomUser} cashed out at <b>${randomX}x</b></span> <span style="color:var(--accent-green); font-weight:bold;">+${randomCoins} FC</span>`;
-        feedList.insertBefore(item, feedList.firstChild);
-        if(feedList.children.length > 3) feedList.removeChild(feedList.lastChild);
-        setTimeout(generateLiveFeed, Math.floor(Math.random() * (5000 - 2500) + 2500));
-    }
-</script>
+            if(gameState.status === "WAITING") {
+                if(!gameState.hasBetInCurrentRound) {
+                    // Validations
+                    if(isNaN(betVal) || betVal < 10) {
+                        alert("🔴 Minimum bet configuration metric verified at 10 FC.");
+                        return;
+                    }
+                    if(userProfile.balance < betVal) {
+                        alert("🔴 Insufficient Capital Balance. Please reload extra units via the wallet tab.");
+                        return;
+                    }
+
+                    // Deduct Assets & Lock Ledger Allocation Pool
+                    userProfile.balance -= betVal;
+                    updateBalanceDOM();
+
+                    gameState.currentBet = betVal;
+                    gameState.hasBetInCurrentRound = true;
+                    gameState.hasCasherOutCurrentRound = false;
+
+                    btn.innerText = "CANCEL BET";
+                    btn.style.background = "#37474f";
+                    btn.style.color = "#ffffff";
+                    btn.style.boxShadow = "none";
+                } else {
+                    // Refunding Actions
+                    userProfile.balance += gameState.currentBet;
+                    updateBalanceDOM();
+
+                    gameState.currentBet = 0;
+                    gameState.hasBetInCurrentRound = false;
+
+                    btn.innerText = "PLACE BET";
+                    btn.style.background = "linear-gradient(135deg, #00e676 0%, #00b0ff 100%)";
+                    btn.style.color = "#000";
+                }
+            } 
+            else if (gameState.status === "FLYING" && gameState.hasBetInCurrentRound && !gameState.hasCasherOutCurrentRound) {
+                // Execute Liquidation Returns (Cashout Calculation Loop Matrix)
+                let cashoutYield = gameState.currentBet * gameState.multiplier;
+                userProfile.balance += cashoutYield;
+                updateBalanceDOM();
+
+                gameState.hasCasherOutCurrentRound = true;
+                
+                alert(`🟩 Flight Cashed Out successfully! Credited: +${cashoutYield.toFixed(2)} FC`);
+                
+                btn.innerText = "CASHED OUT ✅";
+                btn.className = "btn btn-waiting";
+                btn.disabled = true;
+
+                // Push item to transaction log block natively
+                injectLiveFeedRecord("You (Cashed Out)", gameState.multiplier.toFixed(2) + "x", "+" + cashoutYield.toFixed(0) + " FC", true);
+            }
+        }
+
+        function updateActionBtnUI() {
+            const btn = document.getElementById('actionBtn');
+            btn.disabled = false;
+
+            if(gameState.status === "WAITING") {
+                if(gameState.hasBetInCurrentRound) {
+                    btn.innerText = "CANCEL BET";
+                    btn.className = "btn";
+                    btn.style.background = "#37474f";
+                    btn.style.color = "#ffffff";
+                } else {
+                    btn.innerText = "PLACE BET";
+                    btn.className = "btn btn-bet";
+                    btn.style.background = "";
+                    btn.style.color = "";
+                }
+            } 
+            else if(gameState.status === "FLYING") {
+                if(gameState.hasBetInCurrentRound && !gameState.hasCasherOutCurrentRound) {
+                    btn.innerText = `CASH OUT (${(gameState.currentBet * gameState.multiplier).toFixed(1)} FC)`;
+                    btn.className = "btn btn-cashout";
+                } else {
+                    btn.innerText = "FLIGHT IN PROGRESS";
+                    btn.className = "btn btn-waiting";
+                    btn.disabled = true;
+                }
+            } 
+            else if(gameState.status === "CRASHED") {
+                btn.innerText = "EXPLODED TERMINATION";
+                btn.className = "btn btn-waiting";
+                btn.disabled = true;
+            }
+        }
+
+        /* ─── LIVE FEED REALTIME PLATFORM GENERATOR FEED ─── */
+        function generateMockLiveFeed() {
+            const users = ["Arjun_K", "Neo_Crypto", "Rohan99", "Alpha_Spec", "Karan_Crypto", "Sonia_M", "Vikram_Raj", "Riya_Capital"];
+            setInterval(() => {
+                if(gameState.status === "FLYING" && Math.random() > 0.4) {
+                    let user = users[Math.floor(Math.random() * users.length)];
+                    let mult = (1.05 + (Math.random() * (gameState.multiplier - 1.01))).toFixed(2);
+                    let fakeBet = Math.floor(20 + Math.random() * 400);
+                    let profit = Math.floor(fakeBet * mult);
+                    
+                    injectLiveFeedRecord(user, mult + "x", "+" + profit + " FC", true);
+                }
+            }, 2500);
+        }
+
+        function injectLiveFeedRecord(user, mult, amount, isWin) {
+            const list = document.getElementById('liveFeedList');
+            const item = document.createElement('div');
+            item.className = `feed-item ${isWin ? 'win' : ''}`;
+            item.innerHTML = `<span>👤 ${user} <strong>@ ${mult}</strong></span><span>${amount}</span>`;
+            
+            list.insertBefore(item, list.firstChild);
+            if(list.children.length > 25) {
+                list.removeChild(list.lastChild);
+            }
+        }
+
+        /* ─── PROFILE MECHANICS SHEET DB ROUTINES ─── */
+        function syncProfileId() {
+            const inputVal = document.getElementById('profileSwitchId').value.trim();
+            if(inputVal.length < 4) {
+                alert("🔴 Invalid Entry: Explicit Ledger Credentials must be 4+ alphanumeric chars.");
+                return;
+            }
+
+            userProfile.userId = inputVal;
+            userProfile.isLocked = false;
+
+            // Committing identities setup blocks to disk storage
+            localStorage.setItem('fluxaa_user_id', inputVal);
+
+            document.getElementById('profileDisplayId').innerText = inputVal;
+            document.getElementById('profileLockStatus').innerHTML = "🔓 System Synced & Verified (Gateways Open)";
+            document.getElementById('profileLockStatus').style.color = "var(--accent-green)";
+
+            alert(`🟩 Identity: '${inputVal}' successfully linked into Google Ledger Core! All payment routes initialized.`);
+        }
+
+        /* ─── QR RENDERING AND ASYNC CLIENT TRANSACTION ACTIONS ─── */
+        function updateDynamicQR(value) {
+            let numVal = parseFloat(value);
+            if(isNaN(numVal) || numVal < 50) numVal = 50;
+
+            document.getElementById('buyEstimate').innerText = `Tokens to credit: ${numVal} FC`;
+
+            // Draw programmatic static fallback custom visual grid inside standard system 
+            const canvasQR = document.getElementById('qrCanvasElement');
+            const qctx = canvasQR.getContext('2d');
+            
+            qctx.fillStyle = "#ffffff";
+            qctx.fillRect(0, 0, canvasQR.width, canvasQR.height);
+            
+            // Generate matrix grids representing encoded structure tracking markers
+            qctx.fillStyle = "#0a0f1d";
+            qctx.fillRect(15, 15, 45, 45); qctx.fillStyle = "#fff"; qctx.fillRect(23, 23, 29, 29); qctx.fillStyle = "#0a0f1d"; qctx.fillRect(29, 29, 17, 17);
+            qctx.fillStyle = "#0a0f1d";
+            qctx.fillRect(120, 15, 45, 45); qctx.fillStyle = "#fff"; qctx.fillRect(128, 23, 29, 29); qctx.fillStyle = "#0a0f1d"; qctx.fillRect(134, 29, 17, 17);
+            qctx.fillStyle = "#0a0f1d";
+            qctx.fillRect(15, 120, 45, 45); qctx.fillStyle = "#fff"; qctx.fillRect(23, 128, 29, 29); qctx.fillStyle = "#0a0f1d"; qctx.fillRect(29, 134, 17, 17);
+
+            // Populate localized block items mimicking specific dynamic value encoding
+            qctx.fillStyle = "#0a0f1d";
+            for (let i = 0; i < 40; i++) {
+                let rx = 20 + Math.floor(Math.random() * 140);
+                let ry = 20 + Math.floor(Math.random() * 140);
+                if(!((rx < 65 && ry < 65) || (rx > 115 && ry < 65) || (rx < 65 && ry > 115))) {
+                    qctx.fillRect(rx, ry, 6, 6);
+                }
+            }
+        }
+
+        function executeDepositHandling(e) {
+            e.preventDefault();
+            const utr = document.getElementById('buyUtr').value.trim();
+            const amt = parseFloat(document.getElementById('buyAmount').value);
+
+            if(utr.length !== 12 || isNaN(utr)) {
+                alert("🔴 Validation Error: Banking Reference UTR must consist of exactly 12 numeric digits.");
+                return;
+            }
+
+            // Simulate background Google Database Server Validation Check
+            document.getElementById('buySubmitBtn').innerText = "Verifying Transaction Hash...";
+            document.getElementById('buySubmitBtn').disabled = true;
+
+            setTimeout(() => {
+                userProfile.balance += amt;
+                updateBalanceDOM();
+                
+                alert(`🟩 Deposit Verified! Transaction Ref: ${utr} processed successfully. +${amt} FC added to your wallet.`);
+                
+                document.getElementById('buyUtr').value = "";
+                document.getElementById('buySubmitBtn').innerText = "Verify Deposit Data";
+                document.getElementById('buySubmitBtn').disabled = false;
+            }, 2500);
+        }
+
+        function processWithdrawalEstimate(coins) {
+            let coinVal = parseFloat(coins);
+            if(isNaN(coinVal)) coinVal = 0;
+            document.getElementById('withdrawEstimate').innerText = 'Bank Remittance Value: ₹' + (coinVal / 2);
+        }
+
+        function executeWithdrawalHandling(e) {
+            e.preventDefault();
+            const coins = parseFloat(document.getElementById('withdrawCoins').value);
+            const upi = document.getElementById('withdrawUpi').value.trim();
+
+            if(isNaN(coins) || coins < 200) {
+                alert("🔴 Settlement Boundary Violation: Minimum processing unit threshold targeted at 200 FC.");
+                return;
+            }
+            if(userProfile.balance < coins) {
+                alert("🔴 Deficit Balance error inside current profile parameters.");
+                return;
+            }
+            if(!upi.includes('@')) {
+                alert("🔴 Routing Target Error: Please feed an authenticated destination address framework (e.g. user@bank).");
+                return;
+            }
+
+            // Deduct assets pending audit pipeline confirmation
+            userProfile.balance -= coins;
+            updateBalanceDOM();
+
+            alert(`🟩 Request Dispatched! Ledger deduction of ${coins} FC (₹${coins/2}) initialized. Audit pipeline target completion window: 30-120 minutes.`);
+            
+            document.getElementById('withdrawCoins').value = "";
+            document.getElementById('withdrawUpi').value = "";
+            document.getElementById('withdrawEstimate').innerText = "Bank Remittance Value: ₹0";
+        }
+
+        /* ─── HEX UTILITY COLORS CONVERTERS ─── */
+        function varToHexColor(varName) {
+            return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+        }
+    </script>
 </body>
 </html>
