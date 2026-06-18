@@ -648,6 +648,24 @@
             document.getElementById('pStatus').style.color = "var(--accent-green)";
         }
 
+        async function updateBalanceOnSheet(userId, newBalance) {
+    const payload = {
+        action: "UPDATE_BALANCE",
+        userId: userId,
+        newBalance: newBalance
+    };
+    try {
+        await fetch(SCRIPT_URL, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain" },
+            body: JSON.stringify(payload)
+        });
+        console.log("Balance Sheet पर अपडेट हो गया!");
+    } catch (err) {
+        console.error("Update Error:", err);
+    }
+        }
+
         /* ─── DEPOSIT & WITHDRAWAL OPERATIONS ─── */
         async function executeDepositHandling(e) {
             e.preventDefault();
