@@ -1,1 +1,347 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Tracker - Fluxaa Technologies</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --input-bg: #ffffff;
+        }
 
+        [data-theme="dark"] {
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --input-bg: #0f172a;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; transition: background 0.2s, color 0.2s; }
+        body { background: var(--bg); color: var(--text-main); min-height: 100vh; padding: 24px 16px; }
+
+        .container { max-width: 850px; margin: 0 auto; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .header h1 { font-size: 24px; font-weight: 700; color: var(--primary); }
+
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
+        .stat-card { background: var(--card-bg); border: 1px solid var(--border); padding: 18px; border-radius: 14px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .stat-card .val { font-size: 26px; font-weight: 800; margin-top: 4px; }
+
+        .card { background: var(--card-bg); border-radius: 16px; padding: 24px; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.04); margin-bottom: 24px; }
+        
+        .form-row { display: flex; gap: 12px; flex-wrap: wrap; }
+        input { flex: 1; min-width: 180px; padding: 12px 16px; border: 1px solid var(--border); border-radius: 10px; font-size: 14px; background: var(--input-bg); color: var(--text-main); outline: none; }
+        button { padding: 12px 20px; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; background: var(--primary); color: #fff; }
+        button:hover { background: var(--primary-dark); }
+        .btn-theme { background: var(--card-bg); color: var(--text-main); border: 1px solid var(--border); }
+
+        .subject-card { border: 1px solid var(--border); border-radius: 14px; padding: 20px; margin-bottom: 20px; background: var(--card-bg); }
+        .sub-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; }
+        .sub-title { font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+        
+        .badge { padding: 4px 10px; border-radius: 6px; font-weight: 700; font-size: 13px; }
+        .badge-safe { background: rgba(16, 185, 129, 0.15); color: var(--success); }
+        .badge-danger { background: rgba(239, 68, 68, 0.15); color: var(--danger); }
+        .sub-meta { color: var(--text-muted); font-size: 13px; margin-bottom: 12px; }
+
+        .btn-actions { display: flex; gap: 8px; align-items: center; }
+        .btn-toggle-cal { background: var(--bg); color: var(--text-main); border: 1px solid var(--border); padding: 6px 14px; font-size: 13px; border-radius: 8px; font-weight: 600; }
+        .btn-toggle-cal:hover { border-color: var(--primary); color: var(--primary); }
+
+        /* Calendar Styles */
+        .calendar-box { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-top: 14px; display: none; }
+        .calendar-box.open { display: block; }
+
+        .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-weight: 600; font-size: 14px; }
+        .cal-nav-btn { background: transparent; color: var(--primary); border: 1px solid var(--border); padding: 4px 10px; border-radius: 6px; cursor: pointer; }
+        .cal-nav-btn:hover { background: var(--border); }
+        
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; }
+        .cal-day-name { font-size: 11px; font-weight: 700; color: var(--text-muted); padding-bottom: 4px; }
+        
+        .cal-date { padding: 8px 4px; border-radius: 8px; border: 1px solid var(--border); font-size: 12px; font-weight: 600; cursor: pointer; background: var(--card-bg); user-select: none; }
+        .cal-date:hover:not(.disabled) { border-color: var(--primary); }
+        .cal-date.weekend { color: var(--danger); border-color: rgba(239, 68, 68, 0.3); }
+        
+        .cal-date.selected { box-shadow: 0 0 0 2px var(--primary); transform: scale(1.05); }
+        .cal-date.present { background: var(--success) !important; color: #fff; border-color: var(--success); }
+        .cal-date.absent { background: var(--danger) !important; color: #fff; border-color: var(--danger); }
+        
+        .cal-date.empty { border: none; background: transparent; cursor: default; }
+        .cal-date.disabled { opacity: 0.3; cursor: not-allowed; background: rgba(0,0,0,0.05); border-color: var(--border) !important; color: var(--text-muted); }
+
+        /* Action Panel */
+        .action-panel { margin-top: 16px; padding-top: 16px; border-top: 1px dashed var(--border); display: flex; flex-direction: column; gap: 8px; }
+        .action-text { font-size: 13px; font-weight: 600; color: var(--text-main); }
+        .action-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+        .btn-act { padding: 8px 16px; font-size: 12px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; color: #fff; }
+        .btn-act.p { background: var(--success); }
+        .btn-act.a { background: var(--danger); }
+        .btn-act.c { background: var(--text-muted); }
+
+        .btn-danger-sm { background: transparent; color: var(--danger); border: 1px solid var(--danger); padding: 6px 12px; font-size: 12px; border-radius: 6px; }
+        .btn-danger-sm:hover { background: var(--danger); color: #fff; }
+
+        footer { text-align: center; margin-top: 30px; padding: 16px; color: var(--text-muted); font-size: 13px; border-top: 1px solid var(--border); }
+        footer strong { color: var(--primary); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>📊 Attendance Tracker</h1>
+        <button class="btn-theme" onclick="toggleTheme()" id="themeBtn">🌙 Dark Mode</button>
+    </div>
+
+    <!-- SUMMARY DASHBOARD -->
+    <div class="summary-grid">
+        <div class="stat-card">
+            <div style="color:var(--text-muted); font-size:13px;">Overall Attendance</div>
+            <div class="val" id="totalPct">0%</div>
+        </div>
+        <div class="stat-card">
+            <div style="color:var(--text-muted); font-size:13px;">Total Attended</div>
+            <div class="val" id="totalAttendedVal">0</div>
+        </div>
+        <div class="stat-card">
+            <div style="color:var(--text-muted); font-size:13px;">Total Classes</div>
+            <div class="val" id="totalClassesVal">0</div>
+        </div>
+    </div>
+
+    <!-- ADD SUBJECT FORM -->
+    <div class="card">
+        <h3>Naya Subject Add Karein</h3>
+        <br>
+        <div class="form-row">
+            <input type="text" id="subName" placeholder="Subject Name (e.g. Maths)">
+            <button onclick="addSubject()">Add Subject</button>
+        </div>
+    </div>
+
+    <!-- SUBJECT LIST WITH TOGGLE CALENDAR -->
+    <div class="card">
+        <h3>Subject List</h3>
+        <div id="subjectList" style="margin-top: 16px;"></div>
+    </div>
+
+    <footer>
+        Powered by <strong>Fluxaa Technologies</strong>
+    </footer>
+</div>
+
+<script>
+    let currentTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    document.getElementById('themeBtn').innerText = currentTheme === 'light' ? '🌙 Dark Mode' : '☀️ Light Mode';
+
+    function toggleTheme() {
+        currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        localStorage.setItem('theme', currentTheme);
+        document.getElementById('themeBtn').innerText = currentTheme === 'light' ? '🌙 Dark Mode' : '☀️ Light Mode';
+    }
+
+    let subjects = JSON.parse(localStorage.getItem('subjects_cal_v2')) || [];
+    let currentMonthOffsets = {}; 
+    let activeSelectedDates = {}; 
+    let openCalendars = {}; // Calendar visibility state track karne ke liye
+
+    const realToday = new Date();
+    const todayStr = `${realToday.getFullYear()}-${String(realToday.getMonth() + 1).padStart(2, '0')}-${String(realToday.getDate()).padStart(2, '0')}`;
+
+    function addSubject() {
+        const name = document.getElementById('subName').value.trim();
+        if(!name) return alert("Subject ka naam enter karein!");
+        let newId = Date.now();
+        subjects.push({ id: newId, name: name, history: {} });
+        currentMonthOffsets[newId] = 0;
+        activeSelectedDates[newId] = todayStr;
+        openCalendars[newId] = false;
+        document.getElementById('subName').value = '';
+        saveAndRender();
+    }
+
+    function deleteSubject(id) {
+        if(confirm("Kya aap is subject ko delete karna chahte hain?")) {
+            subjects = subjects.filter(s => s.id !== id);
+            delete currentMonthOffsets[id];
+            delete activeSelectedDates[id];
+            delete openCalendars[id];
+            saveAndRender();
+        }
+    }
+
+    function toggleCalendarState(id) {
+        openCalendars[id] = !openCalendars[id];
+        renderSubjects();
+    }
+
+    function changeMonth(id, dir) {
+        if(!currentMonthOffsets[id]) currentMonthOffsets[id] = 0;
+        currentMonthOffsets[id] += dir;
+        renderSubjects();
+    }
+
+    function selectDate(subId, dateStr) {
+        activeSelectedDates[subId] = dateStr;
+        renderSubjects();
+    }
+
+    function markSelected(subId, action) {
+        let dateStr = activeSelectedDates[subId] || todayStr;
+        let sub = subjects.find(s => s.id === subId);
+        if(!sub) return;
+
+        if(action === 'clear') {
+            delete sub.history[dateStr];
+        } else {
+            sub.history[dateStr] = action;
+        }
+        
+        saveAndRender();
+    }
+
+    function renderSubjects() {
+        const list = document.getElementById('subjectList');
+        list.innerHTML = '';
+        let globalAttended = 0;
+        let globalTotal = 0;
+
+        if(subjects.length === 0) {
+            list.innerHTML = '<p style="color:var(--text-muted); text-align:center;">Koi subject add nahi hai.</p>';
+        }
+
+        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+        subjects.forEach(sub => {
+            if (!activeSelectedDates[sub.id]) {
+                activeSelectedDates[sub.id] = todayStr;
+            }
+
+            let attended = 0;
+            let total = 0;
+
+            Object.values(sub.history).forEach(st => {
+                total++;
+                if(st === 'present') attended++;
+            });
+
+            globalAttended += attended;
+            globalTotal += total;
+            const pct = total > 0 ? ((attended / total) * 100).toFixed(1) : 0;
+            const isSafe = pct >= 75;
+
+            let plannerMsg = isSafe
+                ? `Safe to bunk next <strong>${Math.max(0, Math.floor((attended - 0.75 * total) / 0.75))}</strong> classes`
+                : `Must attend next <strong>${Math.ceil((0.75 * total - attended) / 0.25)}</strong> classes`;
+
+            let offset = currentMonthOffsets[sub.id] || 0;
+            let targetDate = new Date(realToday.getFullYear(), realToday.getMonth() + offset, 1);
+            let year = targetDate.getFullYear();
+            let month = targetDate.getMonth();
+
+            let firstDay = new Date(year, month, 1).getDay();
+            let daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            let calHtml = '';
+            for(let e = 0; e < firstDay; e++) {
+                calHtml += `<div class="cal-date empty"></div>`;
+            }
+
+            for(let day = 1; day <= daysInMonth; day++) {
+                let cellDateObj = new Date(year, month, day);
+                let dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                
+                let dayOfWeek = cellDateObj.getDay();
+                let isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
+                let isFuture = cellDateObj > realToday;
+                let status = sub.history[dateStr] || '';
+                let isSelected = activeSelectedDates[sub.id] === dateStr;
+
+                let classes = ['cal-date'];
+                if(isWeekend) classes.push('weekend');
+                if(status) classes.push(status);
+                if(isSelected) classes.push('selected');
+                if(isFuture) classes.push('disabled');
+
+                if(isFuture) {
+                    calHtml += `<div class="${classes.join(' ')}">${day}</div>`;
+                } else {
+                    calHtml += `<div class="${classes.join(' ')}" onclick="selectDate(${sub.id}, '${dateStr}')">${day}</div>`;
+                }
+            }
+
+            let selDate = activeSelectedDates[sub.id];
+            let isCalOpen = openCalendars[sub.id] || false;
+
+            let actionPanelHtml = `
+                <div class="action-panel">
+                    <div class="action-text">Selected Date: <strong>${selDate}</strong> ${selDate === todayStr ? '(Today)' : ''}</div>
+                    <div class="action-btns">
+                        <button class="btn-act p" onclick="markSelected(${sub.id}, 'present')">Mark Present</button>
+                        <button class="btn-act a" onclick="markSelected(${sub.id}, 'absent')">Mark Absent</button>
+                        <button class="btn-act c" onclick="markSelected(${sub.id}, 'clear')">Remove Class</button>
+                    </div>
+                </div>`;
+
+            list.innerHTML += `
+                <div class="subject-card">
+                    <div class="sub-header">
+                        <div class="sub-title">
+                            ${sub.name} <span class="badge ${isSafe ? 'badge-safe' : 'badge-danger'}">${pct}%</span>
+                        </div>
+                        <div class="btn-actions">
+                            <button class="btn-toggle-cal" onclick="toggleCalendarState(${sub.id})">
+                                ${isCalOpen ? '❌ Hide Calendar' : '📅 View Calendar'}
+                            </button>
+                            <button class="btn-danger-sm" onclick="deleteSubject(${sub.id})">Delete</button>
+                        </div>
+                    </div>
+                    <div class="sub-meta">Attended: <strong>${attended}/${total}</strong> • ${plannerMsg}</div>
+
+                    <div class="calendar-box ${isCalOpen ? 'open' : ''}">
+                        <div class="cal-header">
+                            <button class="cal-nav-btn" onclick="changeMonth(${sub.id}, -1)">◀ Prev</button>
+                            <span>${monthNames[month]} ${year}</span>
+                            <button class="cal-nav-btn" onclick="changeMonth(${sub.id}, 1)">Next ▶</button>
+                        </div>
+                        <div class="cal-grid">
+                            <div class="cal-day-name">Sun</div><div class="cal-day-name">Mon</div><div class="cal-day-name">Tue</div>
+                            <div class="cal-day-name">Wed</div><div class="cal-day-name">Thu</div><div class="cal-day-name">Fri</div><div class="cal-day-name">Sat</div>
+                            ${calHtml}
+                        </div>
+                        ${actionPanelHtml}
+                    </div>
+                </div>`;
+        });
+
+        document.getElementById('totalAttendedVal').innerText = globalAttended;
+        document.getElementById('totalClassesVal').innerText = globalTotal;
+        const avgPct = globalTotal > 0 ? ((globalAttended / globalTotal) * 100).toFixed(1) : 0;
+        document.getElementById('totalPct').innerText = avgPct + '%';
+        document.getElementById('totalPct').style.color = avgPct >= 75 ? 'var(--success)' : 'var(--danger)';
+    }
+
+    function saveAndRender() {
+        localStorage.setItem('subjects_cal_v2', JSON.stringify(subjects));
+        renderSubjects();
+    }
+
+    renderSubjects();
+</script>
+</body>
+</html>
